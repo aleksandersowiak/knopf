@@ -1,0 +1,46 @@
+<?php if (!empty($this->slide)) : ?>
+        <div class="carousel slide" id="carousel-example-generic" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <?php $j = 0;
+                foreach ($this->slide as $element) : ?>
+                    <li data-target="#carousel-example-generic" data-slide-to="<?= $j ?>"
+                        class="<?= ($j == 0) ? "active" : "" ?>"></li>
+                    <?php $j++; endforeach; ?>
+            </ol>
+            <div class="carousel-inner" role="listbox">
+                <?php $k = 0;
+                foreach ($this->slide as $element_display) :?>
+                <div class="item <?= ($k == 0) ? "active" : "" ?>"><img alt="Third slide [900x500]"
+                                       data-src="holder.js/900x500/auto/#555:#333/text:Third slide"
+                                       style="max-width:100%; max-height:250px; min-width:100%; min-height:250px; overflow: hidden;
+<!--                                           background: url(--><?//= $linkImage[$h] ?><!--) no-repeat 50% 50%; -->
+                                           background-size:cover;"
+                                       src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iOTAwIiBoZWlnaHQ9IjUwMCIgdmlld0JveD0iMCAwIDkwMCA1MDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzkwMHg1MDAvYXV0by8jNTU1OiMzMzMvdGV4dDpUaGlyZCBzbGlkZQpDcmVhdGVkIHdpdGggSG9sZGVyLmpzIDIuNi4wLgpMZWFybiBtb3JlIGF0IGh0dHA6Ly9ob2xkZXJqcy5jb20KKGMpIDIwMTItMjAxNSBJdmFuIE1hbG9waW5za3kgLSBodHRwOi8vaW1za3kuY28KLS0+PGRlZnM+PHN0eWxlIHR5cGU9InRleHQvY3NzIj48IVtDREFUQVsjaG9sZGVyXzE1YmQ3MjA5Nzg2IHRleHQgeyBmaWxsOiMzMzM7Zm9udC13ZWlnaHQ6Ym9sZDtmb250LWZhbWlseTpBcmlhbCwgSGVsdmV0aWNhLCBPcGVuIFNhbnMsIHNhbnMtc2VyaWYsIG1vbm9zcGFjZTtmb250LXNpemU6NDVwdCB9IF1dPjwvc3R5bGU+PC9kZWZzPjxnIGlkPSJob2xkZXJfMTViZDcyMDk3ODYiPjxyZWN0IHdpZHRoPSI5MDAiIGhlaWdodD0iNTAwIiBmaWxsPSIjNTU1Ii8+PGc+PHRleHQgeD0iMjk4LjMyMDMxMjUiIHk9IjI3MC4xIj5UaGlyZCBzbGlkZTwvdGV4dD48L2c+PC9nPjwvc3ZnPg=="
+                                       data-holder-rendered="true">
+                    <div class="carousel-caption">
+                        <h3><?= $element_display['title']; ?></h3>
+                        <p><?=$this->_heleper->restrictText($element_display['description'],100,true) ?></p>
+                    </div>
+                </div>
+                <?php $k++; endforeach; ?>
+            </div>
+        </div>
+<?php endif; ?>
+        <p>KNOPF Serramenti è nata nel 2005 e si occupa di progettazione, vendita e installazione di serramenti nelle varie tipologie.</p>
+
+    <p>Operiamo in zona di Como e abbiamo prodotti di elevata qualità di aziende nord europee dalla decennale esperienza nella produzione di serramenti per esterni ed interni.</p>
+
+    <p>        La nostra esperienza accumulata negli anni è a vostra disposizione in ogni momento.</p>
+
+    <p>        La qualità dei materiali prodotti è alla base della filosofia aziendale, non rincorriamo dinamiche di costo puntando invece su prodotti certificati, testati e all'avanguardia.</p>
+
+    <p>        Inoltre offriamo un servizio completo dalla gestione dei rapporti al preventivo e installazione dei prodotti.</p>
+
+    <p>        Siamo caratterizzati da.</p>
+        <ul>
+         <li>Esperienza</li>
+            <li> Elevata qualità dei materiali prodotti</li>
+         <li>Gestione chiara e snella</li>
+        </ul>
+
+    <div style="height: 111111px"></div>

@@ -1,0 +1,33 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml">
+ <body style="background-color:#eeeeee;">
+    <div style="background-color:#eeeeee;">
+        <table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin:auto;width:600px">
+            <thead>
+            <tr>
+                <th style="color:#222;font:15px/15px Helvetica,Arial,sans-serif;padding:15px;">
+                <p>Dear All,</p>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="background:#ffffff;border-bottom:2px solid #e1e1e1;border-radius:3px;line-height:22px;margin:0 auto;padding:40px;text-align:center">
+                        <div style="text-align:center">
+                            <p>
+                            %message%
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="text-align:center;margin:25px 0 10px 0;">
+                            <i>Message generated automatically, please do not reply.</i>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+ </body>
+</html>
