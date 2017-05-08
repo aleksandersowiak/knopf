@@ -1,0 +1,19 @@
+Listen 3113
+<VirtualHost 192.168.211.132:3113>
+    ServerName 192.168.211.132:3113
+    DocumentRoot D:\WebServ\httpd\knopf
+
+    SetEnv APPLICATION_ENV "localdev"
+ <Files "secrets.ini">
+			Require all denied
+		</Files>
+<Files "config.php">
+			Require all denied
+		</Files>
+    <Directory D:\WebServ\httpd\knopf>
+        DirectoryIndex index.php
+        AllowOverride All
+        Order allow,deny
+        Allow from all
+    </Directory>
+</VirtualHost>

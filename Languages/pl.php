@@ -20,4 +20,5 @@ $lang = array (
     "back" => "Wróć",
     "read_more" => "Czytaj więcej...",
     "test_mail_title" => 'Test',
+    "admin_footer" => "Administracja"
 );

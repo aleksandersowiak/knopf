@@ -11,11 +11,13 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 -- Zrzut struktury bazy danych database
-CREATE DATABASE IF NOT EXISTS `database` /*!40100 DEFAULT CHARACTER SET utf8 */;
+DROP DATABASE IF EXISTS `database`;
+CREATE DATABASE IF NOT EXISTS `database` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `database`;
 
 
 -- Zrzut struktury tabela database.products
+DROP TABLE IF EXISTS `products`;
 CREATE TABLE IF NOT EXISTS `products` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `title` varchar(50) NOT NULL DEFAULT '0',
@@ -33,6 +35,7 @@ INSERT INTO `products` (`id`, `title`, `description`, `image`) VALUES
 
 
 -- Zrzut struktury tabela database.top_menu
+DROP TABLE IF EXISTS `top_menu`;
 CREATE TABLE IF NOT EXISTS `top_menu` (
   `menu_element` varchar(25) DEFAULT NULL,
   `order` varchar(25) DEFAULT NULL,
@@ -48,6 +51,27 @@ INSERT INTO `top_menu` (`menu_element`, `order`, `link`) VALUES
 	('menu_about', '4', 'home/about'),
 	('menu_contact', '5', 'home/contact');
 /*!40000 ALTER TABLE `top_menu` ENABLE KEYS */;
+
+
+-- Zrzut struktury tabela database.user
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE IF NOT EXISTS `user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL DEFAULT '0',
+  `surname` varchar(50) NOT NULL DEFAULT '0',
+  `city` varchar(50) NOT NULL DEFAULT '0',
+  `street` varchar(50) NOT NULL DEFAULT '0',
+  `postCode` varchar(50) NOT NULL DEFAULT '0',
+  `userName` varchar(50) DEFAULT NULL,
+  `userPassword` varchar(50) DEFAULT NULL,
+  KEY `Indeks 1` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+-- Zrzucanie danych dla tabeli database.user: ~1 rows (około)
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` (`id`, `name`, `surname`, `city`, `street`, `postCode`, `userName`, `userPassword`) VALUES
+	(1, 'Aleksander', 'Sowiak', 'Strzelce opolskie', 'Mickiewicza 11', '47-100', 'test', '1e1ad796c570c44209d2c12d550215974578aa90');
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

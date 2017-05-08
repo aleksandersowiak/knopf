@@ -49,7 +49,6 @@ abstract class BaseModel extends ViewModel
         }
         return $data;
     }
-
     public function insert($table, $insData)
     {
         $escaped_values = array();

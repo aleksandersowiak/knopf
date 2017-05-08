@@ -3,6 +3,7 @@ abstract class BaseController extends BaseModel{
 	protected $urlvalues;
 	protected $action;
     protected $_params = array();
+    public $_session;
 
 	public function __construct($action, $urlvalues) {
 		$this->action = $action;
@@ -21,8 +22,10 @@ abstract class BaseController extends BaseModel{
         }
         $this->setParams($the_request);
         $this->__init();
-        $this->Add('web_title','Knopf');
+        $this->Add('web_title','<img src="/data/images/logo.png"/>');
         $this->Add('top_menu',$this->_model->getTopMenu());
+        $this->_session = new Session();
+        $this->_session->startSession();
 	}
 	public function __init() {
 
@@ -31,7 +34,8 @@ abstract class BaseController extends BaseModel{
 		return $this->{$this->action}();
 	}
 	
-	protected function ReturnView($viewmodel, $fullview) {
+	protected function ReturnView($viewmodel, $fullview, $fixView = null) {
+        if($fixView != null) $this->action = $fixView;
 		$viewloc = 'views/' . get_class($this) . '/' . str_replace('Action','',$this->action) . '.phtml';
 		if ($fullview) {
 			require('views/maintemplate.phtml');
@@ -111,10 +115,10 @@ abstract class BaseController extends BaseModel{
 <script>
 $('#body').append('<div class="box-message"><div class="alert alert-$status pop-up" role="alert">$message</div></div>');
 setTimeout(function(){
-//$('.alert').remove();
-//if('$url' != '') {
-//        window.location="$url";
-//    }
+$('.alert').remove();
+if('$url' != '') {
+        window.location="$url";
+    }
 }, 5000);
 </script>
 EOF;

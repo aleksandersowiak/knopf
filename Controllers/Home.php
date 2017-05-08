@@ -29,4 +29,7 @@ class Home extends BaseController {
         }
         $this->ReturnView('', false);
     }
+    protected function testAction() {
+        echo '<div class="page-header"><h3>dddd</h3></div>';
+    }
 }
