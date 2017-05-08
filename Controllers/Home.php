@@ -1,14 +1,18 @@
 <?php
 class Home extends BaseController {
     protected $_model;
+    protected $_modelAdmin;
     protected $_heleper;
     public function __init() {
         $this->_model = new HomeModel();
+        $this->_modelAdmin = new AdminModel();
         $this->_heleper = new HomeHelper();
         parent::__init();
     }
 	protected function indexAction() {
         $this->Add('slide', $this->_model->getSlide());
+        $this->Add('edit',$this->checkSession(false));
+
         $this->ReturnView('', false);
 	}
 

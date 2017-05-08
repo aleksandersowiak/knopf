@@ -127,4 +127,16 @@ EOF;
     public function redirect($controller = '', $action = '') {
         header('Location: ' . createUrl($controller,$action));
     }
+    public function checkSession($redirect = true)
+    {
+        if (!$this->_session->__isset("user_id")
+            && !$this->_session->__isset('name')
+        ) {
+            if ($redirect == true) {
+                $this->redirect('admin', 'login');
+            }
+            return false;
+        }
+        return true;
+    }
 }

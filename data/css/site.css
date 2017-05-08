@@ -173,3 +173,7 @@ a { text-decoration: none; }
 .checklabel {
     font-weight:100;
 }
+
+.edit-bot {
+    bottom: 5px;
+}
