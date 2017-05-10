@@ -1,7 +1,16 @@
 App = {
     init: function () {
-        App.validateEmail();
-        },
+
+        $(document).ready(function(){
+            //FANCYBOX
+            //https://github.com/fancyapps/fancyBox
+            $(".fancybox").fancybox({
+                openEffect: "none",
+                closeEffect: "none"
+            });
+        });
+
+    },
     showModal: function (data, modalClass, back_redirect) {
 
         var modalTitle = '';

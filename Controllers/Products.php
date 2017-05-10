@@ -11,8 +11,9 @@ class Products extends BaseController {
     }
     protected function readAction() {
        $product = $this->_model->getProducts('`id` = ' . $this->getParam('id') .' AND ');
+        if(empty($product)) $this->_baseHelper->redirect('products','index');
        $this->renderValue($product[0]);
-        $this->ReturnView('', false);
+       $this->ReturnView('', false);
     }
     private function renderValue($product) {
         foreach ($product as $key => $value) {

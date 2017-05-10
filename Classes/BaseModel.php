@@ -91,5 +91,9 @@ abstract class BaseModel extends ViewModel
         $result = $this->select($query);
         return $result;
     }
-
+    public function getContent($value = '') {
+        $query = 'Select value from `content` where `index` LIKE "'.str_replace('Action','',$value).'" LIMIT 1';
+        $result = $this->select($query);
+        return $result[0]['value'];
+    }
 }

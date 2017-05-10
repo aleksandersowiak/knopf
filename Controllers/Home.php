@@ -60,8 +60,13 @@ class Home extends BaseController {
         $this->finish(null, $flash_message);
     }
     protected function contactAction() {
-        $contact = sprintf($this->_model->getContact(),__('address'),__(''),__('phone'),__('phone'),__('email'));
+        $contact = sprintf($this->_model->getContent($this->action),__('address'),__(''),__('phone'),__('phone'),__('email'));
         $this->Add('contactView',$contact);
+        $this->ReturnView('', false);
+    }
+    protected function aboutAction() {
+        $about = $this->_model->getContent($this->action);
+        $this->Add('aboutView',$about);
         $this->ReturnView('', false);
     }
     protected function testAction() {

@@ -233,3 +233,8 @@ a {
     background-color: #f2dede;
     border-color: #a94442;
 }
+.gallery
+{
+    display: inline-block;
+    margin-top: 20px;
+}
