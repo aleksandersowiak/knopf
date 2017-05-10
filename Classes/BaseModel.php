@@ -1,5 +1,6 @@
 <?php
 require_once(dirname(__FILE__) . '/../data/config.php');
+require_once(dirname(__FILE__) . '/../data/recaptcha/recaptchalib.php');
 
 abstract class BaseModel extends ViewModel
 {

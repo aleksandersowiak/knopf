@@ -1,81 +1,98 @@
 <div class="col-md-6">
-<form class="well form-horizontal" action="<?=createUrl('home','contact')?>" method="post"  id="contact_form">
-<fieldset>
-
-<!-- Form Name -->
-<legend>Contact Us Today!</legend>
-
-<!-- Text input-->
-
-<div class="form-group">
-    <label class="col-md-3 control-label">First Name</label>
-    <div class="col-md-8 inputGroupContainer">
-        <div class="input-group">
-            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-            <input  required="required" name="first_name" placeholder="First Name" class="form-control"  type="text">
-        </div>
+    <div class="well">
+        <fieldset>
+            <legend><?=__('contact');?></legend>
+            <?=$this->contactView?>
+        </fieldset>
     </div>
-</div>
-
-<!-- Text input-->
-
-<div class="form-group">
-    <label class="col-md-3 control-label" >Last Name</label>
-    <div class="col-md-8 inputGroupContainer">
-        <div class="input-group">
-            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-            <input required="required" name="last_name" placeholder="Last Name" class="form-control"  type="text">
-        </div>
-    </div>
-</div>
-
-<!-- Text input-->
-<div class="form-group">
-    <label class="col-md-3 control-label">E-Mail</label>
-    <div class="col-md-8 inputGroupContainer">
-        <div class="input-group">
-            <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-            <input required="required" name="email" placeholder="E-Mail Address" class="form-control"  type="text">
-        </div>
-    </div>
-</div>
-
-
-<!-- Text input-->
-
-<div class="form-group">
-    <label class="col-md-3 control-label">Phone #</label>
-    <div class="col-md-8 inputGroupContainer">
-        <div class="input-group">
-            <span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
-            <input name="phone" placeholder="(845)555-1212" class="form-control" type="text">
-        </div>
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">Message</label>
-    <div class="col-md-8 inputGroupContainer">
-        <div class="input-group">
-            <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-            <textarea class="form-control" name="comment" placeholder="Project Description"></textarea>
-        </div>
-    </div>
-</div>
-
-<!-- Success message -->
-<div class="alert alert-success" role="alert" id="success_message">Success <i class="glyphicon glyphicon-thumbs-up"></i> Thanks for contacting us, we will get back to you shortly.</div>
-
-<!-- Button -->
-<div class="form-group">
-    <label class="col-md-3 control-label"></label>
-    <div class="col-md-3">
-        <button type="submit" name="sendContact" value="send" class="btn btn-warning" >Send <span class="glyphicon glyphicon-send"></span></button>
-    </div>
-</div>
-
-</fieldset>
-</form>
 </div>
 <div class="col-md-6">
-    
+    <form class="well form-horizontal" action="<?= createUrl('home', 'contactSend'); ?>" method="post" id="contact_form">
+        <fieldset>
+
+            <!-- Form Name -->
+            <legend><?=__('ask_us');?></legend>
+
+            <!-- Text input-->
+
+            <div class="form-group">
+                <label class="col-md-3 control-label"><?=__('fist_name');?>*</label>
+
+                <div class="col-md-8 inputGroupContainer">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                        <input required="required" name="first_name" placeholder="<?=__('fist_name');?>" class="form-control"
+                               type="text">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Text input-->
+
+            <div class="form-group">
+                <label class="col-md-3 control-label"><?=__('last_name');?>*</label>
+
+                <div class="col-md-8 inputGroupContainer">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                        <input required="required" name="last_name" placeholder="<?=__('last_name');?>" class="form-control"
+                               type="text">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-3 control-label"><?=__('email');?>*</label>
+
+                <div class="col-md-8 inputGroupContainer">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                        <input required="required" name="email" id="email" placeholder="<?=__('email');?>" class="form-control"
+                               type="text">
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Text input-->
+
+            <div class="form-group">
+                <label class="col-md-3 control-label"><?=__('phone');?></label>
+
+                <div class="col-md-8 inputGroupContainer">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
+                        <input name="phone" placeholder="(845)555-1212" class="form-control" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label"><?=__('message');?></label>
+
+                <div class="col-md-8 inputGroupContainer">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                        <textarea class="form-control" name="comment"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label"></label>
+
+                <div class="col-md-3">
+                         <?=recaptcha_get_html($this->_publickey)?>
+                </div>
+            </div>
+            <!-- Button -->
+            <div class="form-group">
+                <label class="col-md-3 control-label"></label>
+                <div class="col-md-3">
+                    <button type="submit" name="sendContact" value="send" class="btn btn-warning"><?=__('send');?> <span
+                            class="glyphicon glyphicon-send"></span></button>
+                </div>
+            </div>
+            <p style="font-size: 11px"><?=__('field_is_required')?></p>
+        </fieldset>
+    </form>
 </div>

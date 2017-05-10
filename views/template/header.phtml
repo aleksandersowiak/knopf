@@ -17,10 +17,18 @@ foreach (glob("Languages/*.php") as $filename) {
     <link rel="stylesheet" href="/data/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="/data/css/flags16.css">
     <link rel="stylesheet" type="text/css" href="/data/css/site.css">
-
+    <script>
+        App.init();
+    </script>
 </head>
 <body>
-<nav class="navbar navbar-default navbar-fixed-top">
+<?php
+if ($this->_session->__isset('flash_message')) {
+    echo $this->_session->__get('flash_message');
+    $this->_session->__unset('flash_message');
+}
+?>
+<nav class="navbar navbar-default navbar-fixed-top navbar-top">
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">

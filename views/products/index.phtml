@@ -1,0 +1,18 @@
+<div class="row">
+    <?php foreach ($viewmodel as $key => $value) : ?>
+
+        <div class="col-sm-6 col-md-4">
+            <div class="thumbnail">
+                <img src="<?= $value['image'] ?>" alt="...">
+
+                <div class="caption">
+                    <h3><?= $value['title'] ?></h3>
+                    <p><?= $this->_baseHelper->restrictText($value['description'], 125, true) ?></p>
+                    <p><a href="<?= createUrl('products', 'read') ?>/<?= $value['id'] ?>" class="btn btn-primary"
+                          role="button"><?= __('show') ?></a></p>
+                </div>
+            </div>
+        </div>
+
+    <?php endforeach; ?>
+</div>

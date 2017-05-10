@@ -5,4 +5,9 @@ class HomeModel extends BaseModel{
         $result = $this->select($query);
         return $result;
     }
+    public function getContact() {
+        $query = 'Select value from `contact` LIMIT 1';
+        $result = $this->select($query);
+        return $result[0]['value'];
+    }
 }

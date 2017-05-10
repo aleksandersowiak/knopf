@@ -1,7 +1,7 @@
 App = {
     init: function () {
-
-    },
+        App.validateEmail();
+        },
     showModal: function (data, modalClass, back_redirect) {
 
         var modalTitle = '';
@@ -68,6 +68,7 @@ App = {
         });
     },
     formAjax: function (elem, params) {
+//        console.log(elem,params);
         if (params['cancel'] != undefined && params['cancel'] == true) {
             $(elem).find('#clear').click(function () {
                 App.ajaxSend(params['url'], {'clear': 1});
@@ -83,10 +84,10 @@ App = {
         });
     },
     ajaxSend: function (url, params, content, onSuccess, onError) {
-        if (App.ajaxUrl == url) {
-            return false;
-        }
-
+        console.log('AjaxSend' + App.ajaxUrl);
+//        if (App.ajaxUrl == url) {
+//            return false;
+//        }
         App.ajaxUrl = url;
 
         //CKedit hack
@@ -104,35 +105,34 @@ App = {
             data: params,
             error: function (data, status) {
                 if (onError == false) {
-                    App.alert('Server communication problem.', 'error');
+                    alert('Server communication problem. ' + status);
                 } else {
                     onError(data);
                 }
-                App.loadButtonReset();
+
                 App.ajaxUrl = null;
             },
             success: function (data, status, jqXHR) {
                 try {
                     eval('var datao = ' + data);
+
                     switch (datao.cmd) {
                         case 'redirect' :
                             document.location.href = datao.url;
                             return true;
                             break;
                         case 'break' :
-                            console.log(originalContent);
                             if (originalContent) {
-
                                 $(originalContent).modal('hide');
                             }
                             if (datao.extraCommand != undefined) {
                                 eval(datao.extraCommand);
                             }
-
                             return true;
                             break;
                     }
                 } catch (e) {
+                    console.log(e);
                 }
 
                 if (onSuccess == false) {
@@ -142,7 +142,7 @@ App = {
                 }
                 App.ajaxUrl = null;
             }
-        })
+        });
     },
     clickAction: function (url, params) {
         if (url == undefined) {
@@ -164,7 +164,7 @@ App = {
         url = urlA.join('');
 
             App.ajaxSend(url, null, null, function (data, status, jqXHR) {
-                console.log(status, jqXHR);
+
 //                if (jqXHR.getResponseHeader('Content-type') == 'html/popup') {
                     var patt = /(redirect\/false){1}/;
                     App.showModal(data, undefined, patt.test(url) ? 'true' : undefined);
@@ -180,6 +180,25 @@ App = {
 //                    $('body').html(data);
 //                }
             });
+    },
+    validateEmail: function () {
+        $('#form_contact').bootstrapValidator({
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                email: {
+                    validators: {
+                        regexp: {
+                            regexp: '^[^@\\s]+@([^@\\s]+\\.)+[^@\\s]+$',
+                            message: 'The value is not a valid email address'
+                        }
+                    }
+                }
+            }
+        });
     }
 };
 
@@ -190,16 +209,11 @@ App = {
 
 jQuery(document).ready(function($){
 
-    $("form").on('submit', function (event) {
-        if ($(this).find("input.required").val() == "") {
-            $(this).find("input.required").addClass('error-input');
-            event.preventDefault();
-        }
+    $('input, button').on('click', function () {
+        App.formAjax($(this).parents('form'), {
+            url: $(this).parents('form').attr('action')
+        });
     });
-    $("form").on('keydown', function (event) {
-        $(this).find("input.required").removeClass('error-input');
-    });
-
     var introSection = $('#carousel-example-generic'),
         introSectionHeight = introSection.height(),
     //change scaleSpeed if you want to change the speed of the scale effect

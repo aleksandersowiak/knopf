@@ -16,4 +16,6 @@ $lang = array (
     "welcome_message" => "Hello",
     "result_database" => "Result from database",
     "back" => "Back",
+
+    "admin_footer" => "Admin Panel",
 );

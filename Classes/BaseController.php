@@ -4,6 +4,7 @@ abstract class BaseController extends BaseModel{
 	protected $action;
     protected $_params = array();
     public $_session;
+    public $_baseHelper;
 
 	public function __construct($action, $urlvalues) {
 		$this->action = $action;
@@ -25,10 +26,16 @@ abstract class BaseController extends BaseModel{
         $this->Add('web_title','<img src="/data/images/logo.png"/>');
         $this->Add('top_menu',$this->_model->getTopMenu());
         $this->_session = new Session();
-        $this->_session->startSession();
+        if (session_status() == PHP_SESSION_NONE) {
+            $this->_session->startSession();
+        }
+
+        $this->_baseHelper = new BaseHelper();
+
 	}
 	public function __init() {
-
+        $this->Add('_publickey',$this->getConfig()['recaptcha.public']);
+        $this->Add('_privatekey',$this->getConfig()['recaptcha.private']);
     }
 	public function ExecuteAction() {
 		return $this->{$this->action}();
@@ -37,14 +44,13 @@ abstract class BaseController extends BaseModel{
 	protected function ReturnView($viewmodel, $fullview, $fixView = null) {
         if($fixView != null) $this->action = $fixView;
 		$viewloc = 'views/' . get_class($this) . '/' . str_replace('Action','',$this->action) . '.phtml';
-		if ($fullview) {
-			require('views/maintemplate.phtml');
+        if ($fullview) {
             return;
-		} else {
+        } else {
             require('views/template/header.phtml'); // is set default header
-			require($viewloc);  // data from controller action
+            require($viewloc); // data from controller action
             require('views/template/footer.phtml'); // is set default footer
-		}
+        }
 	}
 
     public function setParam($key, $value)
@@ -110,22 +116,22 @@ abstract class BaseController extends BaseModel{
         $mail->Send();
         unset($mail);
     }
-    public function renderMessage($message,$status,$url = '') {
-        return <<<EOF
-<script>
-$('#body').append('<div class="box-message"><div class="alert alert-$status pop-up" role="alert">$message</div></div>');
-setTimeout(function(){
-$('.alert').remove();
-if('$url' != '') {
-        window.location="$url";
-    }
-}, 5000);
-</script>
+    public function renderMessage($message,$status) {
+        return  <<<EOF
+        $('#body').find('.container').append('<div class="box-message"><div class="alert alert-$status pop-up" role="alert">$message</div></div>');
+        setTimeout(function(){
+            $('.alert').remove();
+        }, 5000);
 EOF;
-
     }
-    public function redirect($controller = '', $action = '') {
-        header('Location: ' . createUrl($controller,$action));
+    public function redirect($controller = '', $action = '', $url = '') {
+        if($controller != '' && $action != '') {
+            return  'window.location="'.createUrl($controller,$action).'";';
+        }else if ($url != '') {
+            return  'window.location="'.$url.'";';
+        }else{
+            return  'window.location=window.location.href;';
+        }
     }
     public function checkSession($redirect = true)
     {
@@ -133,10 +139,26 @@ EOF;
             && !$this->_session->__isset('name')
         ) {
             if ($redirect == true) {
-                $this->redirect('admin', 'login');
+                $this->_baseHelper->redirect('admin', 'login');
             }
             return false;
         }
         return true;
+    }
+    public function finish($msg = null,$extraCommand = null, $type = "success") {
+        $result = array();
+        $result['cmd'] = 'break';
+
+        if(!is_null($extraCommand)) {
+            $result['extraCommand'] = $extraCommand;
+        }
+
+        if(!is_null($msg)) {
+            $result['msg'] = $msg;
+            $result['type'] = $type;
+            $result['cmd'] = 'break-with-msg';
+        }
+
+        die(json_encode($result));
     }
 }

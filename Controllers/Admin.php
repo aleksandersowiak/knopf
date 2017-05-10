@@ -8,7 +8,6 @@ class Admin extends BaseController
     public function __init()
     {
         $this->_model = new AdminModel();
-//        $this->_heleper = new HomeHelper();
         parent::__init();
     }
 
@@ -23,34 +22,37 @@ class Admin extends BaseController
         if ($this->_session->__isset("user_id")
             && $this->_session->__isset('name')
         ) {
-            $this->redirect('admin', 'index');
+            $this->_baseHelper->redirect('admin', 'index');
         }
         $this->ReturnView('', false);
+    }
+
+    protected function setSessionAction () {
+        $message = '';
         if (($this->getParam('userName') != '' && $this->getParam('userPassword') != '' && ($_SERVER['REQUEST_METHOD'] == 'POST'))) {
             $userName = $this->getParam('userName');
             $userPassword = $this->getParam('userPassword');
             if ($this->_model->checkUser($userName) == 1) {
-                if (count($this->_model->checkPassword($userName, $userPassword)) == 1) {
+                if ($this->_model->checkPassword($userName, $userPassword) != false) {
                     $data = $this->_model->getUser($this->_model->checkPassword($userName, $userPassword));
                     $this->_session->__set('user_id', $data[0]['id']);
                     $this->_session->__set('name', $data[0]['name'] . ' ' . $data[0]['surname']);
-                    echo $this->renderMessage(__('login_success'), 'success', createUrl('admin', 'index'));
+                    $message = $this->renderMessage(__('login_success'), 'success') . $this->redirect('admin','index');
                 } else {
-                    echo $this->renderMessage(__('password_incorrect'), 'danger');
-                    return;
+                    $message =  $this->renderMessage(__('login_incorrect'), 'danger');
                 }
             } else {
-                echo $this->renderMessage(__('user_not_exists'), 'danger');
-                return;
+                $message = $this->renderMessage(__('login_incorrect'), 'danger');
             }
         }
+        $this->finish(null, $message);
     }
 
     protected function logoutAction()
     {
         $this->checkSession();
-        $this->ReturnView('', false, 'index');
         $this->_session->destroy();
-        echo $this->renderMessage(__('logout_success'), 'success', createUrl('home', 'index'));
+        $this->_session->__set('flash_message', $this->renderMessage(__('logout_success'), 'success'));
+        $this->_baseHelper->redirect('admin', 'login');
     }
 }

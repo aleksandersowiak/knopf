@@ -7,30 +7,61 @@ class Home extends BaseController {
         $this->_model = new HomeModel();
         $this->_modelAdmin = new AdminModel();
         $this->_heleper = new HomeHelper();
+
         parent::__init();
     }
 	protected function indexAction() {
         $this->Add('slide', $this->_model->getSlide());
         $this->Add('edit',$this->checkSession(false));
-
         $this->ReturnView('', false);
 	}
+    public function contactSendAction() {
+        $flash_message = $this->renderMessage(__('error'), 'danger');
+        if(($this->getParam('first_name') != '') && ($this->getParam('last_name') != '') && ($this->getParam('email') != '')) {
+            $resp = recaptcha_check_answer ($this->_privatekey,
+                $_SERVER["REMOTE_ADDR"],
+                $this->getParam("recaptcha_challenge_field"),
+                $this->getParam("recaptcha_response_field"));
+            if (!$resp->is_valid) {
+                $flash_message = $this->renderMessage(__('reCAPTCHA_error'), 'danger') . "$('#recaptcha_widget_div').parents('.form-group').addClass('recaptcha_widget_div_has-error');";
+            } else {
+                $emailTemplate = dirname(__FILE__) . '/../data/template/contact_mail.txt';
+                $message_contact = "<table border='0' style='width: 500px; border: 0'>
+                                      <tr>
+                                        <td style='width: 100px'>First Name: </td>
+                                        <td>%s</td>
+                                      </tr>
+                                      <tr>
+                                        <td style='width: 100px'>Last Name: </td>
+                                        <td>%s</td>
+                                      </tr>
+                                      <tr>
+                                        <td style='width: 100px'>E-mail: </td>
+                                        <td>%s</td>
+                                      </tr>
+                                      <tr>
+                                        <td style='width: 100px'>Phone: </td>
+                                        <td>%s</td>
+                                      </tr>
+                                      <tr>
+                                        <td style='width: 100px'>Message: </td>
+                                        <td>%s</td>
+                                      </tr>
+                                    </table>";
 
-    protected function contactAction() {
+                $message = sprintf($message_contact, $this->getParam('first_name'), $this->getParam('last_name'), $this->getParam('email'), $this->getParam('phone'), $this->getParam('comment'));
+                $message = str_replace("%message%", $message, file_get_contents($emailTemplate));
 
-        if($this->getParam('sendContact')) {
-            $emailTemplate = dirname(__FILE__) . '/../data/template/contact_mail.txt';
-            $message = $this->getParam('first_name') .'<br>';
-            $message .= $this->getParam('last_name') .'<br>';
-            $message .= $this->getParam('email') .'<br>';
-            $message .= $this->getParam('phone') .'<br>';
-            $message .= $this->getParam('comment') .'<br>';
+                $this->send_mail(__('mail_title'),$message);
+                $flash_message =  $this->renderMessage(__('send_mail'), 'success') . "$('#recaptcha_reload').trigger('click'); $('form').trigger('reset');";
 
-            $message = str_replace("%message%", $message, file_get_contents($emailTemplate));
-            $this->send_mail(__('test_mail_title'),$message);
-            $this->Add('flash_message',$this->renderMessage('Mail was sent!', 'success', createUrl('home','contact')));
-
+            }
         }
+        $this->finish(null, $flash_message);
+    }
+    protected function contactAction() {
+        $contact = sprintf($this->_model->getContact(),__('address'),__(''),__('phone'),__('phone'),__('email'));
+        $this->Add('contactView',$contact);
         $this->ReturnView('', false);
     }
     protected function testAction() {
