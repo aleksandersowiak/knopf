@@ -18,4 +18,7 @@ $lang = array (
     "back" => "Back",
 
     "admin_footer" => "Admin Panel",
+    "log_in" => "Login",
+    "username" => "Username",
+    "password" => "Password",
 );

@@ -7,7 +7,7 @@
     </div>
 </div>
 <div class="col-md-6">
-    <form class="well form-horizontal" action="<?= createUrl('home', 'contactSend'); ?>" method="post" id="contact_form">
+    <form data-toggle="validator" class="well form-horizontal" action="<?= createUrl('home', 'contactSend'); ?>" method="post" id="contact_form">
         <fieldset>
 
             <!-- Form Name -->
@@ -96,3 +96,12 @@
         </fieldset>
     </form>
 </div>
+<script>
+    $('button[type="submit"]').on('click' , function () {
+        if(!App.validateEmail("email"))
+        {
+            $("#email").attr("data-toggle","tooltip").attr("data-placement","top").attr("title","<?=__("invalid_email")?>");
+            return false;
+        }
+    });
+</script>

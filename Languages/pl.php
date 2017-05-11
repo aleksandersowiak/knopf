@@ -39,4 +39,11 @@ $lang = array(
     "reCAPTCHA_error" => "reCAPTCHA nie został wprowadzony prawidłowo. Prosimy spróbować ponownie.",
     "field_is_required" => "Pola oznaczone <b>*</b> są wymagane.",
     "show" => "Pokaż",
+    "invalid_email" => "Niepoprawny adres e-mail",
+    "coockie_message" => "Ta strona używa cookie i innych technologii. Korzystając z niej wyrażasz zgodę na ich używanie, zgodnie z aktualnymi ustawieniami przeglądarki.",
+    "got_it" => "Rozumiem",
+    "learn_more" => "Czytaj więcej",
+    "log_in" => "Zaloguj",
+    "username" => "Nazwa uzytkownika",
+    "password" => 'Hasło',
 );

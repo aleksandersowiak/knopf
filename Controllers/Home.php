@@ -12,7 +12,9 @@ class Home extends BaseController {
     }
 	protected function indexAction() {
         $this->Add('slide', $this->_model->getSlide());
-        $this->Add('edit',$this->checkSession(false));
+
+        $about = $this->_model->getContent($this->action);
+        $this->Add('homeView',$about);
         $this->ReturnView('', false);
 	}
     public function contactSendAction() {
@@ -51,8 +53,10 @@ class Home extends BaseController {
 
                 $message = sprintf($message_contact, $this->getParam('first_name'), $this->getParam('last_name'), $this->getParam('email'), $this->getParam('phone'), $this->getParam('comment'));
                 $message = str_replace("%message%", $message, file_get_contents($emailTemplate));
-
-                $this->send_mail(__('mail_title'),$message);
+                   $send = $this->send_mail(__('mail_title'),$message);
+                if($send['status'] == false){
+                    $flash_message = $this->renderMessage(__($send['message']), 'success') . "$('#recaptcha_reload').trigger('click'); $('form').trigger('reset');";
+                }
                 $flash_message =  $this->renderMessage(__('send_mail'), 'success') . "$('#recaptcha_reload').trigger('click'); $('form').trigger('reset');";
 
             }

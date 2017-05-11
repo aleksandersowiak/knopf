@@ -53,6 +53,6 @@ class Admin extends BaseController
         $this->checkSession();
         $this->_session->destroy();
         $this->_session->__set('flash_message', $this->renderMessage(__('logout_success'), 'success'));
-        $this->_baseHelper->redirect('admin', 'login');
+        $this->_baseHelper->redirect('home', 'index');
     }
 }

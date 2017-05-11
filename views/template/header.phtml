@@ -1,6 +1,11 @@
 <?php
 $opts = array();
-$uri = '/' . $_GET['controller'] . '/' . $_GET['action'];
+if ($_GET['id'] == "") {
+    $id = "";
+} else {
+    $id = "/" . $_GET['id'];
+}
+$uri = '/' . $_GET['controller'] . '/' . $_GET['action'] . $id;
 foreach (glob("Languages/*.php") as $filename) {
     $lang = str_replace('.php', '', basename($filename));
     $languages[$lang] = __($lang);
@@ -9,7 +14,9 @@ foreach (glob("Languages/*.php") as $filename) {
 ?>
 <html lang="<?=$base_lang?>">
 <head>
-    <meta charset="utf-8">
+    <title>KNOPF - Serramenti vendita ed installazione</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Language" content="<?=$base_lang?>" />
     <script src="/data/js/jquery-3.2.1.js"></script>
     <script src="/data/js/bootstrap.js"></script>
     <script src="/data/js/app.js"></script>
@@ -22,6 +29,28 @@ foreach (glob("Languages/*.php") as $filename) {
     <link rel="stylesheet" type="text/css" href="/data/css/site.css">
     <script>
         App.init();
+    </script>
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+    <script>
+        window.addEventListener("load", function(){
+            window.cookieconsent.initialise({
+                "palette": {
+                    "popup": {
+                        "background": "#edeff5",
+                        "text": "#838391"
+                    },
+                    "button": {
+                        "background": "#4b81e8"
+                    }
+                },
+                "position": "bottom-right",
+                "content": {
+                    "message": "<?=__('coockie_message')?>",
+                    "dismiss": "<?=__('got_it')?>",
+                    "link": "<?=__('learn_more')?>"
+                }
+            })});
     </script>
 </head>
 <body>
@@ -86,3 +115,6 @@ if ($this->_session->__isset('flash_message')) {
 </nav>
 <div id="body">
 <div class="container">
+<?php if($this->edit == true) {
+    echo '<div class="pull-right edit-bot"><span><i class="glyphicon glyphicon-edit"></i> '.__('edit').'</span></div>';
+} ?>

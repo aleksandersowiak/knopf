@@ -34,21 +34,22 @@ class Loader {
 		if (class_exists($this->controller)) {
 			$parents = class_parents($this->controller);
 			//does the class extend the controller class?
+
 			if (in_array("BaseController",$parents)) {
 				//does the class contain the requested method?
 				if (method_exists($this->controller,$this->action)) {
 					return new $this->controller($this->action,$this->urlvalues);
 				} else {
 					echo 'bad method error';
-					return new Error("badUrl",$this->urlvalues);
+//					return new Error("badUrl",$this->urlvalues);
 				}
 			} else {
 			    echo 'bad controller error';
-				return new Error("badUrl",$this->urlvalues);
+//				return new Error("badUrl",$this->urlvalues);
 			}
 		} else {
 			echo 'bad controller error';
-			return new Error("badUrl",$this->urlvalues);
+//			return new Error("badUrl",$this->urlvalues);
 		}
 	}
     public function baseUrl() {

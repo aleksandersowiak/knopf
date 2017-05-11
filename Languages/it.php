@@ -18,4 +18,7 @@ $lang = array (
     "welcome_message" => "Dzień Dobry",
     "result_database" => "Wynik z bazy danych",
     "back" => "Wróć",
+    "log_in" => "Accesso",
+    "username" => "Nome utente",
+    "password" => "Parola d'ordine",
 );

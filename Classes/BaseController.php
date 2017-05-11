@@ -28,12 +28,14 @@ abstract class BaseController extends BaseModel{
         $this->_session = new Session();
         if (session_status() == PHP_SESSION_NONE) {
             $this->_session->startSession();
+            $this->Add('edit',$this->checkSession(false));
         }
 
         $this->_baseHelper = new BaseHelper();
 
 	}
 	public function __init() {
+
         $this->Add('_publickey',$this->getConfig()['recaptcha.public']);
         $this->Add('_privatekey',$this->getConfig()['recaptcha.private']);
     }
@@ -43,13 +45,15 @@ abstract class BaseController extends BaseModel{
 	
 	protected function ReturnView($viewmodel, $fullview, $fixView = null) {
         if($fixView != null) $this->action = $fixView;
-		$viewloc = 'views/' . get_class($this) . '/' . str_replace('Action','',$this->action) . '.phtml';
+		$viewloc = APPLICATION_PATH.'/views/' . get_class($this) . '/' . str_replace('Action','',$this->action) . '.phtml';
         if ($fullview) {
             return;
-        } else {
-            require('views/template/header.phtml'); // is set default header
+        } else if($this->getParam('popupModal') == true) {
+            require($viewloc);
+        }else{
+            require(APPLICATION_PATH.'/views/template/header.phtml'); // is set default header
             require($viewloc); // data from controller action
-            require('views/template/footer.phtml'); // is set default footer
+            require(APPLICATION_PATH.'/views/template/footer.phtml'); // is set default footer
         }
 	}
 
@@ -113,8 +117,12 @@ abstract class BaseController extends BaseModel{
         $mail->IsSMTP();
         $mail->Subject = "" . $title . " - " . date('Y-m-d_H:i:s');
         $mail->Body = $message;
-        $mail->Send();
+
+        if(!$mail->Send()) {
+            return array('status' => false, 'message' => $mail->ErrorInfo);
+        }
         unset($mail);
+        return array('status' => true);
     }
     public function renderMessage($message,$status) {
         return  <<<EOF

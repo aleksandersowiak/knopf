@@ -1,5 +1,5 @@
 <?php
-$configApp = parse_ini_file(dirname(__FILE__). "/../../secrets.ini");
+$configApp = parse_ini_file(APPLICATION_PATH ."/secrets.ini");
 $this->_email->IsHTML(true);
 
 $this->_email->WordWrap = 50;                                                   // nastavime word wrap
