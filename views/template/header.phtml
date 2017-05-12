@@ -20,6 +20,9 @@ foreach (glob("Languages/*.php") as $filename) {
     <script src="/data/js/jquery-3.2.1.js"></script>
     <script src="/data/js/bootstrap.js"></script>
     <script src="/data/js/app.js"></script>
+    <script src="/data/js/summernote.js"></script>
+    <script src="/data/js/lang/summernote-<?=$base_lang?>-<?=strtoupper($base_lang)?>.js"></script>
+
 
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
     <script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
@@ -27,6 +30,7 @@ foreach (glob("Languages/*.php") as $filename) {
     <link rel="stylesheet" href="/data/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="/data/css/flags16.css">
     <link rel="stylesheet" type="text/css" href="/data/css/site.css">
+    <link rel="stylesheet" type="text/css" href="/data/css/summernote.css">
     <script>
         App.init();
     </script>
@@ -114,7 +118,14 @@ if ($this->_session->__isset('flash_message')) {
     <!-- /.container-fluid -->
 </nav>
 <div id="body">
-<div class="container">
-<?php if($this->edit == true) {
-    echo '<div class="pull-right edit-bot"><span><i class="glyphicon glyphicon-edit"></i> '.__('edit').'</span></div>';
-} ?>
+    <div class="container">
+    <?php if ($this->edit == true) : ?>
+        <script>
+            App.waitForElement('div[data-content="content"]', function () {
+                $('div[data-content="content"]').each(function (i, e) {
+                    var editButton = '<div class="pull-right edit-bot like-link clearfix edit-document" data-url="<?=createUrl('admin','edit')?>" data-action="' + $(e).attr('data-action') + '" data-controller="' + $(e).attr('data-controller') + '"  data-id="' + $(e).attr('data-id') + '"  <span> <i class="glyphicon glyphicon-edit"></i><?=__('edit')?></span></div>';
+                    $(e).prepend(editButton);
+                });
+            });
+        </script>
+<?php endif; ?>

@@ -38,7 +38,7 @@ class Loader {
 			if (in_array("BaseController",$parents)) {
 				//does the class contain the requested method?
 				if (method_exists($this->controller,$this->action)) {
-					return new $this->controller($this->action,$this->urlvalues);
+					return new $this->controller($this->controller, $this->action, $this->urlvalues);
 				} else {
 					echo 'bad method error';
 //					return new Error("badUrl",$this->urlvalues);

@@ -2,11 +2,13 @@
 abstract class BaseController extends BaseModel{
 	protected $urlvalues;
 	protected $action;
+    protected $controller;
     protected $_params = array();
     public $_session;
     public $_baseHelper;
 
-	public function __construct($action, $urlvalues) {
+	public function __construct($controller, $action, $urlvalues) {
+        $this->controller = $controller;
 		$this->action = $action;
 		$this->urlvalues = $urlvalues;
         $the_request = array();
@@ -28,9 +30,11 @@ abstract class BaseController extends BaseModel{
         $this->_session = new Session();
         if (session_status() == PHP_SESSION_NONE) {
             $this->_session->startSession();
-            $this->Add('edit',$this->checkSession(false));
+            $this->Add('dataAction', str_replace('Action','',$this->action));
+            $this->Add('dataController', $this->controller);
+            $this->Add('editButton','');
         }
-
+        $this->Add('edit',$this->checkSession(false));
         $this->_baseHelper = new BaseHelper();
 
 	}

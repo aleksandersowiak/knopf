@@ -55,4 +55,21 @@ class Admin extends BaseController
         $this->_session->__set('flash_message', $this->renderMessage(__('logout_success'), 'success'));
         $this->_baseHelper->redirect('home', 'index');
     }
+
+    protected function editAction() {
+
+        $controller = $this->getParam('dataController');
+        $action = $this->getParam('dataAction');
+        $id = $this->getParam('dataId');
+
+        $this->Add('dataController', $controller);
+        $this->Add('dataAction', $action);
+
+        $data = $this->_model->getDataToEdit($controller, $action, $id);
+        if($data != false) {
+            $this->Add('dataEdit', $data);
+        }
+        $this->ReturnView('', false);
+
+    }
 }

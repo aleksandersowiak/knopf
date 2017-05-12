@@ -15,6 +15,30 @@ App = {
             });
             App.actionClick();
             App.animate();
+            App.waitForElement('.edit-document', function () {
+                $('.edit-document').on('click', function () {
+                    console.log('edit-document');
+                    App.ajaxSend($(this).attr('data-url'), {
+                        'popupModal': true,
+                        'dataController': $(this).attr('data-controller'),
+                        'dataAction': $(this).attr('data-action'),
+                        'dataId' : $(this).attr('data-id')
+                    });
+                    App.waitForElement('#editor', function () {
+                        $('#editor').summernote(
+                            {
+                                height: 350,
+                                lang: $('html').attr('lang') + '-' + $('html').attr('lang').toUpperCase(),
+                                popover: {
+                                    image: [],
+                                    link: [],
+                                    air: []
+                                }
+                            }
+                        );
+                    });
+                });
+            });
         });
     },
     actionClick: function () {
@@ -24,6 +48,18 @@ App = {
                 url: $(this).parents('form').attr('action')
             });
         });
+        $(".modal").on('hidden.bs.modal', function () {
+            $(this).remove();
+        });
+    },
+    waitForElement: function (elementPath, callBack) {
+        window.setTimeout(function () {
+            if ($(elementPath).length) {
+                callBack(elementPath, $(elementPath));
+            } else {
+                App.waitForElement(elementPath, callBack);
+            }
+        }, 500)
     },
     validateEmail: function (id) {
         var email_regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;

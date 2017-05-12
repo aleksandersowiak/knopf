@@ -2,7 +2,13 @@
     <div class="well">
         <fieldset>
             <legend><?=__('contact');?></legend>
-            <?=$this->contactView?>
+            <?php
+            $message = '';
+            foreach ($this->contactView as $k => $value) :
+                $message .= '<div data-content="content" data-id="'.$value['id'].'" data-controller="'.$value['controller'].'" data-action="'.$value['action'].'">'.sprintf($value['value'],__('address'),__(''),__('phone'),__('phone'),__('email')).'</div>';
+            endforeach;
+            echo $message;
+            ?>
         </fieldset>
     </div>
 </div>

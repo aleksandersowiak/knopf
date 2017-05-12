@@ -64,7 +64,7 @@ class Home extends BaseController {
         $this->finish(null, $flash_message);
     }
     protected function contactAction() {
-        $contact = sprintf($this->_model->getContent($this->action),__('address'),__(''),__('phone'),__('phone'),__('email'));
+        $contact = $this->_model->getContent($this->action);
         $this->Add('contactView',$contact);
         $this->ReturnView('', false);
     }
