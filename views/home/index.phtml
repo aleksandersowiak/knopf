@@ -31,7 +31,7 @@
 
 <?php
 $message = '';
-foreach ($this->homeView as $k => $value) :
+foreach ($this->indexAction as $k => $value) :
     $message .= '<div data-content="content" data-id="'.$value['id'].'" data-controller="'.$value['controller'].'" data-action="'.$value['action'].'">'.$value['value'].'</div>';
 endforeach;
 echo $message;

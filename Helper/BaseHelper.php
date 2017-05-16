@@ -20,7 +20,7 @@ class BaseHelper
     {
         if ($simple == true) {
             $countText = strlen($string);
-            $table = array('<br>' => ' ', '<br/>' => ' ', '</br>' => ' ', '</li>' => ' ', '</p>' => ' ');
+            $table = array('<br>' => ' ', '<br/>' => ' ', '</br>' => ' ', '</li>' => ' ', '</p>' => ' ', '<p>' => ' ');
             if ($countText > $length) {
                 $cut = substr(strip_tags(strtr($string, $table)), 0, $length);
                 $restrict = ($cut) . "...";

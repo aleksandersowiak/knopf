@@ -13,6 +13,7 @@ $lang = array(
     "menu_contact" => "Kontakt",
     "menu_product" => "Produkty",
     "menu_gallery" => "Galeria",
+    "menu_index" => "Strona Główna",
 
 
     "back" => "Wróć",
@@ -46,4 +47,11 @@ $lang = array(
     "log_in" => "Zaloguj",
     "username" => "Nazwa uzytkownika",
     "password" => 'Hasło',
+    "cancel" => "Przerwij",
+    "save_changes" => "Zapisz zmiany",
+    "save" => "Zapisz",
+    "add" => "Dodaj",
+    "save_error" => "Błąd przy zapisie do bazy.",
+    "contents" => "Treści",
+    "are_you_sure" => "Dodawanie nowego elementu do strony"
 );

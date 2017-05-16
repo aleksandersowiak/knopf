@@ -1,11 +1,22 @@
 App = {
     init: function () {
+
         $(document).ready(function () {
             $('#pop-upModal').on('click', function () {
-                console.log('pop-up');
-                App.ajaxSend($(this).attr('data-url'), {
+                var params = {
                     'popupModal': true
-                });
+                };
+                if ($(this).attr('params') != undefined) {
+                    var param = $('#pop-upModal').attr('params');
+                    var oo = {};
+                    param.split(',').forEach(function (x) {
+                        var split = x.split(':');
+                        oo[split[0]] = split[1];
+                    });
+                    $.extend(params, oo);
+                }
+                console.log(params);
+                App.ajaxSend($(this).attr('data-url'), params);
             });
             //FANCYBOX
             //https://github.com/fancyapps/fancyBox
@@ -22,7 +33,8 @@ App = {
                         'popupModal': true,
                         'dataController': $(this).attr('data-controller'),
                         'dataAction': $(this).attr('data-action'),
-                        'dataId' : $(this).attr('data-id')
+                        'dataId' : $(this).attr('data-id'),
+                        'dataLanguage' : $('html').attr('lang')
                     });
                     App.waitForElement('#editor', function () {
                         $('#editor').summernote(
@@ -40,6 +52,7 @@ App = {
                 });
             });
         });
+
     },
     actionClick: function () {
         $('input, button').on('click', function () {

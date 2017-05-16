@@ -51,33 +51,38 @@ abstract class BaseModel extends ViewModel
         }
         return $data;
     }
-    public function insert($table, $insData)
+    public function insert($table, $insData, $where = '')
     {
         $escaped_values = array();
         $columns = implode(", ", array_keys($insData));
         foreach (array_values($insData) as $val) {
-
             $escaped_values[] = $this->_quote($val);
         }
         $values = implode(", ", $escaped_values);
-        $sql = "INSERT INTO `" . $table . "` ($columns) VALUES ($values)";
+        $sql = "INSERT INTO `" . $table . "` ($columns) VALUES ($values) ";
         $result = $this->_db->query($sql);
         if ($result === FALSE) {
             die($this->_db->error);
         }
+        return ($this->_db->insert_id);
     }
 
-    public function update($table,$upData, $where)
+    public function update($table,$upData, $where = '')
     {
         foreach ($upData as $key => $testimonials) {
             $column = ($key);
             $value = ($testimonials);
+            $where .= ' (1=1) ';
             $sql = "UPDATE `" . $table . "` SET `" . $column . "`='" . $value . "' WHERE  $where";
             $result = $this->_db->query($sql);
             if ($result === FALSE) {
                 die($this->_db->error);
             }
         }
+    }
+
+    public function delete($table, $id) {
+
     }
 
     protected function _quote($value)
@@ -92,8 +97,10 @@ abstract class BaseModel extends ViewModel
         $result = $this->select($query);
         return $result;
     }
-    public function getContent($value = '') {
-        $query = 'Select * from `content` where `action` LIKE "'.str_replace('Action','',$value).'"';
+    public function getContent($controller = '', $action = '', $lang = DEFAULT_LANG) {
+        $query = 'Select `t`.`'.$lang.'` as value, `c`.* from `content` as `c`
+        left join `translate` as `t` on `t`.`id` = `c`.`translate_id`
+        where `c`.`action` LIKE "'.str_replace('Action','',$action).'" AND `c`.`controller` LIKE "'.$controller.'"';
         $result = $this->select($query);
         return $result;
     }

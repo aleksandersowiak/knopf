@@ -173,4 +173,8 @@ EOF;
 
         die(json_encode($result));
     }
+    public function renderMessageView($controller, $action) {
+        $contact = $this->_model->getContent($controller, $action, $this->getParam('language'));
+        $this->Add($action,$contact);
+    }
 }

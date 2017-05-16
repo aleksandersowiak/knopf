@@ -12,9 +12,7 @@ class Home extends BaseController {
     }
 	protected function indexAction() {
         $this->Add('slide', $this->_model->getSlide());
-
-        $about = $this->_model->getContent($this->action);
-        $this->Add('homeView',$about);
+        $this->renderMessageView($this->controller,$this->action);
         $this->ReturnView('', false);
 	}
     public function contactSendAction() {
@@ -64,13 +62,11 @@ class Home extends BaseController {
         $this->finish(null, $flash_message);
     }
     protected function contactAction() {
-        $contact = $this->_model->getContent($this->action);
-        $this->Add('contactView',$contact);
+        $this->renderMessageView($this->controller,$this->action);
         $this->ReturnView('', false);
     }
     protected function aboutAction() {
-        $about = $this->_model->getContent($this->action);
-        $this->Add('aboutView',$about);
+        $this->renderMessageView($this->controller,$this->action);
         $this->ReturnView('', false);
     }
     protected function testAction() {

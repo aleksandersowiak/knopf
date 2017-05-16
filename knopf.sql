@@ -11,7 +11,7 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 -- Zrzut struktury bazy danych database
-CREATE DATABASE IF NOT EXISTS `database` /*!40100 DEFAULT CHARACTER SET latin1 */;
+CREATE DATABASE IF NOT EXISTS `database` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `database`;
 
 
@@ -20,17 +20,18 @@ CREATE TABLE IF NOT EXISTS `content` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `controller` varchar(25) DEFAULT NULL,
   `action` varchar(25) DEFAULT NULL,
-  `value` longtext,
+  `translate_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
--- Zrzucanie danych dla tabeli database.content: ~4 rows (około)
+-- Zrzucanie danych dla tabeli database.content: ~3 rows (około)
 /*!40000 ALTER TABLE `content` DISABLE KEYS */;
-INSERT INTO `content` (`id`, `controller`, `action`, `value`) VALUES
-	(1, 'home', 'contact', '<h3>Knopf vendita ed installazione</h3> \r\n<div class="form-group">\r\n<div class="col-md-8 inputGroupContainer">\r\n<label class="col-md-3 control-label">%s</label>\r\nvia Gelada 10  22070 Montano Lucino (co) \r\n</div>\r\n<div class="col-md-8 inputGroupContainer">\r\n<label class="col-md-3 control-label">%s</label>\r\nP.iva:02884300134\r\n</div>\r\n<div class="col-md-8 inputGroupContainer">\r\n<label class="col-md-3 control-label">%s</label>\r\ntel:+390314104220\r\n</div>\r\n<div class="col-md-8 inputGroupContainer">\r\n<label class="col-md-3 control-label">%s</label>\r\ncell:+393938190367\r\n</div>\r\n<div class="col-md-8 inputGroupContainer">\r\n<label class="col-md-3 control-label">%s</label>\r\n<a href="mailto:info@knopf.co.it">info@knopf.co.it</a>\r\n</div>\r\n</div>'),
-	(2, 'home', 'about', '<p>Knopf serramenti si occupa di progettazione,vendita ed installazione di serramenti nelle varie tipologie.</p>\r\n<p>Operiamo in zona di Como ed abbiamo prodotti di elevata qualità di aziende dalla decennale esperienza nella produzione si serramenti per esterni ed esterni.</p>\r\n<p>La nostra esperienza accumulata negli anni è a vostra disposizione in ogni momento.</p>\r\n<p>La qualità dei materiali prodotti è alla base della filosofia aziendale,non rincoriamo dinamiche di costo puntando invece su prodotti certificati,testati e all\'avanguardia.</p>\r\n<p>In oltre offriamo un servizio completo dalla gestione dei rapporti al preventivo ed installazione.</p>'),
-	(3, 'home', 'index', '<p>KNOPF Serramenti è nata nel 2005 e si occupa di progettazione, vendita e installazione di serramenti nelle varie\r\n    tipologie.</p>\r\n\r\n<p>Operiamo in zona di Como e abbiamo prodotti di elevata qualità di aziende nord europee dalla decennale esperienza\r\n    nella produzione di serramenti per esterni ed interni.</p>\r\n\r\n<p> La nostra esperienza accumulata negli anni è a vostra disposizione in ogni momento.</p>\r\n\r\n<p> La qualità dei materiali prodotti è alla base della filosofia aziendale, non rincorriamo dinamiche di costo puntando\r\n    invece su prodotti certificati, testati e all\'avanguardia.</p>\r\n\r\n<p> Inoltre offriamo un servizio completo dalla gestione dei rapporti al preventivo e installazione dei prodotti.</p>\r\n\r\n<p> Siamo caratterizzati da.</p>\r\n<ul>\r\n    <li>Esperienza</li>\r\n    <li> Elevata qualità dei materiali prodotti</li>\r\n    <li>Gestione chiara e snella</li>\r\n</ul>'),
-	(4, 'home', 'index', 'test');
+INSERT INTO `content` (`id`, `controller`, `action`, `translate_id`) VALUES
+	(1, 'home', 'contact', 1),
+	(2, 'home', 'about', 0),
+	(4, 'home', 'index', 3),
+	(5, 'home', 'index', 2),
+	(6, 'home', 'about', 4);
 /*!40000 ALTER TABLE `content` ENABLE KEYS */;
 
 
@@ -39,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `gallery` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `image` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- Zrzucanie danych dla tabeli database.gallery: ~2 rows (około)
 /*!40000 ALTER TABLE `gallery` DISABLE KEYS */;
@@ -79,7 +80,7 @@ CREATE TABLE IF NOT EXISTS `top_menu` (
 -- Zrzucanie danych dla tabeli database.top_menu: ~5 rows (około)
 /*!40000 ALTER TABLE `top_menu` DISABLE KEYS */;
 INSERT INTO `top_menu` (`id`, `menu_element`, `order`, `link`) VALUES
-	(1, 'menu_home_page', '1', ''),
+	(1, 'menu_home_page', '1', 'home/index'),
 	(2, 'menu_product', '2', 'products'),
 	(3, 'menu_gallery', '3', 'gallery'),
 	(4, 'menu_about', '4', 'home/about'),
@@ -90,16 +91,19 @@ INSERT INTO `top_menu` (`id`, `menu_element`, `order`, `link`) VALUES
 -- Zrzut struktury tabela database.translate
 CREATE TABLE IF NOT EXISTS `translate` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `controller` varchar(25) DEFAULT NULL,
-  `action` varchar(25) DEFAULT NULL,
   `pl` longtext,
   `en` longtext,
   `it` longtext,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
--- Zrzucanie danych dla tabeli database.translate: ~0 rows (około)
+-- Zrzucanie danych dla tabeli database.translate: ~2 rows (około)
 /*!40000 ALTER TABLE `translate` DISABLE KEYS */;
+INSERT INTO `translate` (`id`, `pl`, `en`, `it`) VALUES
+	(1, '<h3>Knopf vendita ed installazione</h3> \r\n<div class="form-group">\r\n<div class="col-md-8 inputGroupContainer">\r\n<label class="col-md-3 control-label">%s</label>\r\nvia Gelada 10  22070 Montano Lucino (co) \r\n</div>\r\n<div class="col-md-8 inputGroupContainer">\r\n<label class="col-md-3 control-label">%s</label>\r\nP.iva:02884300134\r\n</div>\r\n<div class="col-md-8 inputGroupContainer">\r\n<label class="col-md-3 control-label">%s</label>\r\ntel:+390314104220\r\n</div>\r\n<div class="col-md-8 inputGroupContainer">\r\n<label class="col-md-3 control-label">%s</label>\r\ncell:+393938190367\r\n</div>\r\n<div class="col-md-8 inputGroupContainer">\r\n<label class="col-md-3 control-label">%s</label>\r\n<a href="mailto:info@knopf.co.it">info@knopf.co.it</a>\r\n</div>\r\n</div>', '<h3>Knopf vendita ed installazione</h3> \r\n<div class="form-group">\r\n<div class="col-md-8 inputGroupContainer">\r\n<label class="col-md-3 control-label">%s</label>\r\nvia Gelada 10  22070 Montano Lucino (co) \r\n</div>\r\n<div class="col-md-8 inputGroupContainer">\r\n<label class="col-md-3 control-label">%s</label>\r\nP.iva:02884300134\r\n</div>\r\n<div class="col-md-8 inputGroupContainer">\r\n<label class="col-md-3 control-label">%s</label>\r\ntel:+390314104220\r\n</div>\r\n<div class="col-md-8 inputGroupContainer">\r\n<label class="col-md-3 control-label">%s</label>\r\ncell:+393938190367\r\n</div>\r\n<div class="col-md-8 inputGroupContainer">\r\n<label class="col-md-3 control-label">%s</label>\r\n<a href="mailto:info@knopf.co.it">info@knopf.co.it</a>\r\n</div>\r\n</div>', '<h3>Knopf vendita ed installazione</h3> \r\n<div class="form-group">\r\n<div class="col-md-8 inputGroupContainer">\r\n<label class="col-md-3 control-label">%s</label>\r\nvia Gelada 10  22070 Montano Lucino (co) \r\n</div>\r\n<div class="col-md-8 inputGroupContainer">\r\n<label class="col-md-3 control-label">%s</label>\r\nP.iva:02884300134\r\n</div>\r\n<div class="col-md-8 inputGroupContainer">\r\n<label class="col-md-3 control-label">%s</label>\r\ntel:+390314104220\r\n</div>\r\n<div class="col-md-8 inputGroupContainer">\r\n<label class="col-md-3 control-label">%s</label>\r\ncell:+393938190367\r\n</div>\r\n<div class="col-md-8 inputGroupContainer">\r\n<label class="col-md-3 control-label">%s</label>\r\n<a href="mailto:info@knopf.co.it">info@knopf.co.it</a>\r\n</div>\r\n</div>'),
+	(2, 'Tekst na stronę główną', 'text for home page', '<p>KNOPF Serramenti è nata nel 2005 e si occupa di progettazione, vendita e installazione di serramenti nelle varie tipologie.</p>\r\n<p>Operiamo in zona di Como e abbiamo prodotti di elevata qualità di aziende nord europee dalla decennale esperienza nella produzione di serramenti per esterni ed interni.</p>\r\n<p>La nostra esperienza accumulata negli anni è a vostra disposizione in ogni momento.</p>\r\n<p>La qualità dei materiali prodotti è alla base della filosofia aziendale, non rincorriamo dinamiche di costo puntando invece su prodotti certificati, testati e all\'avanguardia.</p>\r\n<p>Inoltre offriamo un servizio completo dalla gestione dei rapporti al preventivo e installazione dei prodotti.</p>\r\n<legend>Siamo caratterizzati da.</legend>\r\n<ul>\r\n<li>Esperienza</li>\r\n<li>Elevata qualità dei materiali prodotti</li>\r\n<li>Gestione chiara e snella</li>\r\n</ul>'),
+	(3, '<p>test</p>', NULL, NULL),
+	(4, '<p>O nas by mogÅ‚o byÄ‡</p>', NULL, NULL);
 /*!40000 ALTER TABLE `translate` ENABLE KEYS */;
 
 

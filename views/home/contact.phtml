@@ -1,11 +1,11 @@
 <div class="col-md-6">
     <div class="well">
         <fieldset>
-            <legend><?=__('contact');?></legend>
+            <legend><?= __('contact'); ?></legend>
             <?php
             $message = '';
-            foreach ($this->contactView as $k => $value) :
-                $message .= '<div data-content="content" data-id="'.$value['id'].'" data-controller="'.$value['controller'].'" data-action="'.$value['action'].'">'.sprintf($value['value'],__('address'),__(''),__('phone'),__('phone'),__('email')).'</div>';
+            foreach ($this->contactAction as $k => $value) :
+                $message .= '<div data-content="content" data-id="' . $value['id'] . '" data-controller="' . $value['controller'] . '" data-action="' . $value['action'] . '">' . $value['value'] . '</div>';
             endforeach;
             echo $message;
             ?>
@@ -13,21 +13,23 @@
     </div>
 </div>
 <div class="col-md-6">
-    <form data-toggle="validator" class="well form-horizontal" action="<?= createUrl('home', 'contactSend'); ?>" method="post" id="contact_form">
+    <form data-toggle="validator" class="well form-horizontal" action="<?= createUrl('home', 'contactSend'); ?>"
+          method="post" id="contact_form">
         <fieldset>
 
             <!-- Form Name -->
-            <legend><?=__('ask_us');?></legend>
+            <legend><?= __('ask_us'); ?></legend>
 
             <!-- Text input-->
 
             <div class="form-group">
-                <label class="col-md-3 control-label"><?=__('fist_name');?>*</label>
+                <label class="col-md-3 control-label"><?= __('fist_name'); ?>*</label>
 
                 <div class="col-md-8 inputGroupContainer">
                     <div class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                        <input required="required" name="first_name" placeholder="<?=__('fist_name');?>" class="form-control"
+                        <input required="required" name="first_name" placeholder="<?= __('fist_name'); ?>"
+                               class="form-control"
                                type="text">
                     </div>
                 </div>
@@ -36,12 +38,13 @@
             <!-- Text input-->
 
             <div class="form-group">
-                <label class="col-md-3 control-label"><?=__('last_name');?>*</label>
+                <label class="col-md-3 control-label"><?= __('last_name'); ?>*</label>
 
                 <div class="col-md-8 inputGroupContainer">
                     <div class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                        <input required="required" name="last_name" placeholder="<?=__('last_name');?>" class="form-control"
+                        <input required="required" name="last_name" placeholder="<?= __('last_name'); ?>"
+                               class="form-control"
                                type="text">
                     </div>
                 </div>
@@ -49,12 +52,13 @@
 
             <!-- Text input-->
             <div class="form-group">
-                <label class="col-md-3 control-label"><?=__('email');?>*</label>
+                <label class="col-md-3 control-label"><?= __('email'); ?>*</label>
 
                 <div class="col-md-8 inputGroupContainer">
                     <div class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-                        <input required="required" name="email" id="email" placeholder="<?=__('email');?>" class="form-control"
+                        <input required="required" name="email" id="email" placeholder="<?= __('email'); ?>"
+                               class="form-control"
                                type="text">
                     </div>
                 </div>
@@ -64,7 +68,7 @@
             <!-- Text input-->
 
             <div class="form-group">
-                <label class="col-md-3 control-label"><?=__('phone');?></label>
+                <label class="col-md-3 control-label"><?= __('phone'); ?></label>
 
                 <div class="col-md-8 inputGroupContainer">
                     <div class="input-group">
@@ -74,7 +78,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-md-3 control-label"><?=__('message');?></label>
+                <label class="col-md-3 control-label"><?= __('message'); ?></label>
 
                 <div class="col-md-8 inputGroupContainer">
                     <div class="input-group">
@@ -87,26 +91,27 @@
                 <label class="col-md-3 control-label"></label>
 
                 <div class="col-md-3">
-                         <?=recaptcha_get_html($this->_publickey)?>
+                    <?= recaptcha_get_html($this->_publickey) ?>
                 </div>
             </div>
             <!-- Button -->
             <div class="form-group">
                 <label class="col-md-3 control-label"></label>
+
                 <div class="col-md-3">
-                    <button type="submit" name="sendContact" value="send" class="btn btn-warning"><?=__('send');?> <span
+                    <button type="submit" name="sendContact" value="send" class="btn btn-warning"><?= __('send'); ?>
+                        <span
                             class="glyphicon glyphicon-send"></span></button>
                 </div>
             </div>
-            <p style="font-size: 11px"><?=__('field_is_required')?></p>
+            <p style="font-size: 11px"><?= __('field_is_required') ?></p>
         </fieldset>
     </form>
 </div>
 <script>
-    $('button[type="submit"]').on('click' , function () {
-        if(!App.validateEmail("email"))
-        {
-            $("#email").attr("data-toggle","tooltip").attr("data-placement","top").attr("title","<?=__("invalid_email")?>");
+    $('button[type="submit"]').on('click', function () {
+        if (!App.validateEmail("email")) {
+            $("#email").attr("data-toggle", "tooltip").attr("data-placement", "top").attr("title", "<?=__("invalid_email")?>");
             return false;
         }
     });
