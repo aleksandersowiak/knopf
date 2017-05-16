@@ -64,8 +64,15 @@ class AdminModel extends BaseModel
 
     }
 
-    public function getContents() {
-        $query = 'Select * from `content`';
+    public function getContents($view) {
+        switch ($view) {
+            case 'home' :
+                $query = 'Select * from `content` ';
+                break;
+            case 'products' :
+                $query = 'Select * from `products` ';
+                break;
+        }
         return $this->select($query);
     }
 }
