@@ -37,34 +37,35 @@ class AdminModel extends BaseModel
 
     public function insertData($params = array())
     {
-//        array(4) {
-//        ["editor"]=>
-//  string(0) ""
-//        ["dataController"]=>
-//  string(4) "home"
-//        ["dataAction"]=>
-//  string(5) "index"
-//        ["action"]=>
-//  string(6) "insert"
-//}
+        $data = explode('/',$params['value']);
+
         $save = $saveContent = array();
-        $save[$params['language']] = $params['editor'];
+        $save[$params['language']] = '';
         $id = $this->insert('translate', $save);
 
-        $saveContent['controller'] = $params['dataController'];
-        $saveContent['action'] = $params['dataAction'];
+        $saveContent['controller'] = $data[0];
+        $saveContent['action'] = $data[1];
         $saveContent['translate_id'] = $id;
 
-        $this->insert('content',$saveContent);
-
+        if($this->insert('content',$saveContent) == false) {
+            return false;
+        }
+        return true;
     }
 
     public function updateData($params = array())
     {
+        $save = $saveContent = array();
+        $save[$params['language']] = $params['editor'];
 
+        $translate_id = $this->select('select translate_id from content where id = ' .$params['dataId']);
+        $update = $this->update('translate', $save, '`id` = ' . $translate_id[0]['translate_id']);
+         if($update == false) return false;
+        return true;
     }
 
     public function getContents($view) {
+        $query = null;
         switch ($view) {
             case 'home' :
                 $query = 'Select * from `content` ';
@@ -73,6 +74,9 @@ class AdminModel extends BaseModel
                 $query = 'Select * from `products` ';
                 break;
         }
-        return $this->select($query);
+        if($query != NULL) {
+            return $this->select($query);
+        }
+        return false;
     }
 }

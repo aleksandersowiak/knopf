@@ -92,6 +92,8 @@ class Admin extends BaseController
 
         $this->Add('dataController', $controller);
         $this->Add('dataAction', $action);
+        $this->Add('dataId', $id);
+        $this->Add('dataLanguage', $lang);
 
         $data = $this->_model->getDataToEdit($controller, $action, $id, $lang);
         if ($data != false) {
@@ -103,10 +105,12 @@ class Admin extends BaseController
 
     protected function saveAction()
     {
-        $message = $this->renderMessage(__('save_error'), 'danger');
-        if ($this->getParam("action") != '') {
-            $this->_model->{$this->getParam("action") . 'Data'}($this->getParams());
-            $message = $this->renderMessage(__('login_incorrect'), 'success');
+        $message = $this->renderMessage(__('edit_error'), 'danger');
+        $save = $this->_model->{$this->getParam('action').'Data'}($this->getParams());
+        if($save != false){
+            $modal = "$('.modal').modal('hide');";
+            $data = explode('/', $this->getParam('value'));
+            $message = $this->renderMessage(__('edit_success') , 'success'). $modal;
         }
         $this->finish(null, $message);
     }
@@ -137,7 +141,9 @@ class Admin extends BaseController
 //            }
             $contentData[$val['controller']][] = $val['action'];
         }
-        $this->Add('contentAdd',array_unique($contentData[$this->getParam('dataController')]));
+        $return = array_unique($contentData[$this->getParam('dataController')]);
+        $this->Add('dataController',$this->getParam('dataController'));
+        $this->Add('contentAdd',$return);
         $this->ReturnView('',false);
     }
 }

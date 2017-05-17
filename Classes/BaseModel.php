@@ -51,7 +51,7 @@ abstract class BaseModel extends ViewModel
         }
         return $data;
     }
-    public function insert($table, $insData, $where = '')
+    public function insert($table, $insData, $wheres = '')
     {
         $escaped_values = array();
         $columns = implode(", ", array_keys($insData));
@@ -59,25 +59,30 @@ abstract class BaseModel extends ViewModel
             $escaped_values[] = $this->_quote($val);
         }
         $values = implode(", ", $escaped_values);
-        $sql = "INSERT INTO `" . $table . "` ($columns) VALUES ($values) ";
+        $where = ($wheres != '') ? ' WHERE ' . $wheres : '';
+        $sql = "INSERT INTO `" . $table . "` ($columns) VALUES ($values) $where";
         $result = $this->_db->query($sql);
         if ($result === FALSE) {
-            die($this->_db->error);
+            return false;
+//            die($this->_db->error);
         }
         return ($this->_db->insert_id);
     }
 
-    public function update($table,$upData, $where = '')
+    public function update($table,$upData, $wheres = '')
     {
         foreach ($upData as $key => $testimonials) {
             $column = ($key);
             $value = ($testimonials);
-            $where .= ' (1=1) ';
-            $sql = "UPDATE `" . $table . "` SET `" . $column . "`='" . $value . "' WHERE  $where";
+            $where = ($wheres != '') ? ' WHERE ' . $wheres : '';
+            $sql = "UPDATE `" . $table . "` SET `" . $column . "`='" . $value . "' $where";
+
             $result = $this->_db->query($sql);
             if ($result === FALSE) {
-                die($this->_db->error);
+                return false;
+//                die($this->_db->error);
             }
+            return true;
         }
     }
 

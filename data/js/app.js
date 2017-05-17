@@ -15,7 +15,7 @@ App = {
                     });
                     $.extend(params, oo);
                 }
-                console.log(params);
+
                 App.ajaxSend($(this).attr('data-url'), params);
             });
             //FANCYBOX
@@ -28,7 +28,6 @@ App = {
             App.animate();
             App.waitForElement('.edit-document', function () {
                 $('.edit-document').on('click', function () {
-                    console.log('edit-document');
                     App.ajaxSend($(this).attr('data-url'), {
                         'popupModal': true,
                         'dataController': $(this).attr('data-controller'),
@@ -56,14 +55,13 @@ App = {
     },
     actionClick: function () {
         $('input, button').on('click', function () {
-            console.log('click');
             App.formAjax($(this).parents('form'), {
                 url: $(this).parents('form').attr('action')
             });
         });
-        $(".modal").on('hidden.bs.modal', function () {
-            $(this).remove();
-        });
+//        $(".modal").on('hidden.bs.modal', function () {
+//            $(this).remove();
+//        });
     },
     waitForElement: function (elementPath, callBack) {
         window.setTimeout(function () {
@@ -103,7 +101,7 @@ App = {
         });
     },
     formAjax: function (elem, params) {
-//        console.log(elem,params);
+
         if (params['cancel'] != undefined && params['cancel'] == true) {
             $(elem).find('#clear').click(function () {
                 App.ajaxSend(params['url'], {'clear': 1});
@@ -119,7 +117,7 @@ App = {
         });
     },
     ajaxSend: function (url, params, content, onSuccess, onError) {
-        console.log('AjaxSend' + App.ajaxUrl);
+
 //        if (App.ajaxUrl == url) {
 //            return false;
 //        }
@@ -161,7 +159,6 @@ App = {
                                 $(originalContent).modal('hide');
                             }
                             if (datao.extraCommand != undefined) {
-                                console.log('extra');
                                 eval(datao.extraCommand);
                             }
                             return true;

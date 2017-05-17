@@ -177,4 +177,11 @@ EOF;
         $contact = $this->_model->getContent($controller, $action, $this->getParam('language'));
         $this->Add($action,$contact);
     }
+
+    public function reloadView($controller = '', $action = 'index')
+    {
+        if ($controller == '') $controller = get_class($this);
+        if ($action == '') $action = $this->action;
+        return $viewloc = APPLICATION_PATH . '/views/' . ucfirst($controller) . '/' . str_replace('Action', '', $action) . '.phtml';
+    }
 }

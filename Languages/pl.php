@@ -53,5 +53,8 @@ $lang = array(
     "add" => "Dodaj",
     "save_error" => "Błąd przy zapisie do bazy.",
     "contents" => "Treści",
-    "are_you_sure" => "Dodawanie nowego elementu do strony"
+    "are_you_sure" => "Dodawanie nowego elementu do strony",
+    "edit_success" => "Dane zostały zapisane!",
+    "edit_error" => "Wystąpił błąd podczas zapisu!",
+    "please_select" => 'Proszę wybrać',
 );

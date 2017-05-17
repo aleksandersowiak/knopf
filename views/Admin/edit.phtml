@@ -1,12 +1,11 @@
 <?php
 $textArea = '';
-$button = __('add');
-$action = 'insert';
+$button = __('save_changes');
+
 if(isset($this->dataEdit)) :
     $textArea = $this->dataEdit;
-    $button = __('save_changes');
-    $action = 'update';
-endif; ?>
+endif;
+?>
 <div class="modal fade bs-example-modal-lg" id="bs-example-modal-edit-post" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <form class="form-horizontal" role="form" id="form" method="post" action="<?=createUrl('admin','save')?>">
         <div class="modal-dialog modal-lg">
@@ -23,8 +22,9 @@ endif; ?>
                 <div class="modal-footer">
                     <input type="hidden" name="dataController" value="<?=$this->dataController?>"/>
                     <input type="hidden" name="dataAction" value="<?=$this->dataAction?>"/>
-                    <input type="hidden" name="action" value="<?=$action?>"/>
-                    <input type="hidden" name="language" value="<?=$_GET['language']?>"/>
+                    <input type="hidden" name="language" value="<?=$this->dataLanguage?>"/>
+                    <input type="hidden" name="dataId" value="<?=$this->dataId?>"/>
+                    <input type="hidden" name="action" value="update"/>
                     <button type="button" class="btn btn-default" data-dismiss="modal"><?=__('cancel')?></button>
                     <button type="submit" class="btn btn-primary"><?=$button?></button>
                 </div>
