@@ -233,25 +233,114 @@ a {
     background-color: #f2dede;
     border-color: #a94442;
 }
-.gallery
-{
+
+.gallery {
     display: inline-block;
     margin-top: 20px;
 }
+
 .like-link {
     color: #337ab7;
     text-decoration: none;
 }
+
 .like-link:hover,
 .like-link:focus {
     color: #23527c;
     text-decoration: underline;
     cursor: pointer;
 }
+
 .like-link:focus {
     outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px;
 }
+
 .add-new-select {
     width: 150px !important;
 }
+
+#loader {
+
+    opacity: 1;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 1042;
+    width: 150px;
+    height: 150px;
+    margin: -75px 0 0 -75px;
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #3498db;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Add animation to "page content" */
+.animate-bottom {
+    position: relative;
+    -webkit-animation-name: animatebottom;
+    -webkit-animation-duration: 1s;
+    animation-name: animatebottom;
+    animation-duration: 1s
+}
+
+@-webkit-keyframes animatebottom {
+    from {
+        bottom: -100px;
+        opacity: 0
+    }
+    to {
+        bottom: 0px;
+        opacity: 1
+    }
+}
+
+@keyframes animatebottom {
+    from {
+        bottom: -100px;
+        opacity: 0
+    }
+    to {
+        bottom: 0;
+        opacity: 1
+    }
+}
+
+body {
+    font-family: sans-serif;
+}
+
+.cols {
+    min-width: 48%;
+    max-width: 48%;
+    margin-left: 15px;
+    float: left;
+}
+
+.gallery {
+    margin: auto;
+    display: inline-table;
+}
+.images { display: inline-table; margin: 2px 5px 2px 5px}

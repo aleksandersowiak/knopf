@@ -36,6 +36,7 @@ abstract class BaseController extends BaseModel{
         }
         $this->Add('edit',$this->checkSession(false));
         $this->_baseHelper = new BaseHelper();
+        $this->Add('viewContent' , '');
 
 	}
 	public function __init() {
@@ -49,15 +50,16 @@ abstract class BaseController extends BaseModel{
 	
 	protected function ReturnView($viewmodel, $fullview, $fixView = null) {
         if($fixView != null) $this->action = $fixView;
-		$viewloc = APPLICATION_PATH.'/views/' . get_class($this) . '/' . str_replace('Action','',$this->action) . '.phtml';
+		$viewloc = APPLICATION_PATH.'/views/' . get_class($this) . '/' . str_replace('Action','',$this->action) . '.php';
+
         if ($fullview) {
             return;
-        } else if($this->getParam('popupModal') == true) {
+        } else if(($this->getParam('popupModal') == true) || ($this->getParam('onlyView') == 'true')) {
             require($viewloc);
         }else{
-            require(APPLICATION_PATH.'/views/template/header.phtml'); // is set default header
+            require(APPLICATION_PATH.'/views/template/header.php'); // is set default header
             require($viewloc); // data from controller action
-            require(APPLICATION_PATH.'/views/template/footer.phtml'); // is set default footer
+            require(APPLICATION_PATH.'/views/template/footer.php'); // is set default footer
         }
 	}
 
@@ -118,7 +120,7 @@ abstract class BaseController extends BaseModel{
         if ($attachment != null) {
             $mail->AddAttachment($attachment);
         }
-        $mail->IsSMTP();
+
         $mail->Subject = "" . $title . " - " . date('Y-m-d_H:i:s');
         $mail->Body = $message;
 
@@ -130,7 +132,7 @@ abstract class BaseController extends BaseModel{
     }
     public function renderMessage($message,$status) {
         return  <<<EOF
-        $('#body').find('.container').append('<div class="box-message"><div class="alert alert-$status pop-up" role="alert">$message</div></div>');
+        $('#body').append('<div class="box-message"><div class="alert alert-$status pop-up" role="alert">$message</div></div>');
         setTimeout(function(){
             $('.alert').remove();
         }, 5000);

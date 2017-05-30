@@ -18,11 +18,13 @@ class Home extends BaseController {
     public function contactSendAction() {
         $flash_message = $this->renderMessage(__('error'), 'danger');
         if(($this->getParam('first_name') != '') && ($this->getParam('last_name') != '') && ($this->getParam('email') != '')) {
-            $resp = recaptcha_check_answer ($this->_privatekey,
-                $_SERVER["REMOTE_ADDR"],
-                $this->getParam("recaptcha_challenge_field"),
-                $this->getParam("recaptcha_response_field"));
-            if (!$resp->is_valid) {
+//            $resp = recaptcha_check_answer ($this->_privatekey,
+//                $_SERVER["REMOTE_ADDR"],
+//                $this->getParam("recaptcha_challenge_field"),
+//                $this->getParam("recaptcha_response_field"));
+//            if (!$resp->is_valid) {
+            $resp = $this->reCaptcha($this->getParam("g-recaptcha-response"));
+            if (!$resp) {
                 $flash_message = $this->renderMessage(__('reCAPTCHA_error'), 'danger') . "$('#recaptcha_widget_div').parents('.form-group').addClass('recaptcha_widget_div_has-error');";
             } else {
                 $emailTemplate = dirname(__FILE__) . '/../data/template/contact_mail.txt';
@@ -71,5 +73,33 @@ class Home extends BaseController {
     }
     protected function testAction() {
         echo '<div class="page-header"><h3>dddd</h3></div>';
+    }
+    private function reCaptcha($response) {
+        $postdata = http_build_query(
+            array(
+                'secret' => $this->_privatekey,
+                'response' => $response
+            )
+        );
+
+        $opts = array('http' =>
+            array(
+                'method'  => 'POST',
+                'header'  => 'Content-type: application/x-www-form-urlencoded',
+                'content' => $postdata
+            )
+        );
+
+        $context  = stream_context_create($opts);
+
+        $result = file_get_contents('https://www.google.com/recaptcha/api/siteverify', false, $context);
+
+        $check = json_decode($result);
+
+        if($check->success) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

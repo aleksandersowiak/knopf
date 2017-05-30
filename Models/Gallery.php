@@ -1,7 +1,15 @@
 <?php
 class GalleryModel extends BaseModel {
-    public function getImages() {
-        $query = "SELECT image FROM `products` UNION SELECT image from `gallery`";
+    public function getImages($where = '') {
+        if($where == '' ) {
+            $where = 'LIMIT 10';
+        }
+        $query = "SELECT image, category from `gallery` " . $where;
         return $this->select($query);
+    }
+    public function getCategoryId($name) {
+        $query = "select category_id from gallery where category LIKE '".$name."'";
+        $result = $this->select($query);
+        return $result[0]['category_id'];
     }
 }

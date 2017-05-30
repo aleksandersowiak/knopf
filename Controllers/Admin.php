@@ -8,6 +8,7 @@ class Admin extends BaseController
     public function __init()
     {
         $this->_model = new AdminModel();
+
         parent::__init();
     }
 
@@ -15,25 +16,36 @@ class Admin extends BaseController
     {
         $this->checkSession();
         $content = '';
+        $addButton = '<span class="label label-primary">%s</span> <span class="like-link" id="pop-upModal" data-url="' . createUrl('admin', 'add') . '" data-controller="%s"
+        params="dataController:%s"><i class="glyphicon glyphicon-plus-sign" data-toggle="tooltip" data-placement="right" title="' . __('add') . '"></i></span>';
         if ($this->getParam('id') == 'contents') {
             switch ($this->getParam('view')) {
                 case 'home' :
                     $contentData = array();
                     $content = $this->_model->getContents($this->getParam('view'));
-                    foreach ($content as $key => $val) {
-                        $textContent = $this->_model->getDataToEdit($val['controller'], $val['action'], $val['id'], $this->getParam('language'));
-                        if (!array_key_exists($val['controller'], $contentData)) {
-                            $contentData[] = '<span class="label label-primary">' . $val['controller'] . '</span> <span class="like-link" id="pop-upModal" data-url="' . createUrl('admin', 'add') . '" data-controller="' .
-                                $val['controller'] . '" params="dataController:' . $val['controller'] . '"><i class="glyphicon glyphicon-plus-sign"></i> ' . __('add') . '</span>';
+                        foreach ($content as $key => $val) {
+
+                            if($val['controller'] != NULL && $val['action'] != NULL && $val['id'] != NULL) {
+                            $textContent = $this->_model->getDataToEdit($val['controller'], $val['action'], $val['id'], $this->getParam('language'));
+
+                            if (!array_key_exists($val['controller'], $contentData)) {
+                                $contentData[] = sprintf($addButton, $val['controller'], $val['controller'], $val['controller']);
+                            }
+                            $contentData[$val['controller']][] = '<span class="label label-default" data-id="' . $val['id'] . '"> ' .
+                                __('menu_' . $val['action']) . '</span>' .
+                                ' <span class="like-link edit-document" data-url="' . createUrl('admin', 'edit') . '" data-action="' .
+                                $val['action'] . '" data-controller="' .
+                                $val['controller'] . '"  data-id="' .
+                                $val['id'] . '"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="right" title="' . __('edit') . '"></i> </span>'
+                                .
+                                ' <span class="like-link edit-document" data-url="' . createUrl('admin', 'delete') . '" data-action="' .
+                                $val['action'] . '" data-controller="' .
+                                $val['controller'] . '"  data-id="' .
+                                $val['id'] . '"><i class="glyphicon glyphicon-remove" data-toggle="tooltip" data-placement="right" title="' . __('delete') . '"></i> </span>' .
+                                ' <p><i>' . $this->_baseHelper->restrictText($textContent, 100, true) . '</i></p>';
                         }
-                        $contentData[$val['controller']][] = '<span class="label label-default" data-id="' . $val['id'] . '"> ' .
-                            __('menu_' . $val['action']) . '</span>' .
-                            ' <span class="like-link edit-document" data-url="' . createUrl('admin', 'edit') . '" data-action="' .
-                            $val['action'] . '" data-controller="' .
-                            $val['controller'] . '"  data-id="' .
-                            $val['id'] . '"><i class="glyphicon glyphicon-edit"></i> ' . __('edit') . '</span>' .
-                            ' <p><i>' . $this->_baseHelper->restrictText($textContent, 100, true) . '</i></p>';
-                    }
+                        }
+
                     $content = $this->createList($contentData);
                     break;
             }
@@ -109,12 +121,19 @@ class Admin extends BaseController
         $save = $this->_model->{$this->getParam('action').'Data'}($this->getParams());
         if($save != false){
             $modal = "$('.modal').modal('hide');";
-            $data = explode('/', $this->getParam('value'));
-            $message = $this->renderMessage(__('edit_success') , 'success'). $modal;
+            $reload = '$.post("'.$_SERVER['HTTP_REFERER'].'", {\'onlyView\': true, \'id\': \'contents\', \'view\': \''.$this->getParam('dataController').'\', \'language\': \''.$_GET['language'].'\', \'controller\': \''.$_GET['controller'].'\', \'action\': \''.$_GET['action'].'\' }, function(data){
+                $("#body").find(\'.container\').html(data);
+            });';
+            $message = $this->renderMessage(__('edit_success') , 'success'). $modal . $reload;
         }
         $this->finish(null, $message);
     }
 
+    protected function deleteAction() {
+        $this->_model->delete($this->getParam('dataController'),' `id` = ' . $this->getParam('dataId'));
+        $message = $this->renderMessage(__('delete_success') , 'success');
+        $this->finish(null, $message);
+    }
     private function createList($arr)
     {
         $html = '<ul>';
@@ -141,7 +160,9 @@ class Admin extends BaseController
 //            }
             $contentData[$val['controller']][] = $val['action'];
         }
-        $return = array_unique($contentData[$this->getParam('dataController')]);
+
+        $dataController = $contentData;
+        $return = (!empty($dataController)) ? array_unique($dataController[$this->getParam('dataController')]) :$dataController;
         $this->Add('dataController',$this->getParam('dataController'));
         $this->Add('contentAdd',$return);
         $this->ReturnView('',false);

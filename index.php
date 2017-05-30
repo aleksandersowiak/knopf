@@ -36,7 +36,7 @@ function __($text)
     return $text;
 }
 
-function createUrl($controller = '', $action = '')
+function createUrl($controller = '', $action = '' , $id = '')
 {
     if ($controller == '' || $controller == NULL || $controller == false) {
         $controller = 'home';
@@ -49,10 +49,8 @@ function createUrl($controller = '', $action = '')
     } else {
         $language = $_GET['language'];
     }
-    if ($_GET['id'] == "") {
-        $id = "";
-    } else {
-        $id = "/" . $_GET['id'];
+    if ($id != "") {
+        $id = "/" . $id;
     }
     return "/" . $language . "/" . $controller . "/" . $action . $id;
 }

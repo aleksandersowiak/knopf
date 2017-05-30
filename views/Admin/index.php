@@ -13,18 +13,16 @@
             <?php
             $collect = array();
             foreach ($this->top_menu as $element) {
-                $link[0] = $element['link'];
-                if (strpos($element['link'], '/')) {
-                    $link = explode('/', $element['link']);
-                }
-                if (!in_array($link[0], $collect)) {
-                    $collect[] = $link[0];
-                    echo '<li data-select="' . $link[0] . '"><a href="' . createUrl('admin', 'index') . '/view/' . $link[0] . '"> ' . __($link[0]) . '</a></li>';
-                    unset($link);
+                if (!in_array($element['controller'], $collect)) {
+                    $collect[] = $element['controller'];
+                    echo '<li data-select="' . $element['controller'] . '">
+                        <a href="' . createUrl('admin', 'index', 'contents') . '/view/' . $element['controller'] . '"> ' . __($element['controller']) . '</a>
+                    </li>';
+                    unset($element);
                 }
             }
             ?>
-            <li><a href="<?= createUrl('admin', 'logout') ?>"><?= __('logout') ?></a></li>
+            <li><a href="<?= createUrl('admin', 'logout') ?>"><i class="glyphicon glyphicon-off"></i> <?=__('logout')?></a></li>
 
         </ul>
     </div>
@@ -32,6 +30,8 @@
 
 <?= $this->viewContent ?>
 
+<?php if(isset($_GET['view'])) : ?>
 <script>
     $('.nav-tabs').find('li[data-select="<?=$_GET['view']?>"]').addClass('active');
 </script>
+<?php endif; ?>

@@ -15,6 +15,7 @@ $lang = array(
     "menu_gallery" => "Galeria",
     "menu_index" => "Strona Główna",
 
+    "logout" => "Wyloguj",
 
     "back" => "Wróć",
     "fist_name" => "Imię",
@@ -32,6 +33,7 @@ $lang = array(
     "login_success" => "Zostałeś(aś) zalogowany prawidłowo",
     "login_incorrect" => "Nazwa użytkownika lub hasło jest nieprawidłowe",
     "logout_success" => "Zostałeś(aś) wylogowany(a)",
+    "delete_success" => "Wpis został usunięty!",
 
     "ask_us" => "Skontaktuj się z nami przez formularz",
     "contact" => "Kontakt",
@@ -51,10 +53,19 @@ $lang = array(
     "save_changes" => "Zapisz zmiany",
     "save" => "Zapisz",
     "add" => "Dodaj",
+    "delete" => "Usuń",
     "save_error" => "Błąd przy zapisie do bazy.",
     "contents" => "Treści",
     "are_you_sure" => "Dodawanie nowego elementu do strony",
     "edit_success" => "Dane zostały zapisane!",
     "edit_error" => "Wystąpił błąd podczas zapisu!",
     "please_select" => 'Proszę wybrać',
+
+
+    1 => "one",
+    2 => "two",
+    3 => "three",
+    4 => "four",
+    5 => "five",
+    6 => "six",
 );

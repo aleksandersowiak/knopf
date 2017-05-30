@@ -103,9 +103,11 @@ abstract class BaseModel extends ViewModel
         return $result;
     }
     public function getContent($controller = '', $action = '', $lang = DEFAULT_LANG) {
-        $query = 'Select `t`.`'.$lang.'` as value, `c`.* from `content` as `c`
-        left join `translate` as `t` on `t`.`id` = `c`.`translate_id`
-        where `c`.`action` LIKE "'.str_replace('Action','',$action).'" AND `c`.`controller` LIKE "'.$controller.'"';
+        if($lang == '') $lang = DEFAULT_LANG;
+        $query = 'Select `c`.`'.$lang.'` as value, `c`.*, `tm`.controller, `tm`.action from `content` as `c`
+        left join `top_menu` as `tm` on `tm`.id = `c`.menu_id
+        where `tm`.`action` LIKE "'.str_replace('Action','',$action).'" AND `tm`.`controller` LIKE "'.$controller.'"';
+
         $result = $this->select($query);
         return $result;
     }
