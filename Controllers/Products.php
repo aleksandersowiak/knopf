@@ -10,7 +10,7 @@ class Products extends BaseController {
         $this->ReturnView($products, false);
     }
     protected function readAction() {
-       $product = $this->_model->getProducts('`id` = ' . $this->getParam('id') .' AND ');
+       $product = $this->_model->getProducts('`p`.`id` = ' . $this->getParam('id') .' AND ');
         if(empty($product)) $this->_baseHelper->redirect('products','index');
        $this->renderValue($product[0]);
        $this->ReturnView('', false);

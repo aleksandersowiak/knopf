@@ -131,7 +131,12 @@ class Admin extends BaseController
 
     protected function deleteAction() {
         $this->_model->delete($this->getParam('dataController'),' `id` = ' . $this->getParam('dataId'));
-        $message = $this->renderMessage(__('delete_success') , 'success');
+        $modal = "$('.modal').modal('hide');";
+        $reload = '$.post("'.$_SERVER['HTTP_REFERER'].'", {\'onlyView\': true, \'id\': \'contents\', \'view\': \''.$this->getParam('dataController').'\', \'language\': \''.$_GET['language'].'\', \'controller\': \''.$_GET['controller'].'\', \'action\': \''.$_GET['action'].'\' }, function(data){
+                $("#body").find(\'.container\').html(data);
+            });';
+        $message = $this->renderMessage(__('delete_success') , 'success'). $modal . $reload;
+  
         $this->finish(null, $message);
     }
     private function createList($arr)

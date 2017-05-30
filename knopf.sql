@@ -11,6 +11,7 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 -- Zrzut struktury tabela database.content
+DROP TABLE IF EXISTS `content`;
 CREATE TABLE IF NOT EXISTS `content` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `menu_id` int(11) DEFAULT NULL,
@@ -26,13 +27,14 @@ DELETE FROM `content`;
 /*!40000 ALTER TABLE `content` DISABLE KEYS */;
 INSERT INTO `content` (`id`, `menu_id`, `pl`, `en`, `it`) VALUES
 	(4, 5, '<p>test 2 taki o ... &nbsp; &nbsp;dsdd</p><p>test &nbsp;222222222222222 vxv&nbsp;</p><p>ddd panel administracyjny r</p>', NULL, '<h3>Knopf vendita ed installazione</h3> \r\n<div class="form-group">\r\n<div class="col-md-8 inputGroupContainer">\r\n<label class="col-md-3 control-label">Adress</label>\r\nvia Gelada 10  22070 Montano Lucino (co) \r\n</div>\r\n<div class="col-md-8 inputGroupContainer">\r\n<label class="col-md-3 control-label">&nbsp;</label>\r\nP.iva:02884300134\r\n</div>\r\n<div class="col-md-8 inputGroupContainer">\r\n<label class="col-md-3 control-label">Tel.</label>\r\ntel:+390314104220\r\n</div>\r\n<div class="col-md-8 inputGroupContainer">\r\n<label class="col-md-3 control-label">Tel.</label>\r\ncell:+393938190367\r\n</div>\r\n<div class="col-md-8 inputGroupContainer">\r\n<label class="col-md-3 control-label">E-Mail</label>\r\n<a href="mailto:info@knopf.co.it">info@knopf.co.it</a>\r\n</div>\r\n</div>'),
-	(9, 1, '<p>wpis 1 test z gÅ‚Ã³wnej zzzda dasd&nbsp;</p><p>wp .pl</p><p>hehehe</p><p>test</p><p>dasdasdasdasdasdasdasd</p>', NULL, NULL),
+	(9, 1, 'śćńżółęąśń', NULL, NULL),
 	(11, 1, '<p>wpis 3</p>', NULL, NULL),
 	(12, 1, '', NULL, NULL);
 /*!40000 ALTER TABLE `content` ENABLE KEYS */;
 
 
 -- Zrzut struktury tabela database.gallery
+DROP TABLE IF EXISTS `gallery`;
 CREATE TABLE IF NOT EXISTS `gallery` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `image` varchar(100) DEFAULT NULL,
@@ -62,6 +64,7 @@ INSERT INTO `gallery` (`id`, `image`, `category`, `product_id`, `category_id`, `
 
 
 -- Zrzut struktury tabela database.products
+DROP TABLE IF EXISTS `products`;
 CREATE TABLE IF NOT EXISTS `products` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `title` varchar(50) NOT NULL DEFAULT '0',
@@ -80,6 +83,7 @@ INSERT INTO `products` (`id`, `title`, `description`, `pinned`) VALUES
 
 
 -- Zrzut struktury tabela database.top_menu
+DROP TABLE IF EXISTS `top_menu`;
 CREATE TABLE IF NOT EXISTS `top_menu` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `menu_element` varchar(25) DEFAULT NULL,
@@ -102,6 +106,7 @@ INSERT INTO `top_menu` (`id`, `menu_element`, `order`, `controller`, `action`) V
 
 
 -- Zrzut struktury tabela database.user
+DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL DEFAULT '0',
