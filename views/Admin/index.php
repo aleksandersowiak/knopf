@@ -22,6 +22,7 @@
                 }
             }
             ?>
+            <li><a href="<?= createUrl('admin', 'importImages') ?>"><i class="glyphicon glyphicon-import"></i> <?=__('import_images')?></a></li>
             <li><a href="<?= createUrl('admin', 'logout') ?>"><i class="glyphicon glyphicon-off"></i> <?=__('logout')?></a></li>
 
         </ul>

@@ -1,12 +1,6 @@
 App = {
     init: function () {
-        $(function () {
-            //clear modal cache, so that new content can be loaded
-            $('body').on('hidden.bs.modal', '.modal', function () {
-                $(this).remove();
-
-            });
-        });
+        console.log('init app.');
         $(document).ready(function () {
             if (typeof loadEditButton == 'function') {
                 loadEditButton();
@@ -16,13 +10,12 @@ App = {
                 $('[data-toggle="tooltip"]').tooltip()
             });
             })
-            $(".modal").on('hidden.bs.modal', function () {
-                $(this).remove();
-            });
-            $('#pop-upModal').on('click', function () {
+
+            $('#pop-upModal, .modal #pop-upModal').on('click', function () {
                 var params = {
                     'popupModal': true
                 };
+
                 if ($(this).attr('params') != undefined) {
                     var param = $('#pop-upModal').attr('params');
                     var oo = {};
@@ -38,10 +31,10 @@ App = {
             //FANCYBOX
             //https://github.com/fancyapps/fancyBox
                 App.waitForElement('.fancybox', function () {
-            $(".fancybox").fancybox({
-//                openEffect: "none",
-//                closeEffect: "none"
-            });
+                    $(".fancybox").fancybox({
+        //                openEffect: "none",
+        //                closeEffect: "none"
+                    });
                 });
             App.actionClick();
             App.animate();
@@ -54,19 +47,6 @@ App = {
                         'dataId' : $(this).attr('data-id'),
                         'dataLanguage' : $('html').attr('lang')
                     });
-                    App.waitForElement('#editor', function () {
-                        $('#editor').last().summernote(
-                            {
-                                height: 350,
-                                lang: $('html').attr('lang') + '-' + $('html').attr('lang').toUpperCase(),
-                                popover: {
-                                    image: [],
-                                    link: [],
-                                    air: []
-                                }
-                            }
-                        );
-                    });
                 });
             });
         });
@@ -78,9 +58,6 @@ App = {
                 url: $(this).parents('form').attr('action')
             });
         });
-//        $(".modal").on('hidden.bs.modal', function () {
-//            $(this).remove();
-//        });
     },
     waitForElement: function (elementPath, callBack) {
         window.setTimeout(function () {
@@ -113,8 +90,30 @@ App = {
         }
     },
     showModal: function (data, modalClass, back_redirect) {
-        $(data).modal().on('shown.bs.modal', function () {
+        console.log(data);
+
+        $('.modal').each(function (i, e) {
+            if ($('.modal').is(':hidden')) {
+                $(e).remove();
+            }
+        })
+
+        $(data).modal().on('shown.bs.modal', function (e) {
             App.actionClick();
+            App.waitForElement('#editor', function () {
+                $('#editor').last().summernote(
+                    {
+                        height: 350,
+                        lang: $('html').attr('lang') + '-' + $('html').attr('lang').toUpperCase(),
+                        popover: {
+                            image: [],
+                            link: [],
+                            air: []
+                        }
+                    }
+                );
+            });
+            App.init();
         });
     },
     formAjax: function (elem, params) {
@@ -135,15 +134,10 @@ App = {
     },
     ajaxSend: function (url, params, content, onSuccess, onError) {
 
-//        if (App.ajaxUrl == url) {
-//            return false;
-//        }
-
-        $('body').append("<div id=\"loader-backGround\" class=\"modal-backdrop fade in\"></div><div id=\"loader\"></div>");
+       $('body').append("<div id=\"loader-backGround\" class=\"modal-backdrop fade in\"></div><div id=\"loader\"></div>");
 
         App.ajaxUrl = url;
 
-        //CKedit hack
         if (url.indexOf('javascript') >= 0) {
             return false;
         }
@@ -182,7 +176,6 @@ App = {
                                 eval(datao.extraCommand);
                                 $('#loader-backGround, #loader').fadeOut().remove();
                             }
-                            App.init();
                             return true;
                             break;
                     }
@@ -196,11 +189,12 @@ App = {
                             if($('.modal').length > 0) {
                                 App.waitForElement('.modal',  function () {
                                     $('#loader-backGround, #loader').fadeOut().remove();
+
                                 })
                             } else{
                                 $('#loader-backGround, #loader').fadeOut().remove();
                             }
-                        })
+                        });
                         return true;
                     } else {
                         $(content).html(data);
@@ -218,7 +212,6 @@ App = {
                 }
             }
         });
-//
     },
     clickAction: function (url, params) {
         if (url == undefined) {

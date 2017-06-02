@@ -64,8 +64,8 @@ abstract class BaseModel extends ViewModel
         $sql = "INSERT INTO `" . $table . "` ($columns) VALUES ($values) $where";
         $result = $this->_db->query($sql);
         if ($result === FALSE) {
-            return false;
-//            die($this->_db->error);
+//            return false;
+            die($this->_db->error);
         }
         return ($this->_db->insert_id);
     }
@@ -105,7 +105,7 @@ abstract class BaseModel extends ViewModel
     }
     public function getContent($controller = '', $action = '', $lang = DEFAULT_LANG) {
         if($lang == '') $lang = DEFAULT_LANG;
-        $query = 'Select `c`.`'.$lang.'` as value, `c`.*, `tm`.controller, `tm`.action from `content` as `c`
+        $query = 'Select `c`.`description_'.$lang.'` as value, `c`.*, `tm`.controller, `tm`.action from `content` as `c`
         left join `top_menu` as `tm` on `tm`.id = `c`.menu_id
         where `tm`.`action` LIKE "'.str_replace('Action','',$action).'" AND `tm`.`controller` LIKE "'.$controller.'"';
 

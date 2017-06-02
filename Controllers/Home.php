@@ -11,7 +11,7 @@ class Home extends BaseController {
         parent::__init();
     }
 	protected function indexAction() {
-        $this->Add('slide', $this->_model->getSlide());
+        $this->Add('slide', $this->_model->getSlide($this->getParam('language')));
         $this->renderMessageView($this->controller,$this->action);
         $this->ReturnView('', false);
 	}

@@ -1,11 +1,10 @@
-<link rel="stylesheet" href="/data/css/jquery.jMosaic.css"/>
-<script src="/data/js/jquery.jMosaic.js"></script>
+
 <div class="row">
     <div class='list-group gallery'>
         <?php foreach ($viewmodel as $category => $images) : ?>
         <div class="panel panel-default cols">
 
-            <div class="panel-body">
+            <div class="panel-body no-margins">
                 <div class="pictures">
                     <?php foreach ($images as $image) : ?>
                         <img class="img-responsive" alt="" src="<?= $image ?>"/>
@@ -20,6 +19,6 @@
 </div>
 <script>
     $(document).ready(function () {
-        $('.pictures').jMosaic({items_type: "img", min_row_height: 75, margin: 3, is_first_big: false});
+        $('.pictures').jMosaic({items_type: "img", min_row_height: 50, margin: 0, is_first_big: false});
     })
 </script>

@@ -5,12 +5,12 @@ class Gallery extends BaseController {
         $this->_model = new GalleryModel();
         parent::__init();
     }
-    protected function indexAction() {
+    protected function indexAction($fix = false) {
         $data = array();
         foreach ($this->_model->getImages() as $cat_img) {
             $data[$cat_img['category']][] = $cat_img['image'];
         }
-        $this->ReturnView($data,false);
+        $this->ReturnView($data,false, $fix);
     }
 
     protected function viewAction() {
@@ -18,5 +18,8 @@ class Gallery extends BaseController {
     }
     protected function getCategoryId($name) {
         return $this->_model->getCategoryId($name);
+    }
+    public function getAllImages() {
+        return $this->_model->getImages();
     }
 }

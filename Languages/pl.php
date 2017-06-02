@@ -25,6 +25,7 @@ $lang = array(
     "address" => "Adres",
     "message" => "Wiadomość",
     "send" => "Wyślij",
+    "title" => "Tytuł",
 
     "read_more" => "Czytaj więcej...",
     "mail_title" => "Kontakt ze strony",
@@ -60,4 +61,14 @@ $lang = array(
     "edit_success" => "Dane zostały zapisane!",
     "edit_error" => "Wystąpił błąd podczas zapisu!",
     "please_select" => 'Proszę wybrać',
+    "method_not_exist" => "Możliwość edytowania %s nie jest możliwa.",
+    "realization" => "Realizacje",
+    "pin_realization" => "Realizacje",
+    "pin_realization_tooltip" => "Dodaj lub edytuj powiązane realizacje",
+    "pin_images" => "Zdjęcia",
+    "pin_images_tooltip" => "Dodaj lub edytuj powiązane zdjęcia",
+    "use_checkbox" => "używając checkbox",
+    "image_assign_success" => "Zdjęcie zostało poprawnie przypisane",
+    "image_assign_error" => "Błąd przy przypisywaniu zdjęcia",
+    "import_images" => "Import Zdjęć."
 );

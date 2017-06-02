@@ -43,6 +43,16 @@ abstract class BaseController extends BaseModel{
 
         $this->Add('_publickey',$this->getConfig()['recaptcha.public']);
         $this->Add('_privatekey',$this->getConfig()['recaptcha.private']);
+
+        if ($this->getParam('controller') == '' || $this->getParam('controller') == NULL || $this->getParam('controller') == false) {
+            $this->setParam('controller','home');
+        }
+        if ($this->getParam('action') == '' || $this->getParam('action') == NULL || $this->getParam('action') == false) {
+            $this->setParam('action','index');
+        }
+        if ($this->getParam('language') == "") {
+            $this->setParam('language',DEFAULT_LANG);
+        }
     }
 	public function ExecuteAction() {
 		return $this->{$this->action}();
@@ -54,7 +64,7 @@ abstract class BaseController extends BaseModel{
 
         if ($fullview) {
             return;
-        } else if(($this->getParam('popupModal') == true) || ($this->getParam('onlyView') == 'true')) {
+        } else if(($this->getParam('popupModal') == true) || ($this->getParam('onlyView') == 'true') || $fixView != null) {
             require($viewloc);
         }else{
             require(APPLICATION_PATH.'/views/template/header.php'); // is set default header
@@ -185,5 +195,16 @@ EOF;
         if ($controller == '') $controller = get_class($this);
         if ($action == '') $action = $this->action;
         return $viewloc = APPLICATION_PATH . '/views/' . ucfirst($controller) . '/' . str_replace('Action', '', $action) . '.phtml';
+    }
+    public function loadViewFileAction() {
+        $controller = ($this->getParam('controllerData') == '') ? $this->getParam('controllerData') : $_POST['controllerData'];
+        $action = ($this->getParam('actionData') == '') ? $this->getParam('actionData') : $_POST['actionData'];
+        if($this->getParam('useController') != '') {
+            $class = $controller;
+            $object = new $class($controller, $action, '');
+            $object->$action();
+            return;
+        }
+        require_once (APPLICATION_PATH.'/views/' . $controller . '/' . $action . '.php');
     }
 }

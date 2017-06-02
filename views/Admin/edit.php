@@ -6,7 +6,7 @@ if(isset($this->dataEdit)) :
     $textArea = $this->dataEdit;
 endif;
 ?>
-<div class="modal fade bs-example-modal-lg" id="bs-example-modal-edit-post" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade primary" id="bs-modal-edit-post" tabindex="-1" role="modal-dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <form class="form-horizontal" role="form" id="form" method="post" action="<?=createUrl('admin','save')?>">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -16,7 +16,7 @@ endif;
                 </div>
                 <div class="modal-body">
                     <div id="alerts"></div>
-                    <textarea  id="editor" contenteditable="true" name="editor" style="overflow: auto; display: none"><?=$textArea?></textarea>
+                    <textarea  id="editor" contenteditable="true" name="description_<?=$this->dataLanguage?>" style="overflow: auto; display: none"><?=$textArea?></textarea>
 
                 </div>
                 <div class="modal-footer">
@@ -25,10 +25,22 @@ endif;
                     <input type="hidden" name="language" value="<?=$this->dataLanguage?>"/>
                     <input type="hidden" name="dataId" value="<?=$this->dataId?>"/>
                     <input type="hidden" name="action" value="update"/>
+
+                    <?= (isset($this->pin_realization)) ? '<button type="button" class="btn btn-default pin-btn" data-url="pinImages" data-type="realization">' . __('pin_realization') .'</button>' : '' ?>
+                    <?= (isset($this->pin_images)) ? '<button type="button" class="btn btn-default pin-btn"  data-url="pinImages" data-type="product_id">' . __('pin_images') .'</button>' : '' ?>
                     <button type="button" class="btn btn-default" data-dismiss="modal"><?=__('cancel')?></button>
                     <button type="submit" class="btn btn-primary"><?=$button?></button>
                 </div>
+                <div class="pinned"></div>
             </div>
+
+            <script>
+                $('.pin-btn').on('click', function () {
+                $.post('<?=createUrl('admin', 'loadViewFile')?>', {controllerData: 'admin', actionData: $(this).attr('data-url'), useController : true, dataType: $(this).attr('data-type') }, function(data){
+                    $('.modal').find('.pinned').html(data);
+                })
+                })
+            </script>
         </div>
     </form>
 </div>

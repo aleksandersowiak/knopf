@@ -47,7 +47,7 @@
 		$(it.element).find(it.options.items_type).each(function(i) { 
 			$(this).addClass("jMosaic-item");
 			var newwidth = 	it.itemNewWidth(this, it.options.min_row_height);
-			$(this).removeAttr("width").removeAttr("height").css({"width": newwidth+"px", "height": it.options.min_row_height+"px", "margin": it.options.margin+"px"});		
+			$(this).removeAttr("width").removeAttr("height").css({"width": newwidth+"px", "height": it.options.min_row_height+"px", "margin": it.options.margin+"px"});
 			if (i == 0 || $(this).position().top == $(this).prev().position().top) {
 				classWidth += $(this).outerWidth(true);
 			}
