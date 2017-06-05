@@ -80,8 +80,8 @@ abstract class BaseModel extends ViewModel
 
             $result = $this->_db->query($sql);
             if ($result === FALSE) {
-                return false;
-//                die($this->_db->error);
+//                return false;
+                die($this->_db->error);
             }
             return true;
         }

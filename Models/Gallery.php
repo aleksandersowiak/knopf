@@ -4,7 +4,7 @@ class GalleryModel extends BaseModel {
         if($where == '' ) {
             $where = 'LIMIT 10';
         }
-        $query = "SELECT id,image, category, product_id, realization re from `gallery` " . $where;
+        $query = "SELECT id,image, category, product_id, realization from `gallery` " . $where;
         return $this->select($query);
     }
     public function getCategoryId($name) {

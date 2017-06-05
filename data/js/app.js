@@ -93,7 +93,7 @@ App = {
         console.log(data);
 
         $('.modal').each(function (i, e) {
-            if ($('.modal').is(':hidden')) {
+            if ($('.modal, .modal-backdrop').is(':hidden')) {
                 $(e).remove();
             }
         })
@@ -113,7 +113,6 @@ App = {
                     }
                 );
             });
-            App.init();
         });
     },
     formAjax: function (elem, params) {

@@ -27,7 +27,7 @@ endif;
                     <input type="hidden" name="action" value="update"/>
 
                     <?= (isset($this->pin_realization)) ? '<button type="button" class="btn btn-default pin-btn" data-url="pinImages" data-type="realization">' . __('pin_realization') .'</button>' : '' ?>
-                    <?= (isset($this->pin_images)) ? '<button type="button" class="btn btn-default pin-btn"  data-url="pinImages" data-type="product_id">' . __('pin_images') .'</button>' : '' ?>
+                    <?= (isset($this->pin_images)) ? '<button type="button" class="btn btn-default pin-btn"  data-url="pinImages" data-type="product_id">' . __('pin_product_id') .'</button>' : '' ?>
                     <button type="button" class="btn btn-default" data-dismiss="modal"><?=__('cancel')?></button>
                     <button type="submit" class="btn btn-primary"><?=$button?></button>
                 </div>
