@@ -1,5 +1,5 @@
 <?php
-$lang = array (
+$lang = array(
     //"String" => "Translated String",
     "pl" => "Polski",
     "en" => 'English',

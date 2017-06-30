@@ -1,4 +1,6 @@
 <?php
-class HomeHelper extends BaseHelper {
+
+class HomeHelper extends BaseHelper
+{
 
 }

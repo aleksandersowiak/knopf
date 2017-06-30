@@ -6,9 +6,9 @@ App = {
                 loadEditButton();
             }
             App.waitForElement('[data-toggle="tooltip"]', function () {
-            $(function () {
-                $('[data-toggle="tooltip"]').tooltip()
-            });
+                $(function () {
+                    $('[data-toggle="tooltip"]').tooltip()
+                });
             })
 
             $('#pop-upModal, .modal #pop-upModal').on('click', function () {
@@ -18,24 +18,31 @@ App = {
 
                 if ($(this).attr('params') != undefined) {
                     var param = $('#pop-upModal').attr('params');
+                    if($(this).attr('params') != undefined) {
+                         param = $(this).attr('params');
+                    }
                     var oo = {};
+                    if (param.indexOf(',')) {
                     param.split(',').forEach(function (x) {
                         var split = x.split(':');
                         oo[split[0]] = split[1];
                     });
+                    } else {
+                        var split = param.split(':');
+                        oo[split[0]] = split[1];
+                    }
                     $.extend(params, oo);
                 }
-
                 App.ajaxSend($(this).attr('data-url'), params);
             });
             //FANCYBOX
             //https://github.com/fancyapps/fancyBox
-                App.waitForElement('.fancybox', function () {
-                    $(".fancybox").fancybox({
-        //                openEffect: "none",
-        //                closeEffect: "none"
-                    });
+            App.waitForElement('.fancybox', function () {
+                $(".fancybox").fancybox({
+                    //                openEffect: "none",
+                    //                closeEffect: "none"
                 });
+            });
             App.actionClick();
             App.animate();
             App.waitForElement('.edit-document', function () {
@@ -44,8 +51,8 @@ App = {
                         'popupModal': true,
                         'dataController': $(this).attr('data-controller'),
                         'dataAction': $(this).attr('data-action'),
-                        'dataId' : $(this).attr('data-id'),
-                        'dataLanguage' : $('html').attr('lang')
+                        'dataId': $(this).attr('data-id'),
+                        'dataLanguage': $('html').attr('lang')
                     });
                 });
             });
@@ -70,28 +77,32 @@ App = {
     },
     validateEmail: function (id) {
         var email_regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
-        if (!email_regex.test($("#" + id).val())) {
-            var div = $("#" + id).closest("div");
-            div.removeClass("has-success");
-            $("#glypcn" + id).remove();
-            div.addClass("has-error has-feedback");
-            div.append('<span id="glypcn' + id + '" class="glyphicon glyphicon-remove form-control-feedback"></span>');
-
-            $("#" + id).attr("data-toggle", "tooltip").attr("data-placement", "left").attr("title", "Tooltip on left")
-            return false;
-        }
-        else {
-            var div = $("#" + id).closest("div");
-            div.removeClass("has-error");
-            $("#glypcn" + id).remove();
-            div.addClass("has-success has-feedback");
-            div.append('<span id="glypcn' + id + '" class="glyphicon glyphicon-ok form-control-feedback"></span>');
-            return true;
-        }
+        if (!email_regex.test($("#" + id).val()) && !App.serErrorfield(id)) return false;
+        App.serSuccessfield(id);
+        return true;
+    },
+    validateField: function (id) {
+        if($("#" + id).val() == '' && !App.serErrorfield(id)) return false;
+        App.serSuccessfield(id);
+        return true;
+    },
+    serErrorfield: function (id) {
+        var div = $("#" + id).closest("div");
+        div.removeClass("has-success");
+        $("#glypcn" + id).remove();
+        div.addClass("has-error has-feedback");
+        div.append('<span id="glypcn' + id + '" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+        return false;
+    },
+    serSuccessfield: function (id) {
+        var div = $("#" + id).closest("div");
+        div.removeClass("has-error");
+        $("#glypcn" + id).remove();
+        div.addClass("has-success has-feedback");
+        div.append('<span id="glypcn' + id + '" class="glyphicon glyphicon-ok form-control-feedback"></span>');
+        return true;
     },
     showModal: function (data, modalClass, back_redirect) {
-        console.log(data);
-
         $('.modal').each(function (i, e) {
             if ($('.modal, .modal-backdrop').is(':hidden')) {
                 $(e).remove();
@@ -133,7 +144,7 @@ App = {
     },
     ajaxSend: function (url, params, content, onSuccess, onError) {
 
-       $('body').append("<div id=\"loader-backGround\" class=\"modal-backdrop fade in\"></div><div id=\"loader\"></div>");
+        $('body').append("<div id=\"loader-backGround\" class=\"modal-backdrop fade in\"></div><div id=\"loader\"></div>");
 
         App.ajaxUrl = url;
 
@@ -184,13 +195,13 @@ App = {
                 if (onSuccess == false) {
                     if (params.popupModal == true) {
                         App.showModal(data);
-                        App.waitForElement('.modal',  function () {
-                            if($('.modal').length > 0) {
-                                App.waitForElement('.modal',  function () {
+                        App.waitForElement('.modal', function () {
+                            if ($('.modal').length > 0) {
+                                App.waitForElement('.modal', function () {
                                     $('#loader-backGround, #loader').fadeOut().remove();
 
                                 })
-                            } else{
+                            } else {
                                 $('#loader-backGround, #loader').fadeOut().remove();
                             }
                         });
@@ -202,11 +213,11 @@ App = {
                     onSuccess(data, status, jqXHR);
                 }
                 App.ajaxUrl = null;
-                if($('.modal').length > 0) {
-                    App.waitForElement('.modal',  function () {
+                if ($('.modal').length > 0) {
+                    App.waitForElement('.modal', function () {
                         $('#loader-backGround, #loader').fadeOut().remove();
                     })
-                } else{
+                } else {
                     $('#loader-backGround, #loader').fadeOut().remove();
                 }
             }

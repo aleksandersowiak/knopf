@@ -1,16 +1,19 @@
 <?php
-abstract class BaseController extends BaseModel{
-	protected $urlvalues;
-	protected $action;
+
+abstract class BaseController extends BaseModel
+{
+    protected $urlvalues;
+    protected $action;
     protected $controller;
     protected $_params = array();
     public $_session;
     public $_baseHelper;
 
-	public function __construct($controller, $action, $urlvalues) {
+    public function __construct($controller, $action, $urlvalues)
+    {
         $this->controller = $controller;
-		$this->action = $action;
-		$this->urlvalues = $urlvalues;
+        $this->action = $action;
+        $this->urlvalues = $urlvalues;
         $the_request = array();
         if (isset($_SERVER['REQUEST_METHOD'])) {
             switch ($_SERVER['REQUEST_METHOD']) {
@@ -25,53 +28,58 @@ abstract class BaseController extends BaseModel{
         }
         $this->setParams($the_request);
         $this->__init();
-        $this->Add('web_title','<img src="/data/images/logo.png"/>');
-        $this->Add('top_menu',$this->_model->getTopMenu());
+        $this->Add('web_title', '<img src="/data/images/logo.png"/>');
+        $this->Add('top_menu', $this->_model->getTopMenu());
         $this->_session = new Session();
         if (session_status() == PHP_SESSION_NONE) {
             $this->_session->startSession();
-            $this->Add('dataAction', str_replace('Action','',$this->action));
+            $this->Add('dataAction', str_replace('Action', '', $this->action));
             $this->Add('dataController', $this->controller);
-            $this->Add('editButton','');
+            $this->Add('editButton', '');
         }
-        $this->Add('edit',$this->checkSession(false));
+        $this->Add('edit', $this->checkSession(false));
         $this->_baseHelper = new BaseHelper();
-        $this->Add('viewContent' , '');
+        $this->Add('viewContent', '');
 
-	}
-	public function __init() {
+    }
 
-        $this->Add('_publickey',$this->getConfig()['recaptcha.public']);
-        $this->Add('_privatekey',$this->getConfig()['recaptcha.private']);
+    public function __init()
+    {
+
+        $this->Add('_publickey', $this->getConfig()['recaptcha.public']);
+        $this->Add('_privatekey', $this->getConfig()['recaptcha.private']);
 
         if ($this->getParam('controller') == '' || $this->getParam('controller') == NULL || $this->getParam('controller') == false) {
-            $this->setParam('controller','home');
+            $this->setParam('controller', 'home');
         }
         if ($this->getParam('action') == '' || $this->getParam('action') == NULL || $this->getParam('action') == false) {
-            $this->setParam('action','index');
+            $this->setParam('action', 'index');
         }
         if ($this->getParam('language') == "") {
-            $this->setParam('language',DEFAULT_LANG);
+            $this->setParam('language', DEFAULT_LANG);
         }
     }
-	public function ExecuteAction() {
-		return $this->{$this->action}();
-	}
-	
-	protected function ReturnView($viewmodel, $fullview, $fixView = null) {
-        if($fixView != null) $this->action = $fixView;
-		$viewloc = APPLICATION_PATH.'/views/' . get_class($this) . '/' . str_replace('Action','',$this->action) . '.php';
+
+    public function ExecuteAction()
+    {
+        return $this->{$this->action}();
+    }
+
+    protected function ReturnView($viewmodel, $fullview, $fixView = null)
+    {
+        if ($fixView != null) $this->action = $fixView;
+        $viewloc = APPLICATION_PATH . '/views/' . get_class($this) . '/' . str_replace('Action', '', $this->action) . '.php';
 
         if ($fullview) {
             return;
-        } else if(($this->getParam('popupModal') == true) || ($this->getParam('onlyView') == 'true') || $fixView != null) {
+        } else if (($this->getParam('popupModal') == true) || ($this->getParam('onlyView') == 'true') || $fixView != null) {
             require($viewloc);
-        }else{
-            require(APPLICATION_PATH.'/views/template/header.php'); // is set default header
+        } else {
+            require(APPLICATION_PATH . '/views/template/header.php'); // is set default header
             require($viewloc); // data from controller action
-            require(APPLICATION_PATH.'/views/template/footer.php'); // is set default footer
+            require(APPLICATION_PATH . '/views/template/footer.php'); // is set default footer
         }
-	}
+    }
 
     public function setParam($key, $value)
     {
@@ -108,6 +116,7 @@ abstract class BaseController extends BaseModel{
     {
         return $this->_params;
     }
+
     public function mailClass()
     {
         include(dirname(__FILE__) . "/mailer/class.phpmailer.php");
@@ -116,6 +125,7 @@ abstract class BaseController extends BaseModel{
         include(dirname(__FILE__) . "/mailer/setparameters.php");
         return $this->_email;
     }
+
     public function send_mail($title = 'Default', $message = '', $attachment = null)
     {
         $mail = $this->mailClass();
@@ -134,29 +144,34 @@ abstract class BaseController extends BaseModel{
         $mail->Subject = "" . $title . " - " . date('Y-m-d_H:i:s');
         $mail->Body = $message;
 
-        if(!$mail->Send()) {
+        if (!$mail->Send()) {
             return array('status' => false, 'message' => $mail->ErrorInfo);
         }
         unset($mail);
         return array('status' => true);
     }
-    public function renderMessage($message,$status) {
-        return  <<<EOF
+
+    public function renderMessage($message, $status)
+    {
+        return <<<EOF
         $('#body').append('<div class="box-message"><div class="alert alert-$status pop-up" role="alert">$message</div></div>');
         setTimeout(function(){
             $('.alert').remove();
         }, 5000);
 EOF;
     }
-    public function redirect($controller = '', $action = '', $url = '') {
-        if($controller != '' && $action != '') {
-            return  'window.location="'.createUrl($controller,$action).'";';
-        }else if ($url != '') {
-            return  'window.location="'.$url.'";';
-        }else{
-            return  'window.location=window.location.href;';
+
+    public function redirect($controller = '', $action = '', $url = '')
+    {
+        if ($controller != '' && $action != '') {
+            return 'window.location="' . createUrl($controller, $action) . '";';
+        } else if ($url != '') {
+            return 'window.location="' . $url . '";';
+        } else {
+            return 'window.location=window.location.href;';
         }
     }
+
     public function checkSession($redirect = true)
     {
         if (!$this->_session->__isset("user_id")
@@ -169,15 +184,20 @@ EOF;
         }
         return true;
     }
-    public function finish($msg = null,$extraCommand = null, $type = "success") {
+
+    public function finish($msg = null, $extraCommand = null, $type = "success")
+    {
         $result = array();
         $result['cmd'] = 'break';
 
-        if(!is_null($extraCommand)) {
+        if (!is_null($extraCommand)) {
+            if($this->getParam('onlyView') == 'true') {
+                $extraCommand .= ' App.init();  ';
+            }
             $result['extraCommand'] = $extraCommand;
         }
 
-        if(!is_null($msg)) {
+        if (!is_null($msg)) {
             $result['msg'] = $msg;
             $result['type'] = $type;
             $result['cmd'] = 'break-with-msg';
@@ -185,9 +205,11 @@ EOF;
 
         die(json_encode($result));
     }
-    public function renderMessageView($controller, $action) {
+
+    public function renderMessageView($controller, $action)
+    {
         $contact = $this->_model->getContent($controller, $action, $this->getParam('language'));
-        $this->Add($action,$contact);
+        $this->Add($action, $contact);
     }
 
     public function reloadView($controller = '', $action = 'index')
@@ -196,15 +218,17 @@ EOF;
         if ($action == '') $action = $this->action;
         return $viewloc = APPLICATION_PATH . '/views/' . ucfirst($controller) . '/' . str_replace('Action', '', $action) . '.phtml';
     }
-    public function loadViewFileAction() {
+
+    public function loadViewFileAction()
+    {
         $controller = ($this->getParam('controllerData') == '') ? $this->getParam('controllerData') : $_POST['controllerData'];
         $action = ($this->getParam('actionData') == '') ? $this->getParam('actionData') : $_POST['actionData'];
-        if($this->getParam('useController') != '') {
+        if ($this->getParam('useController') != '') {
             $class = $controller;
             $object = new $class($controller, $action, '');
             $object->$action();
             return;
         }
-        require_once (APPLICATION_PATH.'/views/' . $controller . '/' . $action . '.php');
+        require_once(APPLICATION_PATH . '/views/' . $controller . '/' . $action . '.php');
     }
 }

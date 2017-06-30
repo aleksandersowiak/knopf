@@ -8,11 +8,13 @@
         </p>
     </div>
     <div class="col-md-3 ">
-        <div class='col-md-12'>
-            <a class="thumbnail fancybox" rel="ligthbox" href="<?= $this->image ?>">
-                <img class="img-responsive" alt="" src="<?= $this->image ?>"/>
-            </a>
-        </div>
+        <?php foreach ($this->image as $image) : ?>
+            <div class='col-md-12'>
+                <a class="thumbnail fancybox" rel="ligthbox" href="<?= $image['image'] ?>">
+                    <img class="img-responsive" alt="" src="<?= $image['image'] ?>"/>
+                </a>
+            </div>
+        <?php endforeach; ?>
     </div>
 </div>
 <?php if ($this->realization != NULL) : ?>

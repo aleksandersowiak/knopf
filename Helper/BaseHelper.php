@@ -8,14 +8,17 @@ class BaseHelper
         $data = json_encode($data);
         echo $data;
     }
-    public function redirect($controller, $action) {
+
+    public function redirect($controller, $action)
+    {
         if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) || ($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest') {
-            $json = array('cmd' => 'redirect', 'url' => createUrl($controller,$action));
+            $json = array('cmd' => 'redirect', 'url' => createUrl($controller, $action));
             die(json_encode($json));
         } else {
             header("Location: " . createUrl($controller, $action));
         }
     }
+
     public function restrictText($string, $length, $simple = false)
     {
         if ($simple == true) {

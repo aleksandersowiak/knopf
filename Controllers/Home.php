@@ -1,23 +1,31 @@
 <?php
-class Home extends BaseController {
+
+class Home extends BaseController
+{
     protected $_model;
     protected $_modelAdmin;
     protected $_heleper;
-    public function __init() {
+
+    public function __init()
+    {
         $this->_model = new HomeModel();
         $this->_modelAdmin = new AdminModel();
         $this->_heleper = new HomeHelper();
 
         parent::__init();
     }
-	protected function indexAction() {
+
+    protected function indexAction()
+    {
         $this->Add('slide', $this->_model->getSlide($this->getParam('language')));
-        $this->renderMessageView($this->controller,$this->action);
+        $this->renderMessageView($this->controller, $this->action);
         $this->ReturnView('', false);
-	}
-    public function contactSendAction() {
+    }
+
+    public function contactSendAction()
+    {
         $flash_message = $this->renderMessage(__('error'), 'danger');
-        if(($this->getParam('first_name') != '') && ($this->getParam('last_name') != '') && ($this->getParam('email') != '')) {
+        if (($this->getParam('first_name') != '') && ($this->getParam('last_name') != '') && ($this->getParam('email') != '')) {
 //            $resp = recaptcha_check_answer ($this->_privatekey,
 //                $_SERVER["REMOTE_ADDR"],
 //                $this->getParam("recaptcha_challenge_field"),
@@ -53,28 +61,36 @@ class Home extends BaseController {
 
                 $message = sprintf($message_contact, $this->getParam('first_name'), $this->getParam('last_name'), $this->getParam('email'), $this->getParam('phone'), $this->getParam('comment'));
                 $message = str_replace("%message%", $message, file_get_contents($emailTemplate));
-                   $send = $this->send_mail(__('mail_title'),$message);
-                if($send['status'] == false){
+                $send = $this->send_mail(__('mail_title'), $message);
+                if ($send['status'] == false) {
                     $flash_message = $this->renderMessage(__($send['message']), 'success') . "$('#recaptcha_reload').trigger('click'); $('form').trigger('reset');";
                 }
-                $flash_message =  $this->renderMessage(__('send_mail'), 'success') . "$('#recaptcha_reload').trigger('click'); $('form').trigger('reset');";
+                $flash_message = $this->renderMessage(__('send_mail'), 'success') . "$('#recaptcha_reload').trigger('click'); $('form').trigger('reset');";
 
             }
         }
         $this->finish(null, $flash_message);
     }
-    protected function contactAction() {
-        $this->renderMessageView($this->controller,$this->action);
+
+    protected function contactAction()
+    {
+        $this->renderMessageView($this->controller, $this->action);
         $this->ReturnView('', false);
     }
-    protected function aboutAction() {
-        $this->renderMessageView($this->controller,$this->action);
+
+    protected function aboutAction()
+    {
+        $this->renderMessageView($this->controller, $this->action);
         $this->ReturnView('', false);
     }
-    protected function testAction() {
+
+    protected function testAction()
+    {
         echo '<div class="page-header"><h3>dddd</h3></div>';
     }
-    private function reCaptcha($response) {
+
+    private function reCaptcha($response)
+    {
         $postdata = http_build_query(
             array(
                 'secret' => $this->_privatekey,
@@ -84,19 +100,19 @@ class Home extends BaseController {
 
         $opts = array('http' =>
             array(
-                'method'  => 'POST',
-                'header'  => 'Content-type: application/x-www-form-urlencoded',
+                'method' => 'POST',
+                'header' => 'Content-type: application/x-www-form-urlencoded',
                 'content' => $postdata
             )
         );
 
-        $context  = stream_context_create($opts);
+        $context = stream_context_create($opts);
 
         $result = file_get_contents('https://www.google.com/recaptcha/api/siteverify', false, $context);
 
         $check = json_decode($result);
 
-        if($check->success) {
+        if ($check->success) {
             return true;
         } else {
             return false;

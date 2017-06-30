@@ -1,13 +1,13 @@
 <div class="modal fade " tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content col-md-6 col-lg-offset-3">
-                <form role="form" method="post" action="<?= createUrl('admin', 'setSession') ?>">
-                    <div class="form-group text-center">
-                        <div class="logo">
-                            <span class="glyphicon glyphicon-user set-logo"></span>
-                        </div>
+            <form role="form" method="post" action="<?= createUrl('admin', 'setSession') ?>">
+                <div class="form-group text-center">
+                    <div class="logo">
+                        <span class="glyphicon glyphicon-user set-logo"></span>
                     </div>
-                    <div class="modal-body ">
+                </div>
+                <div class="modal-body ">
                     <div class="form-group">
                         <input type="text" required="required" class="form-control input-lg" name="userName" id="userid"
                                placeholder="<?= __('username') ?>">
@@ -20,9 +20,9 @@
                         <button type="submit" required="required"
                                 class="btn btn-default btn-lg btn-block btn-success"><?= __('log_in') ?></button>
                     </div>
-                        </div>
-                </form>
-    </div>
+                </div>
+            </form>
+        </div>
         <!-- /.modal-content -->
     </div>
     <!-- /.modal-dialog -->

@@ -1,6 +1,6 @@
 <?php
-require_once(APPLICATION_PATH.'/data/config.php');
-require_once(APPLICATION_PATH.'/data/recaptcha/recaptchalib.php');
+require_once(APPLICATION_PATH . '/data/config.php');
+require_once(APPLICATION_PATH . '/data/recaptcha/recaptchalib.php');
 
 abstract class BaseModel extends ViewModel
 {
@@ -42,6 +42,7 @@ abstract class BaseModel extends ViewModel
 
     public function select($query)
     {
+//        var_dump($query);
         $sql = $this->_db->query($query);
         if (mysqli_errno($this->_db) > 0) {
             die($this->_db->error);
@@ -52,6 +53,7 @@ abstract class BaseModel extends ViewModel
         }
         return $data;
     }
+
     public function insert($table, $insData, $wheres = '')
     {
         $escaped_values = array();
@@ -70,7 +72,7 @@ abstract class BaseModel extends ViewModel
         return ($this->_db->insert_id);
     }
 
-    public function update($table,$upData, $wheres = '')
+    public function update($table, $upData, $wheres = '')
     {
         foreach ($upData as $key => $testimonials) {
             $column = ($key);
@@ -80,14 +82,15 @@ abstract class BaseModel extends ViewModel
 
             $result = $this->_db->query($sql);
             if ($result === FALSE) {
-//                return false;
-                die($this->_db->error);
+                return false;
+//                die($this->_db->error);
             }
             return true;
         }
     }
 
-    public function delete($table, $id) {
+    public function delete($table, $id)
+    {
 
     }
 
@@ -98,16 +101,20 @@ abstract class BaseModel extends ViewModel
         }
         return "'" . $this->_db->real_escape_string($value) . "'";
     }
-    public function getTopMenu() {
+
+    public function getTopMenu()
+    {
         $query = 'Select * from `top_menu` order by `order` asc';
         $result = $this->select($query);
         return $result;
     }
-    public function getContent($controller = '', $action = '', $lang = DEFAULT_LANG) {
-        if($lang == '') $lang = DEFAULT_LANG;
-        $query = 'Select `c`.`description_'.$lang.'` as value, `c`.*, `tm`.controller, `tm`.action from `content` as `c`
+
+    public function getContent($controller = '', $action = '', $lang = DEFAULT_LANG)
+    {
+        if ($lang == '') $lang = DEFAULT_LANG;
+        $query = 'Select `c`.`description_' . $lang . '` as value, `c`.*, `tm`.controller, `tm`.action from `content` as `c`
         left join `top_menu` as `tm` on `tm`.id = `c`.menu_id
-        where `tm`.`action` LIKE "'.str_replace('Action','',$action).'" AND `tm`.`controller` LIKE "'.$controller.'"';
+        where `tm`.`action` LIKE "' . str_replace('Action', '', $action) . '" AND `tm`.`controller` LIKE "' . $controller . '"';
 
         $result = $this->select($query);
         return $result;

@@ -6,17 +6,17 @@ defined('APPLICATION_ENV')
 define('DEFAULT_LANG', 'pl');
 define('APP_VER', '1.00');
 spl_autoload_register(function ($class_name) {
-    if(file_exists(APPLICATION_PATH.'/Classes/' . $class_name . '.php')) {
-    include_once APPLICATION_PATH.'/Classes/' . $class_name . '.php';
+    if (file_exists(APPLICATION_PATH . '/Classes/' . $class_name . '.php')) {
+        include_once APPLICATION_PATH . '/Classes/' . $class_name . '.php';
     }
 });
-foreach (glob(APPLICATION_PATH."/Models/*.php") as $filename) {
+foreach (glob(APPLICATION_PATH . "/Models/*.php") as $filename) {
     require_once($filename);
 }
-foreach (glob(APPLICATION_PATH."/Controllers/*.php") as $filename) {
+foreach (glob(APPLICATION_PATH . "/Controllers/*.php") as $filename) {
     require_once($filename);
 }
-foreach (glob(APPLICATION_PATH."/Helper/*.php") as $filename) {
+foreach (glob(APPLICATION_PATH . "/Helper/*.php") as $filename) {
     require_once($filename);
 }
 
@@ -37,7 +37,7 @@ function __($text)
     return $text;
 }
 
-function createUrl($controller = '', $action = '' , $id = '')
+function createUrl($controller = '', $action = '', $id = '')
 {
     if ($controller == '' || $controller == NULL || $controller == false) {
         $controller = 'home';

@@ -266,7 +266,7 @@ a {
     position: absolute;
     left: 50%;
     top: 50%;
-    z-index: 1042;
+    z-index: 1051;
     width: 150px;
     height: 150px;
     margin: -75px 0 0 -75px;
@@ -278,6 +278,7 @@ a {
     -webkit-animation: spin 2s linear infinite;
     animation: spin 2s linear infinite;
 }
+#loader-backGround { z-index: 1051 !important; }
 
 @-webkit-keyframes spin {
     0% {
@@ -344,8 +345,39 @@ body {
     display: inline-table;
     width: 100%;
 }
-.images { display: inline-table; margin: 2px 5px 2px 5px}
-.no-margins { padding: 0 !important; height:200px; max-height: 200px; overflow: hidden}
 
-.img-relative { position: relative; }
-.checkbox-img { position: absolute; bottom: 0px; right: 0px; }
+.images {
+    display: inline-table;
+    margin: 2px 5px 2px 5px
+}
+
+.no-margins {
+    padding: 0 !important;
+    height: 200px;
+    max-height: 200px;
+    overflow: hidden
+}
+
+.img-relative {
+    position: relative;
+}
+
+.checkbox-img {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+}
+
+.viewContent ul {
+    float: left;
+    display: inline-grid;
+}
+.viewContentGallery {
+    width: 77%;
+    float: right;
+    padding: 0 15px 0 10px;
+}
+.viewContentGallery .page-header, h3 {
+margin : 0;
+    margin-bottom: 20px;
+}

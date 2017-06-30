@@ -10,6 +10,25 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
+-- Zrzut struktury tabela database.category
+DROP TABLE IF EXISTS `category`;
+CREATE TABLE IF NOT EXISTS `category` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `category_pl` varchar(50) DEFAULT '0',
+  `category_it` varchar(50) DEFAULT '0',
+  `category_en` varchar(50) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+-- Zrzucanie danych dla tabeli database.category: ~0 rows (około)
+DELETE FROM `category`;
+/*!40000 ALTER TABLE `category` DISABLE KEYS */;
+INSERT INTO `category` (`id`, `category_pl`, `category_it`, `category_en`) VALUES
+	(1, 'Brak', 'None', 'None'),
+	(2, 'Okna', 'Okna', 'Windows');
+/*!40000 ALTER TABLE `category` ENABLE KEYS */;
+
+
 -- Zrzut struktury tabela database.content
 DROP TABLE IF EXISTS `content`;
 CREATE TABLE IF NOT EXISTS `content` (
@@ -20,16 +39,15 @@ CREATE TABLE IF NOT EXISTS `content` (
   `description_it` longtext,
   PRIMARY KEY (`id`),
   KEY `Indeks 2` (`menu_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
 
--- Zrzucanie danych dla tabeli database.content: ~7 rows (około)
+-- Zrzucanie danych dla tabeli database.content: ~6 rows (około)
 DELETE FROM `content`;
 /*!40000 ALTER TABLE `content` DISABLE KEYS */;
 INSERT INTO `content` (`id`, `menu_id`, `description_pl`, `description_en`, `description_it`) VALUES
 	(4, 5, '<p>test 2 taki o ... &nbsp; &nbsp;dsdd</p><p>test &nbsp;222222222222222 vxv&nbsp;</p><p>ddd panel administracyjny r6</p>', NULL, '<h3>Knopf vendita ed installazione</h3> \r\n<div class="form-group">\r\n<div class="col-md-8 inputGroupContainer">\r\n<label class="col-md-3 control-label">Adress</label>\r\nvia Gelada 10  22070 Montano Lucino (co) \r\n</div>\r\n<div class="col-md-8 inputGroupContainer">\r\n<label class="col-md-3 control-label">&nbsp;</label>\r\nP.iva:02884300134\r\n</div>\r\n<div class="col-md-8 inputGroupContainer">\r\n<label class="col-md-3 control-label">Tel.</label>\r\ntel:+390314104220\r\n</div>\r\n<div class="col-md-8 inputGroupContainer">\r\n<label class="col-md-3 control-label">Tel.</label>\r\ncell:+393938190367\r\n</div>\r\n<div class="col-md-8 inputGroupContainer">\r\n<label class="col-md-3 control-label">E-Mail</label>\r\n<a href="mailto:info@knopf.co.it">info@knopf.co.it</a>\r\n</div>\r\n</div>'),
-	(9, 1, 'śćńżółęąśń', NULL, NULL),
+	(9, 1, '<div style="text-align: justify;">Lorem ipsum dolor sit amet enim. Etiam ullamcorper. Suspendisse a pellentesque dui, non felis. Maecenas malesuada elit lectus felis, malesuada ultricies. Curabitur et ligula. Ut molestie a, ultricies porta urna. Vestibulum commodo volutpat a, convallis ac, laoreet enim. Phasellus fermentum in, dolor. Pellentesque facilisis. Nulla imperdiet sit amet magna. Vestibulum dapibus, mauris nec malesuada fames ac turpis velit, rhoncus eu, luctus et interdum adipiscing wisi. Aliquam erat ac ipsum. Integer aliquam purus. Quisque lorem tortor fringilla sed, vestibulum id, eleifend justo vel bibendum sapien massa ac turpis faucibus orci luctus non, consectetuer lobortis quis, varius in, purus. Integer ultrices posuere cubilia Curae, Nulla ipsum dolor lacus, suscipit adipiscing. Cum sociis natoque penatibus et ultrices volutpat. Nullam wisi ultricies a, gravida vitae, dapibus risus ante sodales lectus blandit eu, tempor diam pede cursus vitae, ultricies eu, faucibus quis, porttitor eros cursus lectus, pellentesque eget, bibendum a, gravida ullamcorper quam. Nullam viverra consectetuer. Quisque cursus et, porttitor risus. Aliquam sem. In hendrerit nulla quam nunc, accumsan congue. Lorem ipsum primis in nibh vel risus. Sed vel lectus. Ut sagittis, ipsum dolor quam.</div>', NULL, NULL),
 	(13, 0, '', NULL, NULL),
-	(14, 1, '<p>test 2 1</p>', NULL, NULL),
 	(15, 0, '', NULL, NULL),
 	(16, 5, '<p>trtrt</p>', NULL, NULL),
 	(17, 4, '<p style="font-family: arial; font-size: 12px;"><span style="font-size: medium;">Knopf serramenti si occupa di progettazione,vendita ed installazione di serramenti nelle varie tipologie.</span></p><p style="font-family: arial; font-size: 12px;"><span style="font-size: medium;">Operiamo in zona di Como ed abbiamo prodotti di elevata qualità di aziende dalla decennale esperienza nella produzione si serramenti per esterni ed esterni.</span></p><p style="font-family: arial; font-size: 12px;"><span style="font-size: medium;">La nostra esperienza accumulata negli anni è a vostra disposizione in ogni momento.</span></p><p style="font-family: arial; font-size: 12px;"><span style="font-size: medium;">La qualità dei materiali prodotti è alla base della filosofia aziendale,non rincoriamo dinamiche di costo puntando invece su prodotti certificati,testati e all&#8217;avanguardia.</span></p><p style="font-family: arial; font-size: 12px;"><span style="font-size: medium;">In oltre offriamo un servizio completo dalla gestione dei rapporti al preventivo ed installazione.</span></p>', NULL, NULL);
@@ -41,28 +59,34 @@ DROP TABLE IF EXISTS `gallery`;
 CREATE TABLE IF NOT EXISTS `gallery` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `image` varchar(100) DEFAULT NULL,
-  `category` varchar(50) DEFAULT NULL,
+  `category_pl` varchar(50) DEFAULT NULL,
+  `category_it` varchar(50) DEFAULT NULL,
+  `category_en` varchar(50) DEFAULT NULL,
   `product_id` int(11) DEFAULT NULL,
   `category_id` int(11) DEFAULT NULL,
   `realization` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `Indeks 2` (`product_id`),
-  CONSTRAINT `FK_gallery_products` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 
--- Zrzucanie danych dla tabeli database.gallery: ~9 rows (około)
+-- Zrzucanie danych dla tabeli database.gallery: ~15 rows (około)
 DELETE FROM `gallery`;
 /*!40000 ALTER TABLE `gallery` DISABLE KEYS */;
-INSERT INTO `gallery` (`id`, `image`, `category`, `product_id`, `category_id`, `realization`) VALUES
-	(1, '/data/images/upload/8c03fe16e0a60bbb7120321092375fd5.jpg', 'okno', 1, 1, NULL),
-	(2, '/data/images/upload/d1949d4672ce06d15b5de4871495787b.jpg', 'okno', 1, 1, NULL),
-	(3, '/data/images/upload/20121212_163726.jpg', 'Witryny', 1, 2, 1),
-	(4, '/data/images/upload/20130220_132226.jpg', 'okiennice', 1, 3, 1),
-	(5, '/data/images/upload/20151220_154750.jpg', 'Witryny', NULL, 2, NULL),
-	(6, '/data/images/upload/20160313_153837.jpg', 'okiennice', NULL, 3, NULL),
-	(7, '/data/images/upload/20160705_123224.jpg', 'okiennice', NULL, 3, NULL),
-	(8, '/data/images/upload/20160813_123343.jpg', 'okiennice', NULL, 3, NULL),
-	(11, '/data/images/upload/20121029_124519.jpg', 'Witryny', NULL, 2, NULL);
+INSERT INTO `gallery` (`id`, `image`, `category_pl`, `category_it`, `category_en`, `product_id`, `category_id`, `realization`) VALUES
+	(1, '/data/images/upload/8c03fe16e0a60bbb7120321092375fd5.jpg', 'okno', 'okno_it', 'okno', 1, 2, NULL),
+	(2, '/data/images/upload/d1949d4672ce06d15b5de4871495787b.jpg', 'okno', 'okno_it', 'okno', 1, 2, NULL),
+	(3, '/data/images/upload/20121212_163726.jpg', 'Witryny', 'Witryny_it', 'Witryny', 1, 1, 1),
+	(4, '/data/images/upload/20130220_132226.jpg', 'okiennice', 'okiennice_it', 'okiennice', 1, 1, 2),
+	(5, '/data/images/upload/20151220_154750.jpg', 'Witryny', 'Witryny_it', 'Witryny', NULL, 1, NULL),
+	(6, '/data/images/upload/20160313_153837.jpg', 'okiennice', 'okiennice_it', 'okiennice', NULL, 1, NULL),
+	(7, '/data/images/upload/20160705_123224.jpg', 'okiennice', 'okiennice_it', 'okiennice', NULL, 1, NULL),
+	(8, '/data/images/upload/20160813_123343.jpg', 'okiennice', 'okiennice_it', 'okiennice', 2, 1, 2),
+	(11, '/data/images/upload/20121029_124519.jpg', 'Witryny', 'Witryny_it', 'Witryny', 2, 1, NULL),
+	(19, '/data/images/upload/2383f9ac773b45fb1f149ca304a45d77.jpg', 'Witryny', 'Witryny_it', 'Witryny', NULL, 1, NULL),
+	(20, '/data/images/upload/5caa87673caf194a08d360160b6c4f14.jpg', 'Witryny', 'Witryny_it', 'Witryny', NULL, 1, NULL),
+	(21, '/data/images/upload/5caa87673caf194a08d360160b6c4f14.jpg', 'None', NULL, NULL, NULL, 1, NULL),
+	(22, '/data/images/upload/5caa87673caf194a08d360160b6c4f14.jpg', 'None', NULL, NULL, NULL, 1, NULL),
+	(23, '/data/images/upload/5caa87673caf194a08d360160b6c4f14.jpg', 'None', NULL, NULL, NULL, 1, NULL),
+	(24, '/data/images/upload/5caa87673caf194a08d360160b6c4f14.jpg', 'None', NULL, NULL, NULL, 1, NULL);
 /*!40000 ALTER TABLE `gallery` ENABLE KEYS */;
 
 
@@ -78,7 +102,7 @@ CREATE TABLE IF NOT EXISTS `products` (
   `description_en` longtext,
   `pinned` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- Zrzucanie danych dla tabeli database.products: ~2 rows (około)
 DELETE FROM `products`;
@@ -126,7 +150,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
--- Zrzucanie danych dla tabeli database.user: ~1 rows (około)
+-- Zrzucanie danych dla tabeli database.user: ~0 rows (około)
 DELETE FROM `user`;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
 INSERT INTO `user` (`id`, `name`, `surname`, `city`, `street`, `postCode`, `userName`, `userPassword`) VALUES

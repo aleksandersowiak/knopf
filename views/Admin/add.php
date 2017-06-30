@@ -19,8 +19,10 @@
                                     <div class="form-group">
                                         <input type="hidden" name="action" value="insert"/>
                                         <input type="hidden" name="language" value="<?= $_GET['language'] ?>"/>
-                                        <input type="hidden" name="dataController" value="<?= $this->dataController ?>"/>
-                                        <select name="value" required="required" class="form-control add-new-select" id="sel1">
+                                        <input type="hidden" name="dataController"
+                                               value="<?= $this->dataController ?>"/>
+                                        <select name="value" required="required" class="form-control add-new-select"
+                                                id="sel1">
                                             <option value="" selected><?= __('please_select') ?></option>
                                             <?php foreach ($this->contentAdd as $controller => $action) : ?>
                                                 <option

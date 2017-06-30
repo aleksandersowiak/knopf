@@ -28,7 +28,7 @@
                 <div class="col-md-8 inputGroupContainer">
                     <div class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                        <input required="required" name="first_name" placeholder="<?= __('fist_name'); ?>"
+                        <input required="required" name="first_name" id="first_name" placeholder="<?= __('fist_name'); ?>"
                                class="form-control"
                                type="text">
                     </div>
@@ -43,7 +43,7 @@
                 <div class="col-md-8 inputGroupContainer">
                     <div class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                        <input required="required" name="last_name" placeholder="<?= __('last_name'); ?>"
+                        <input required="required" name="last_name" id="last_name" placeholder="<?= __('last_name'); ?>"
                                class="form-control"
                                type="text">
                     </div>
@@ -91,32 +91,33 @@
                 <label class="col-md-3 control-label"></label>
 
                 <div class="col-md-3">
-<!--                    //= recaptcha_get_html($this->_publickey) ?> -->
+                    <!--                    //= recaptcha_get_html($this->_publickey) ?> -->
 
-                <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-                <div class="g-recaptcha" data-sitekey="<?=$this->_publickey?>"></div>
-                <noscript>
-                    <div>
-                        <div style="width: 302px; height: 422px; position: relative;">
-                            <div style="width: 302px; height: 422px; position: absolute;">
-                                <iframe src="https://www.google.com/recaptcha/api/fallback?k=<?=$this->_publickey?>"
+                    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+                    <div class="g-recaptcha" data-sitekey="<?= $this->_publickey ?>"></div>
+                    <noscript>
+                        <div>
+                            <div style="width: 302px; height: 422px; position: relative;">
+                                <div style="width: 302px; height: 422px; position: absolute;">
+                                    <iframe
+                                        src="https://www.google.com/recaptcha/api/fallback?k=<?= $this->_publickey ?>"
                                         frameborder="0" scrolling="no"
                                         style="width: 302px; height:422px; border-style: none;">
-                                </iframe>
+                                    </iframe>
+                                </div>
                             </div>
-                        </div>
-                        <div style="width: 300px; height: 60px; border-style: none;
+                            <div style="width: 300px; height: 60px; border-style: none;
                    bottom: 12px; left: 25px; margin: 0px; padding: 0px; right: 25px;
                    background: #f9f9f9; border: 1px solid #c1c1c1; border-radius: 3px;">
-                            <textarea id="g-recaptcha-response" name="g-recaptcha-response"
-                                      class="g-recaptcha-response"
-                                      style="width: 250px; height: 40px; border: 1px solid #c1c1c1;
-                          margin: 10px 25px; padding: 0px; resize: none;" >
-                            </textarea>
+                                <textarea id="g-recaptcha-response" name="g-recaptcha-response"
+                                          class="g-recaptcha-response"
+                                          style="width: 250px; height: 40px; border: 1px solid #c1c1c1;
+                          margin: 10px 25px; padding: 0px; resize: none;">
+                                </textarea>
+                            </div>
                         </div>
-                    </div>
-                </noscript>
-                    </div>
+                    </noscript>
+                </div>
             </div>
             <!-- Button -->
             <div class="form-group">
@@ -133,9 +134,20 @@
     </form>
 </div>
 <script>
-    $('button[type="submit"]').on('click', function () {
+    $('button[type="submit"]').on('click', function (e) {
+        if (!App.validateField('first_name')) {
+            $("#first_name").attr("data-toggle", "tooltip").attr("data-placement", "top").attr("title", "<?=__("field_required")?>");
+            App.init();
+            return false;
+        }
+        if (!App.validateField('last_name')) {
+            $("#last_name").attr("data-toggle", "tooltip").attr("data-placement", "top").attr("title", "<?=__("field_required")?>");
+            App.init();
+            return false;
+        }
         if (!App.validateEmail("email")) {
             $("#email").attr("data-toggle", "tooltip").attr("data-placement", "top").attr("title", "<?=__("invalid_email")?>");
+            App.init();
             return false;
         }
     });

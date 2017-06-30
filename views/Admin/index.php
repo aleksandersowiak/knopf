@@ -22,17 +22,19 @@
                 }
             }
             ?>
-            <li><a href="<?= createUrl('admin', 'importImages') ?>"><i class="glyphicon glyphicon-import"></i> <?=__('import_images')?></a></li>
-            <li><a href="<?= createUrl('admin', 'logout') ?>"><i class="glyphicon glyphicon-off"></i> <?=__('logout')?></a></li>
+            <li><a href="#" id="pop-upModal" data-url="<?= createUrl('admin', 'importImages') ?>"><i
+                        class="glyphicon glyphicon-import"></i> <?= __('import_images') ?></a></li>
+            <li><a href="<?= createUrl('admin', 'logout') ?>"><i
+                        class="glyphicon glyphicon-off"></i> <?= __('logout') ?></a></li>
 
         </ul>
     </div>
 </nav>
-
-<?= $this->viewContent ?>
-
-<?php if(isset($_GET['view'])) : ?>
-<script>
-    $('.nav-tabs').find('li[data-select="<?=$_GET['view']?>"]').addClass('active');
-</script>
+<div class="viewContent" >
+    <?= $this->viewContent ?>
+</div>
+<?php if (isset($_GET['view'])) : ?>
+    <script>
+        $('.nav-tabs').find('li[data-select="<?=$_GET['view']?>"]').addClass('active');
+    </script>
 <?php endif; ?>

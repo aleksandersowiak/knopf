@@ -70,5 +70,7 @@ $lang = array(
     "use_checkbox" => "używając checkbox",
     "image_assign_success" => "Zdjęcie zostało poprawnie przypisane",
     "image_assign_error" => "Błąd przy przypisywaniu zdjęcia",
-    "import_images" => "Import Zdjęć."
+    "import_images" => "Import Zdjęć.",
+    "import_complete" => "Zaimportowano %s zdjęć",
+    "field_required" => "To pole jest wymagane"
 );

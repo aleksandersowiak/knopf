@@ -1,20 +1,21 @@
-
 <div class="row">
     <div class='list-group gallery'>
         <?php foreach ($viewmodel as $category => $images) : ?>
-        <div class="panel panel-default cols">
+            <div class="panel panel-default cols">
 
-            <div class="panel-body no-margins">
-                <div class="pictures">
-                    <?php foreach ($images as $image) : ?>
-                        <img class="img-responsive" alt="" src="<?= $image ?>"/>
-                    <?php endforeach; ?>
+                <div class="panel-body no-margins">
+                    <div class="pictures">
+                        <?php foreach ($images as $image) : ?>
+                            <img class="img-responsive" alt="" src="<?= $image ?>"/>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+                <div class="panel-footer"><a
+                        href="<?= createUrl('gallery', 'view', $this->getCategoryId($images['category_id'])) ?>"><?= ucfirst($category) ?></a>
                 </div>
             </div>
-            <div class="panel-footer"><a href="<?=createUrl('gallery','view',$this->getCategoryId($category))?>"><?=ucfirst($category)?></a></div>
-        </div>
 
-    <?php endforeach; ?>
+        <?php endforeach; ?>
     </div>
 </div>
 <script>

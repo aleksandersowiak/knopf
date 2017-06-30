@@ -20,11 +20,12 @@ foreach (glob("Languages/*.php") as $filename) {
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <meta http-equiv="Content-Language" content="<?= $base_lang ?>"/>
         <script src="/data/js/jquery-3.2.1.js"></script>
+        <script src="/data/js/jquery-ui.js"></script>
         <script src="/data/js/bootstrap.js"></script>
-        <script src="/data/js/app.js?ver=<?=APP_VER?>"></script>
+        <script src="/data/js/app.js?ver=<?= APP_VER ?>"></script>
         <script src="/data/js/summernote.js"></script>
         <script src="/data/js/lang/summernote-<?= $base_lang ?>-<?= strtoupper($base_lang) ?>.js"></script>
-        <script src="/data/js/jquery.jMosaic.js"></script>
+<!--        <script src="/data/js/jquery.jMosaic.js"></script>-->
 
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"
               media="screen">
@@ -32,7 +33,7 @@ foreach (glob("Languages/*.php") as $filename) {
 
         <link rel="stylesheet" href="/data/css/bootstrap.css">
         <link rel="stylesheet" type="text/css" href="/data/css/flags16.css">
-        <link rel="stylesheet" type="text/css" href="/data/css/site.css?ver=<?=APP_VER?>">
+        <link rel="stylesheet" type="text/css" href="/data/css/site.css?ver=<?= APP_VER ?>">
         <link rel="stylesheet" type="text/css" href="/data/css/summernote.css">
 
         <link rel="stylesheet" type="text/css"
