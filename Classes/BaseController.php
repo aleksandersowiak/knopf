@@ -74,6 +74,7 @@ abstract class BaseController extends BaseModel
             return;
         } else if (($this->getParam('popupModal') == true) || ($this->getParam('onlyView') == 'true') || $fixView != null) {
             require($viewloc);
+
         } else {
             require(APPLICATION_PATH . '/views/template/header.php'); // is set default header
             require($viewloc); // data from controller action

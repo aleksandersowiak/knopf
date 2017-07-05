@@ -6,7 +6,7 @@ $lang = array(
     "it" => "Italiano",
     "global_header_language" => "Język",
     "search_placeholder" => "Szukaj",
-
+"none_category" => 'Brak',
     /// top menu
     "menu_home_page" => "Strona Główna",
     "menu_about" => "O nas",
@@ -72,5 +72,13 @@ $lang = array(
     "image_assign_error" => "Błąd przy przypisywaniu zdjęcia",
     "import_images" => "Import Zdjęć.",
     "import_complete" => "Zaimportowano %s zdjęć",
-    "field_required" => "To pole jest wymagane"
+    "field_required" => "To pole jest wymagane",
+    "success_assign_to_category" => "Zdjęcie zostało poprawnie przypisane do kategorii",
+    "no_action_add_element" => "Nie ma możliwości dodania nowych elementów",
+    "category" => 'Kategoria',
+    "products" => "Produkty",
+    "gallery" => "Galeria",
+    "home" => "Główne",
+    "no_images" => "Brak zdjęć do wyświetlenia.",
+    "no_products" => "Brak produktów do wyświetlenia.",
 );

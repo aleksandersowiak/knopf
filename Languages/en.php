@@ -6,6 +6,7 @@ $lang = array(
     "it" => 'Italiano',
     "global_header_language" => "Language",
     "search_placeholder" => "Search",
+    "none_category" => "None",
 
     "menu_home_page" => 'Home Page',
     "menu_about" => 'About',

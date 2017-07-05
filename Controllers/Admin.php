@@ -117,6 +117,7 @@ class Admin extends BaseController
         $message = $this->renderMessage(__('edit_error'), 'danger');
         $save = $this->_model->{$this->getParam('action') . 'Data'}($this->getParams());
         if ($save != false) {
+            if($this->getParam('dataController') == 'category') $this->setParam('dataController', 'gallery');
             $modal = "$('.modal').modal('hide');";
             $reload = '$.post("' . $_SERVER['HTTP_REFERER'] . '", {\'onlyView\': true, \'id\': \'contents\', \'view\': \'' . $this->getParam('dataController') . '\', \'language\': \'' . $_GET['language'] . '\', \'controller\': \'' . $_GET['controller'] . '\', \'action\': \'' . $_GET['action'] . '\' }, function(data){
                 $("#body").find(\'.container\').html(data);
@@ -131,6 +132,7 @@ class Admin extends BaseController
         if ($this->_model->delete($this->getParam('dataController'), ' `id` = ' . $this->getParam('dataId')) == false) {
             $message = $this->renderMessage(__('delete_error'), 'error');
         } else {
+            if($this->getParam('dataController') == 'category') $this->setParam('dataController', 'gallery');
             $modal = "$('.modal').modal('hide');";
             $reload = '$.post("' . $_SERVER['HTTP_REFERER'] . '", {\'onlyView\': true, \'id\': \'contents\', \'view\': \'' . $this->getParam('dataController') . '\', \'language\': \'' . $_GET['language'] . '\', \'controller\': \'' . $_GET['controller'] . '\', \'action\': \'' . $_GET['action'] . '\' }, function(data){
                     $("#body").find(\'.container\').html(data);
@@ -143,9 +145,7 @@ class Admin extends BaseController
     private function createList($arr)
     {
         $html = '<ul>';
-
         foreach ($arr as $item) {
-
             if (is_array($item)) {
                 $html .= $this->createList($item); // <<< here is the recursion
             } else {
@@ -166,7 +166,6 @@ class Admin extends BaseController
                 foreach ($content as $key => $val) {
                     $contentData[$val['controller']][] = $val['action'];
                 }
-
                 $dataController = $contentData;
                 $return = (!empty($dataController)) ? array_unique($dataController[$this->getParam('dataController')]) : $dataController;
                 $this->Add('dataController', $this->getParam('dataController'));
@@ -178,9 +177,16 @@ class Admin extends BaseController
                 $this->Add('language', $_GET['language']);
                 $this->ReturnView('', false, 'add_product');
                 break;
+
+            case 'category' :
+                    $this->Add('language', $_GET['language']);
+                    $this->ReturnView('', false, 'add_category');
+                break;
+
+            default :
+                $this->finish(null, $this->renderMessage(__('no_action_add_element'), 'warning'));
+                break;
         }
-
-
     }
 
     public function gethomeView($addButton)
@@ -211,7 +217,7 @@ class Admin extends BaseController
     {
         $contentData = array();
         $content = $this->_model->getContents($this->getParam('view'), $this->getParam('language'));
-        $contentData[] = sprintf($this->_addButton, __('products'), __('products'), __('products'));
+        $contentData[] = sprintf($this->_addButton, __('products'), 'products', 'products');
         foreach ($content as $key => $val) {
             $textContent = $this->_model->getProductToEdit($val['id'], $this->getParam('language'));
             $contentData[$val['title']][] = sprintf($this->_editButton, $val['id'], $val['title'], createUrl('admin', 'edit'), '', 'products', $val['id']) .
@@ -224,15 +230,18 @@ class Admin extends BaseController
     private function getgalleryView() {
         $contentData = array();
         $content = $this->_model->getContents($this->getParam('view'), $this->getParam('language'));
-        $contentData[] = sprintf($this->_addButton, __('category'), __('category'), __('category'));
+        $contentData[] = sprintf($this->_addButton, __('category'), 'category', 'category');
 
         foreach ($content as $key => $val) {
             $count = $this->_model->select('select count(*) as count from gallery where category_id = '. $val['category_id']);
+            $deleteButton = ($val['category_id'] != 1 ) ? sprintf($this->_deleteButton, createUrl('admin', 'delete'), 'category', 'category', $val['category_id'], '') : "";
             $contentData[][] =
                 sprintf('<span class="label label-default" data-id="%d">%s</span>
                 <span class="like-link edit-document" data-url="%s" data-action="%s" data-controller="%s" data-id="%d">
                 <i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="right" title="' . __('edit') . '"></i>
-                </span>', $val['category_id'],$val['category'] . ' (' . $count[0]['count']. ')',createUrl('admin', 'editGallery'), '','',$val['category_id']);
+                </span>', $val['category_id'], __($val['category']) . ' (' . $count[0]['count']. ')',createUrl('admin', 'editGallery'), '','',$val['category_id'])
+                . $deleteButton
+            ;
         }
         return ($contentData);
     }
@@ -240,8 +249,10 @@ class Admin extends BaseController
     protected function editGalleryAction() {
         $galleryModel = new GalleryModel();
         $content = $galleryModel->getImages(' WHERE category_id = ' . $this->getParam('dataId'));
-
-        $message = $this->renderJSGallery($content);
+        $message = $this->renderMessage(__('no_images'), 'warning');
+        if(!empty($content)) {
+            $message = $this->renderJSGallery($content);
+        }
         $this->finish(null, $message);
     }
     protected function pinImages()
@@ -263,7 +274,7 @@ class Admin extends BaseController
     {
         $listOfImported = array();
         $gallery = new GalleryModel();
-        $images = $gallery->getImages();
+        $images = $gallery->getImages(' WHERE (1=1) ');
         $i = 0;
         foreach ($images as $image) {
             $listOfImported[] = basename($image['image']);
@@ -271,8 +282,10 @@ class Admin extends BaseController
         $dir          = APPLICATION_PATH . '/data/images/upload/';
         $ImagesA = $this->Get_ImagesToFolder($dir);
         foreach ($ImagesA as $image_to_import) {
-            if(!in_array($image_to_import, $listOfImported)) {
-                $this->_model->insert('gallery', array('image' => '/data/images/upload/' . $image_to_import, 'category_'.$this->getParam('language') => 'None', 'category_id' => 0));
+            if (!in_array($image_to_import, $listOfImported)) {
+                $select_category_id = $this->_model->select('Select id from category where ' . ' category_' . $this->getParam('language') . ' = "none_category"');
+                $save = array('image' => '/data/images/upload/' . $image_to_import, 'category_id' => $select_category_id[0]['id']);
+                $this->_model->insert('gallery', $save);
                 $i++;
             }
         }
@@ -349,7 +362,7 @@ EOF;
         $update = $this->_model->updateDataImage($this->getParams());
 
         if($update != false) {
-            $message = $this->renderMessage(__('success'), 'success');
+            $message = $this->renderMessage(__('success_assign_to_category'), 'success');
         }
         $this->finish(null, $message);
     }

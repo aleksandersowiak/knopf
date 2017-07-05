@@ -1,3 +1,8 @@
+<?php
+if(empty($viewmodel)) :
+    echo '<div class="alert alert-info">'.__('no_products').'</div>';
+else :
+?>
 <div class="row">
     <?php foreach ($viewmodel as $key => $value) : ?>
 
@@ -20,3 +25,4 @@
 
     <?php endforeach; ?>
 </div>
+<?php endif; ?>

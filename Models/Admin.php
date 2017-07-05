@@ -57,6 +57,10 @@ class AdminModel extends BaseModel
                 $save['title_' . $params['language']] = $params['title_' . $params['language']];
                 $save['description_' . $params['language']] = $params['description_' . $params['language']];
                 break;
+            case 'category' :
+                $table = 'category';
+                $save['category_' . $params['language']] = $params['category_' . $params['language']];
+                break;
             default:
                 $table = 'content';
 
@@ -129,7 +133,12 @@ class AdminModel extends BaseModel
             case 'products' :
                 $table = '`products`';
                 break;
+            case 'category' :
+                $table = '`category`';
+                $this->update('gallery', array('category_id' => 1), str_replace("`id`", '`category_id`', $where));
+                break;
         }
+
         if ($table != NULL) {
             return $this->_db->query('DELETE FROM ' . $table . ' WHERE ' . $where);
         }
