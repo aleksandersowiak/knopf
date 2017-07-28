@@ -5,7 +5,7 @@ class ProductsModel extends BaseModel
     public function getProducts($where = '', $language = DEFAULT_LANG)
     {
         $where .= '(1=1)';
-        $query = 'Select `p`.id, `p`.`title_' . $language . '` as title, `p`.`description_' . $language . '` as description, g.image as image from `products` as `p` left join `gallery` as `g` on g.product_id = p.id where ' . $where . ' GROUP BY `p`.`id` order by `p`.`id` asc';
+        $query = 'Select `p`.id, `p`.`title_' . $language . '` as title, `p`.`description_' . $language . '` as description, g.image_thumb as image_thumb from `products` as `p` left join `gallery` as `g` on g.product_id = p.id where ' . $where . ' GROUP BY `p`.`id` order by `p`.`id` asc';
         $result = $this->select($query);
         return $result;
     }

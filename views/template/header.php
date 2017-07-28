@@ -40,8 +40,9 @@ foreach (glob("Languages/*.php") as $filename) {
               href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css"/>
         <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
         <script>
-            App.init();
+            window.onload = App.init();
 
+            window.onload = function () { console.log('loaded...')}
             window.addEventListener("load", function () {
                 window.cookieconsent.initialise({
                     "palette": {

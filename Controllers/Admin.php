@@ -230,25 +230,28 @@ class Admin extends BaseController
     private function getgalleryView() {
         $contentData = array();
         $content = $this->_model->getContents($this->getParam('view'), $this->getParam('language'));
+        $contentData[] = '<a href="'.createUrl('admin','uploadImages').'"><span class="label label-default">'.__('upload_images').'</span></a>';
         $contentData[] = sprintf($this->_addButton, __('category'), 'category', 'category');
 
         foreach ($content as $key => $val) {
             $count = $this->_model->select('select count(*) as count from gallery where category_id = '. $val['category_id']);
             $deleteButton = ($val['category_id'] != 1 ) ? sprintf($this->_deleteButton, createUrl('admin', 'delete'), 'category', 'category', $val['category_id'], '') : "";
             $contentData[][] =
-                sprintf('<span class="label label-default" data-id="%d">%s</span>
-                <span class="like-link edit-document" data-url="%s" data-action="%s" data-controller="%s" data-id="%d">
+                sprintf('<span class="category label label-default" data-id="%d">%s</span>
+                <span class=" like-link edit-document" data-url="%s" data-action="%s" data-controller="%s" data-id="%d">
                 <i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="right" title="' . __('edit') . '"></i>
-                </span>', $val['category_id'], __($val['category']) . ' (' . $count[0]['count']. ')',createUrl('admin', 'editGallery'), '','',$val['category_id'])
+                </span>', $val['category_id'], __($val['category']) . ' (<span class="count">' . $count[0]['count']. '</span>)',createUrl('admin', 'editGallery'), '','',$val['category_id'])
                 . $deleteButton
             ;
         }
         return ($contentData);
     }
-
+    protected function uploadImagesAction() {
+        $this->ReturnView('',false,'');
+    }
     protected function editGalleryAction() {
         $galleryModel = new GalleryModel();
-        $content = $galleryModel->getImages(' WHERE category_id = ' . $this->getParam('dataId'));
+        $content = $galleryModel->getImages(' WHERE category_id = ' . $this->getParam('dataId'), $this->getParam('dataLanguage'));
         $message = $this->renderMessage(__('no_images'), 'warning');
         if(!empty($content)) {
             $message = $this->renderJSGallery($content);
@@ -259,7 +262,7 @@ class Admin extends BaseController
     {
         $gallery = new Gallery($this->controller, $this->action, '');
         $this->Add('data_type', $this->getParam('dataType'));
-        $this->ReturnView($gallery->getAllImages(), false, $this->action);
+        $this->ReturnView($gallery->getAllImages(' WHERE (1=1) '), false, $this->action);
     }
 
     protected function assignAction()
@@ -270,7 +273,7 @@ class Admin extends BaseController
         }
         $this->finish(null, $message);
     }
-    protected function importImagesAction()
+    protected function importImagesAction($m = true)
     {
         $listOfImported = array();
         $gallery = new GalleryModel();
@@ -278,6 +281,7 @@ class Admin extends BaseController
         $i = 0;
         foreach ($images as $image) {
             $listOfImported[] = basename($image['image']);
+            $listOfImported[] = basename($image['image_thumb']);
         }
         $dir          = APPLICATION_PATH . '/data/images/upload/';
         $ImagesA = $this->Get_ImagesToFolder($dir);
@@ -285,12 +289,20 @@ class Admin extends BaseController
             if (!in_array($image_to_import, $listOfImported)) {
                 $select_category_id = $this->_model->select('Select id from category where ' . ' category_' . $this->getParam('language') . ' = "none_category"');
                 $save = array('image' => '/data/images/upload/' . $image_to_import, 'category_id' => $select_category_id[0]['id']);
+                if(!file_exists($dir . '/thumb_' . $image_to_import)) {
+                    $this->make_thumb($dir . $image_to_import, $dir. 'thumb_' . $image_to_import, 400);
+                    $this->fix_orientation($dir. 'thumb_' . $image_to_import);
+                    $save = array_merge(array('image_thumb' => '/data/images/upload/thumb_' . $image_to_import), $save);
+                }
                 $this->_model->insert('gallery', $save);
                 $i++;
             }
         }
-        $message = $this->renderMessage(sprintf(__('import_complete'), $i), 'success');
-        $this->finish(null, $message);
+        if($m = true) {
+            $message = $this->renderMessage(sprintf(__('import_complete'), $i), 'success');
+            $this->finish(null, $message);
+        }
+        return true;
     }
     private function Get_ImagesToFolder($dir){
         $ImagesArray = [];
@@ -305,27 +317,216 @@ class Admin extends BaseController
                 $file_type = pathinfo($file, PATHINFO_EXTENSION);
                 if (in_array($file_type, $file_display) == true) {
                     $ImagesArray[] = $file;
+                    $this->fix_orientation($file);
                 }
             }
             return $ImagesArray;
         }
     }
+    private function imageflip($resource, $mode) {
+
+        if($mode == IMG_FLIP_VERTICAL || $mode == IMG_FLIP_BOTH)
+            $resource = imagerotate($resource, 180, 0);
+
+        if($mode == IMG_FLIP_HORIZONTAL || $mode == IMG_FLIP_BOTH)
+            $resource = imagerotate($resource, 90, 0);
+
+        return $resource;
+
+    }
+    function fix_orientation($fileandpath) {
+        // Does the file exist to start with?
+        if(!file_exists($fileandpath))
+            return false;
+
+        // Get all the exif data from the file
+        $exif = read_exif_data($fileandpath, 'IFD0');
+
+        // If we dont get any exif data at all, then we may as well stop now
+        if(!$exif || !is_array($exif))
+            return false;
+
+        // I hate case juggling, so we're using loweercase throughout just in case
+        $exif = array_change_key_case($exif, CASE_LOWER);
+
+        // If theres no orientation key, then we can give up, the camera hasn't told us the
+        // orientation of itself when taking the image, and i'm not writing a script to guess at it!
+        if(!array_key_exists('orientation', $exif))
+            return false;
+
+        // Gets the GD image resource for loaded image
+        $img_res = $this->get_image_resource($fileandpath);
+
+        // If it failed to load a resource, give up
+        if(is_null($img_res))
+            return false;
+
+        // The meat of the script really, the orientation is supplied as an integer,
+        // so we just rotate/flip it back to the correct orientation based on what we
+        // are told it currently is
+        switch($exif['orientation']) {
+
+            // Standard/Normal Orientation (no need to do anything, we'll return true as in theory, it was successful)
+            case 1: return true; break;
+
+            // Correct orientation, but flipped on the horizontal axis (might do it at some point in the future)
+            case 2:
+                $final_img = $this->imageflip($img_res, IMG_FLIP_HORIZONTAL);
+                break;
+
+            // Upside-Down
+            case 3:
+                $final_img = $this->imageflip($img_res, IMG_FLIP_VERTICAL);
+                break;
+
+            // Upside-Down & Flipped along horizontal axis
+            case 4:
+                $final_img = $this->imageflip($img_res, IMG_FLIP_BOTH);
+                break;
+
+            // Turned 90 deg to the left and flipped
+            case 5:
+                $final_img = imagerotate($img_res, -90, 0);
+                $final_img = $this->imageflip($img_res, IMG_FLIP_HORIZONTAL);
+                break;
+
+            // Turned 90 deg to the left
+            case 6:
+                $final_img = imagerotate($img_res, -90, 0);
+                break;
+
+            // Turned 90 deg to the right and flipped
+            case 7:
+                $final_img = imagerotate($img_res, 90, 0);
+                $final_img = $this->imageflip($img_res,IMG_FLIP_HORIZONTAL);
+                break;
+
+            // Turned 90 deg to the right
+            case 8:
+                $final_img = imagerotate($img_res, 90, 0);
+                break;
+
+        }
+        if(!isset($final_img))
+            return false;
+
+        //-- rename original (very ugly, could probably be rewritten, but i can't be arsed at this stage)
+        $parts = explode("/", $fileandpath);
+        $oldname = array_pop($parts);
+        $path = implode('/', $parts);
+        $oldname_parts = explode(".", $oldname);
+        $ext = array_pop($oldname_parts);
+        $newname = implode('.', $oldname_parts).'.orig.'.$ext;
+
+        rename($fileandpath, $path.'/'.$newname);
+
+        // Save it and the return the result (true or false)
+        $done = $this->save_image_resource($final_img,$fileandpath);
+
+        return $done;
+    }
+    private function get_image_resource($file) {
+
+        $img = null;
+        $p = explode(".", strtolower($file));
+        $ext = array_pop($p);
+        switch($ext) {
+
+            case "png":
+                $img = imagecreatefrompng($file);
+                break;
+
+            case "jpg":
+            case "jpeg":
+                $img = imagecreatefromjpeg($file);
+                break;
+            case "gif":
+                $img = imagecreatefromgif($file);
+                break;
+
+        }
+
+        return $img;
+
+    }
+    private function save_image_resource($resource, $location) {
+
+        $success = false;
+        $p = explode(".", strtolower($location));
+        $ext = array_pop($p);
+        switch($ext) {
+
+            case "png":
+                $success = imagepng($resource,$location);
+                break;
+
+            case "jpg":
+            case "jpeg":
+                $success = imagejpeg($resource,$location);
+                break;
+            case "gif":
+                $success = imagegif($resource,$location);
+                break;
+
+        }
+
+        return $success;
+
+    }
+    private function make_thumb($src, $dest, $desired_width) {
+
+        /* read the source image */
+        $p = explode(".", strtolower($src));
+        $ext = array_pop($p);
+        switch($ext) {
+            case "png":
+                $source_image = imagecreatefrompng($src);
+                break;
+            case "jpg":
+            case "jpeg":
+            $source_image = imagecreatefromjpeg($src);
+                break;
+            case "gif":
+                $source_image = imagecreatefromgif($src);
+                break;
+        }
+
+
+        $width = imagesx($source_image);
+        $height = imagesy($source_image);
+
+        /* find the "desired height" of this thumbnail, relative to the desired width  */
+        $desired_height = floor($height * ($desired_width / $width));
+
+        /* create a new, "virtual" image */
+        $virtual_image = imagecreatetruecolor($desired_width, $desired_height);
+
+        /* copy source image at a resized size */
+        imagecopyresampled($virtual_image, $source_image, 0, 0, 0, 0, $desired_width, $desired_height, $width, $height);
+
+        /* create the physical thumbnail image to its destination */
+        imagejpeg($virtual_image, $dest);
+    }
     protected function renderJSGallery($content) {
         $images = '';
         $viewContent= "$('.viewContent').append('<div class=\"viewContentGallery\"></div>'); ";
-        $h3 = "$('.viewContentGallery').append('<div class=\"page-header\"><h3>".$content[0]['category']."</h3></div>'); ";
+        $h3 = "$('.viewContentGallery').append('<div class=\"page-header\"><h3>".__($content[0]['category'])."</h3></div>'); ";
         foreach ($content as $image) :
             $images .= "$('.viewContentGallery').append('<div class=\"images\" style=\"display: none\" > ";
-            $images .= "<a class=\"fancybox thumbnail\" rel=\"ligthbox\" href=\"".$image['image']."\"> ";
-            $images .= "<img data-id =\"".$image['id']."\" style=\"max-height:150px; min-height:150px;  min-width:150px;  max-width:150px;  overflow: hidden; background: url(".$image['image'].") no-repeat 50% 50%; background-size:cover;\"/> ";
-            $images .= "</a> ";
-            $images .= "</div>'); ";
+            $images .= "<div class=\"thumbnail\">";
+            $images .= "<img target-category-id=\"".$image['category_id']."\" data-id =\"".$image['id']."\" style=\"max-height:150px; min-height:150px;  min-width:150px;  max-width:150px;  overflow: hidden; background: url(".$image['image_thumb'].") no-repeat 50% 50%; background-size:cover;\"/> ";
+            $images .= "</div>";
+            $images .= "<span class=\"text-content\">";
+            $images .= "<span data-url=\"".createUrl('admin','deleteImage')."\" data-id=\"".$image['id']."\" class=\"delete-image\"> <i class=\"glyphicon glyphicon-remove-circle\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"".__('delete_image')."\"></i></span>";
+            $images .= "<a class=\"fancybox\" rel=\"ligthbox\" href=\"".$image['image']."\"> <i class=\"glyphicon glyphicon-resize-full\"  data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"".__('full_size_image')."\"></i></a> ";
+            $images .= "</span></div>'); ";
         endforeach;
         $url = createUrl('admin','assignImageToCategory');
         return <<<EOF
         if($('.viewContentGallery').length > 0) {
             $('.viewContentGallery').remove();
         }
+
         $viewContent
         $h3
         $(document).ready(function () {
@@ -345,20 +546,62 @@ class Admin extends BaseController
 
                 var params = {
                         droppedCategoryId : $(this).attr('data-id'),
-                        imageId : $(event.originalEvent.toElement).attr('data-id')
+                        imageId : $(event.originalEvent.toElement).parents('.images').find('img').attr('data-id')
                     };
                     App.ajaxSend("$url", params);
-                    $('img[data-id="'+$(event.originalEvent.toElement).attr('data-id')+'"]').parents('div.images').remove();
-                    console.log($(this).attr('data-id'),$(event.originalEvent.toElement).attr('data-id'));
+                    $('img[data-id="'+$(event.originalEvent.toElement).parents('.images').find('img').attr('data-id')+'"]').parents('div.images').remove();
+                    var count = $(this).find('span.count').text(); $(this).find('span.count').text(parseInt(count)+1);
+                    var category = $('span.category[data-id="'+$(event.originalEvent.toElement).parents('.images').find('img').attr('target-category-id')+'"]');
+                    console.log(category);
+                    var count_target = category.find('span.count').text(); category.find('span.count').text(parseInt(count_target)-1);
                 }
             });
         });
+         App.waitForElement('[data-toggle="tooltip"]', function () {
+                $(function () {
+                    $('[data-toggle="tooltip"]').tooltip()
+                });
+            });
+            App.waitForElement('.delete-image', function () {
+            $('.delete-image').on('click', function () {
+                    App.ajaxSend($(this).attr('data-url'), {
+                        'popupModal': true,
+                        'dataId': $(this).attr('data-id')
+                    });
+                });
+                });
 EOF;
 
     }
 
+    protected function deleteImageAction()
+    {
+        $message = $this->renderMessage(__('image_delete_error'), 'danger');
+        $file = $this->_model->select('select image, image_thumb from `gallery` where id = ' . $this->getParam('dataId'));
+        if ($this->_model->delete('gallery', '`id` = ' . $this->getParam('dataId')) != false) {
+
+            $image = APPLICATION_PATH . $file[0]['image'];
+            $image_thumb = APPLICATION_PATH . $file[0]['image_thumb'];
+            if (!is_writable($image)) {
+                chmod($image, 0777);
+            }
+            if (!is_writable($image_thumb)) {
+                chmod($image_thumb, 0777);
+            }
+            if (is_file($image)) {
+                unlink($image);
+                unlink($image_thumb);
+            }
+
+            $message = $this->renderMessage(__('image_delete_success'), 'success');
+            $message .= '$(\'img[data-id="' . $this->getParam('dataId') . '"]\').parents(\'div.images\').remove();';
+            $message .= 'var count = $(\'span.count\').text(); $(\'span.count\').text(count-1); ';
+        }
+
+        $this->finish(null, $message);
+    }
     protected function assignImageToCategoryAction() {
-        $message = $this->renderMessage(__('image_assign_error'), 'error');
+        $message = $this->renderMessage(__('image_assign_error'), 'danger');
         $update = $this->_model->updateDataImage($this->getParams());
 
         if($update != false) {
@@ -366,4 +609,29 @@ EOF;
         }
         $this->finish(null, $message);
     }
+
+    protected function uploadAction() {
+        $target_dir = APPLICATION_PATH . '/data/images/upload/';
+        $allowed_ext = array('jpg','jpeg','png');
+        if(array_key_exists('file',$_FILES) && $_FILES['file']['error'] == 0 ){
+            $pic = $_FILES['file'];
+            if(!in_array($this->get_extension($pic['name']),$allowed_ext)){
+                $message = $this->renderMessage(sprintf(__('error_jpeg'),implode(',',$allowed_ext)), 'danger');
+                $this->finish(null, $message);
+            }
+            if(!move_uploaded_file($pic['tmp_name'], $target_dir.$pic['name'])){
+                $message = $this->renderMessage(__('file_was_not_upload'), 'danger');
+                $this->finish(null, $message);
+            }
+            if($this->importImagesAction($m = false)) {
+                $message = $this->renderMessage(sprintf(__('file_upload_done'),$pic['name']), 'danger');
+                $this->finish(null, $message);
+            }
+        }
+    }
+    private  function get_extension($file_name){
+    $ext = explode('.', $file_name);
+    $ext = array_pop($ext);
+    return strtolower($ext);
+}
 }

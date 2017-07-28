@@ -10,7 +10,7 @@ else :
             <div class="thumbnail">
 
                 <img
-                    style="max-height:150px; min-height:150px;  min-width:250px;  max-width:250px;  overflow: hidden; background: url(<?= $value['image'] ?>) no-repeat 50% 50%; background-size:cover;"/>
+                    style="max-height:150px; min-height:150px;  min-width:250px;  max-width:250px;  overflow: hidden; background: url(<?= $value['image_thumb'] ?>) no-repeat 50% 50%; background-size:cover;"/>
 
                 <div class="caption">
                     <h4><?= $value['title'] ?></h4>

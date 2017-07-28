@@ -204,7 +204,8 @@ EOF;
             $result['cmd'] = 'break-with-msg';
         }
 
-        die(json_encode($result));
+        echo(json_encode($result));
+        return;
     }
 
     public function renderMessageView($controller, $action)
@@ -230,6 +231,6 @@ EOF;
             $object->$action();
             return;
         }
-        require_once(APPLICATION_PATH . '/views/' . $controller . '/' . $action . '.php');
+        require_once(APPLICATION_PATH . '/views/' . ucfirst($controller) . '/' . $action . '.php');
     }
 }

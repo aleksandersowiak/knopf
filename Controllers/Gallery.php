@@ -30,8 +30,8 @@ class Gallery extends BaseController
         return $this->_model->getCategoryId($category_id, $this->getParam('language'));
     }
 
-    public function getAllImages()
+    public function getAllImages($where = '')
     {
-        return $this->_model->getImages();
+        return $this->_model->getImages($where);
     }
 }

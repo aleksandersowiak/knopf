@@ -39,6 +39,15 @@ App = {
             //https://github.com/fancyapps/fancyBox
             App.waitForElement('.fancybox', function () {
                 $(".fancybox").fancybox({
+                    openEffect  : 'none',
+                    loop        : true,
+                    preload:    3,
+                    closeEffect : 'none',
+                    helpers : {
+                        title: {
+                            type: 'inside'
+                        }
+                    }
                     //                openEffect: "none",
                     //                closeEffect: "none"
                 });
@@ -220,8 +229,12 @@ App = {
                 } else {
                     $('#loader-backGround, #loader').fadeOut().remove();
                 }
+
             }
+
+
         });
+
     },
     clickAction: function (url, params) {
         if (url == undefined) {

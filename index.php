@@ -53,5 +53,5 @@ function createUrl($controller = '', $action = '', $id = '')
     if ($id != "") {
         $id = "/" . $id;
     }
-    return "/" . $language . "/" . $controller . "/" . $action . $id;
+    return "/" . $language . "/" . $controller . "/" . $action . $id;restore_error_handler();
 }

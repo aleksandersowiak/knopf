@@ -11,7 +11,7 @@
             var dataId = $('input[name="dataId"]').val();
             var checked = (dataId == '<?=$image[$this->data_type]?>' && indDb != '') ? 'checked' : '';
             $('.gallery').append('<div class="images img-relative" style="display: none">' +
-                '<img style="max-height:150px; min-height:150px;  min-width:150px;  max-width:150px;  overflow: hidden; background: url(<?= $image['image'] ?>) no-repeat 50% 50%; background-size:cover;"/>' +
+                '<img style="max-height:150px; min-height:150px;  min-width:150px;  max-width:150px;  overflow: hidden; background: url(<?= $image['image_thumb'] ?>) no-repeat 50% 50%; background-size:cover;"/>' +
                 '<input type="checkbox" ' + checked + ' class="checkbox-img" name="<?= $image['id'] ?>" value="' + dataId + '" />' +
                 '</div>');
             <?php endforeach; ?>

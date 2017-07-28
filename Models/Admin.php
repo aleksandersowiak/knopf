@@ -137,6 +137,10 @@ class AdminModel extends BaseModel
                 $table = '`category`';
                 $this->update('gallery', array('category_id' => 1), str_replace("`id`", '`category_id`', $where));
                 break;
+            case 'gallery' :
+                $table = '`gallery`';
+
+                break;
         }
 
         if ($table != NULL) {

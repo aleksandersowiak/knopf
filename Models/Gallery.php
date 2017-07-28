@@ -7,7 +7,7 @@ class GalleryModel extends BaseModel
         if ($where == '') {
             $where = 'LIMIT 10';
         }
-        $query = "SELECT g.id ,image, c.id as category_id, c.category_$lang as category, g.product_id, g.realization from `gallery` as g left join category as c on c.id = g.category_id " . $where;
+        $query = "SELECT g.id ,image, image_thumb, c.id as category_id, c.category_$lang as category, g.product_id, g.realization from `gallery` as g left join category as c on c.id = g.category_id " . $where;
         return $this->select($query);
     }
 
