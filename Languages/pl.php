@@ -91,4 +91,8 @@ $lang = array(
     'full_size_image' => 'Powiększ zdjęcie',
     'image_delete_error' => 'Nie można usunąć wybranego zdjęcia',
     'image_delete_success' => 'Wybrane zdjęcie zostało usunięte',
+    'browse' => 'Wybierz zdjęcia',
+    'upload' => 'Prześlij',
+    'selected_files' => 'Wybrane pliki:',
+    'no_selected_files' => 'Nie wybrano plików',
 );

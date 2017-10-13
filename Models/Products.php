@@ -12,7 +12,7 @@ class ProductsModel extends BaseModel
 
     public function getRealizationProduct($product_id)
     {
-        $query = 'select image from `gallery` where `realization` = ' . $product_id;
+        $query = 'select image, image_thumb from `gallery` where `realization` = ' . $product_id;
         $result = $this->select($query);
         if (!empty($result)) return $result;
         return NULL;

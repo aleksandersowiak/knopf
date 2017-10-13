@@ -35,8 +35,16 @@
 <div class="viewContent" >
     <?= $this->viewContent ?>
 </div>
-<?php if (isset($_GET['view'])) : ?>
-    <script>
-        $('.nav-tabs').find('li[data-select="<?=$_GET['view']?>"]').addClass('active');
-    </script>
-<?php endif; ?>
+<?php if (isset($_GET['view']) || isset($_GET['action'])) :
+    $v = '';
+    if (isset($_GET['view']) && $_GET['view'] != $_GET['action']) :
+        $v = $_GET['view'];
+    elseif (isset($_GET['action']) && $_GET['action'] != '') :
+        $v = $_GET['action'];
+    endif;
+    if ($v != '') :
+        ?>
+        <script>
+            $('.nav-tabs').find('li[data-select="<?=$v?>"]').addClass('active');
+        </script>
+    <?php endif; endif; ?>

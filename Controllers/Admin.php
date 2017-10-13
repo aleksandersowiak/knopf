@@ -552,7 +552,6 @@ class Admin extends BaseController
                     $('img[data-id="'+$(event.originalEvent.toElement).parents('.images').find('img').attr('data-id')+'"]').parents('div.images').remove();
                     var count = $(this).find('span.count').text(); $(this).find('span.count').text(parseInt(count)+1);
                     var category = $('span.category[data-id="'+$(event.originalEvent.toElement).parents('.images').find('img').attr('target-category-id')+'"]');
-                    console.log(category);
                     var count_target = category.find('span.count').text(); category.find('span.count').text(parseInt(count_target)-1);
                 }
             });

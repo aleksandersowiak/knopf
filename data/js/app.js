@@ -1,6 +1,6 @@
 App = {
     init: function () {
-        console.log('init app.');
+        
         $(document).ready(function () {
             if (typeof loadEditButton == 'function') {
                 loadEditButton();
@@ -11,7 +11,7 @@ App = {
                 });
             })
 
-            $('#pop-upModal, .modal #pop-upModal').on('click', function () {
+            $(document).undelegate('#pop-upModal, .modal #pop-upModal').delegate('#pop-upModal, .modal #pop-upModal', 'click', function () {
                 var params = {
                     'popupModal': true
                 };
@@ -52,10 +52,10 @@ App = {
                     //                closeEffect: "none"
                 });
             });
-            App.actionClick();
+//            App.actionClick();
             App.animate();
             App.waitForElement('.edit-document', function () {
-                $('.edit-document').on('click', function () {
+                $(document).undelegate('.edit-document').delegate('.edit-document', 'click', function () {
                     App.ajaxSend($(this).attr('data-url'), {
                         'popupModal': true,
                         'dataController': $(this).attr('data-controller'),
@@ -181,7 +181,7 @@ App = {
             success: function (data, status, jqXHR) {
                 try {
                     eval('var datao = ' + data);
-
+                    loadEditButton();
                     switch (datao.cmd) {
                         case 'redirect' :
                             document.location.href = datao.url;
@@ -330,4 +330,4 @@ App = {
 
 
 //]]>
-App.actionClick();
+//App.actionClick();

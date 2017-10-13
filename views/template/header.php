@@ -24,6 +24,7 @@ foreach (glob("Languages/*.php") as $filename) {
         <script src="/data/js/bootstrap.js"></script>
         <script src="/data/js/app.js?ver=<?= APP_VER ?>"></script>
         <script src="/data/js/summernote.js"></script>
+        <script src="/data/js/selectables.js"></script>
         <script src="/data/js/lang/summernote-<?= $base_lang ?>-<?= strtoupper($base_lang) ?>.js"></script>
 <!--        <script src="/data/js/jquery.jMosaic.js"></script>-->
 
@@ -35,14 +36,13 @@ foreach (glob("Languages/*.php") as $filename) {
         <link rel="stylesheet" type="text/css" href="/data/css/flags16.css">
         <link rel="stylesheet" type="text/css" href="/data/css/site.css?ver=<?= APP_VER ?>">
         <link rel="stylesheet" type="text/css" href="/data/css/summernote.css">
+        <link rel="stylesheet" type="text/css" href="/data/css/selectables.css">
 
         <link rel="stylesheet" type="text/css"
               href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css"/>
         <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
         <script>
             window.onload = App.init();
-
-            window.onload = function () { console.log('loaded...')}
             window.addEventListener("load", function () {
                 window.cookieconsent.initialise({
                     "palette": {
