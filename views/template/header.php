@@ -6,26 +6,22 @@ if ($_GET['id'] == "") {
     $id = "/" . $_GET['id'];
 }
 $uri = '/' . $_GET['controller'] . '/' . $_GET['action'] . $id;
-foreach (glob("Languages/*.php") as $filename) {
-    $lang = str_replace('.php', '', basename($filename));
-    $languages[$lang] = __($lang);
-    $base_lang = ($_GET['language'] == '') ? DEFAULT_LANG : $_GET['language'];
-}
+
 ?>
     <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html lang="<?= $base_lang ?>">
+<html lang="<?= $this->base_lang ?>">
     <head>
         <meta charset="UTF-8">
         <title>KNOPF - Serramenti vendita ed installazione</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-        <meta http-equiv="Content-Language" content="<?= $base_lang ?>"/>
+        <meta http-equiv="Content-Language" content="<?= $this->base_lang ?>"/>
         <script src="/data/js/jquery-3.2.1.js"></script>
         <script src="/data/js/jquery-ui.js"></script>
         <script src="/data/js/bootstrap.js"></script>
         <script src="/data/js/app.js?ver=<?= APP_VER ?>"></script>
         <script src="/data/js/summernote.js"></script>
         <script src="/data/js/selectables.js"></script>
-        <script src="/data/js/lang/summernote-<?= $base_lang ?>-<?= strtoupper($base_lang) ?>.js"></script>
+        <script src="/data/js/lang/summernote-<?= $this->base_lang ?>-<?= strtoupper($this->base_lang) ?>.js"></script>
 <!--        <script src="/data/js/jquery.jMosaic.js"></script>-->
 
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"
@@ -96,20 +92,20 @@ if ($this->_session->__isset('flash_message')) {
                     ?>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <form class="navbar-form navbar-left">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="<?= __('search_placeholder') ?>">
-                        </div>
-                        <button type="submit" class="btn btn-default glyphicon glyphicon-search"></button>
-                    </form>
+<!--                    <form class="navbar-form navbar-left">-->
+<!--                        <div class="form-group">-->
+<!--                            <input type="text" class="form-control" placeholder="--><?//= __('search_placeholder') ?><!--">-->
+<!--                        </div>-->
+<!--                        <button type="submit" class="btn btn-default glyphicon glyphicon-search"></button>-->
+<!--                    </form>-->
                     <li class="dropdown f16">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false"><?= __('global_header_language'); ?> <?= $languages[$base_lang] ?>
+                           aria-expanded="false"><?= __('global_header_language'); ?> <?= $this->languagesList[$this->base_lang] ?>
                             <span
-                                class="flag <?= $base_lang ?>"></span> <span class="caret"></span></a>
+                                class="flag <?= $this->base_lang ?>"></span> <span class="caret"></span></a>
                         <ul class="dropdown-menu langs">
                             <?php
-                            foreach ($languages as $langK => $langN) {
+                            foreach ($this->languagesList as $langK => $langN) {
                                 echo '<li><a href="/' . $langK . $uri . '"><p class="flag ' . $langK . '">' . $langN . '</p></a></li>';
                             }
                             ?>

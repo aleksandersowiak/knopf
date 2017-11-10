@@ -40,7 +40,13 @@ abstract class BaseController extends BaseModel
         $this->Add('edit', $this->checkSession(false));
         $this->_baseHelper = new BaseHelper();
         $this->Add('viewContent', '');
-
+        foreach (glob("Languages/*.php") as $filename) {
+            $lang = str_replace('.php', '', basename($filename));
+            $languages[$lang] = __($lang);
+            $base_lang = ($_GET['language'] == '') ? DEFAULT_LANG : $_GET['language'];
+        }
+        $this->Add('languagesList', $languages);
+        $this->Add('base_lang', $base_lang);
     }
 
     public function __init()

@@ -20,11 +20,16 @@ if (isset($this->dataTitle)) {
                     <button type="button" class="close" data-dismiss="modal"><span
                             aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                     <h4 class="modal-title"
-                        id="myModalLabel"><?= $button ?> <?= ucfirst($this->dataController . ' ' . $this->dataAction) . ' ' . $dataTitle ?></h4>
+                        id="myModalLabel"><?= $button ?> <?= ucfirst($this->dataController . ' ' . $this->dataAction) ?></h4>
+                    <?php if ($this->dataController == 'products') : ?>
+                    <p>
+                        <input class="form-control  <?=(isset($this->empty_title)) ? ' empty_title ' : '' ?> " type="text" name="title_<?= $this->dataLanguage ?>" value="<?= $dataTitle ?>" />
+                    </p>
+                    <?php endif; ?>
                 </div>
                 <div class="modal-body">
                     <div id="alerts"></div>
-                    <textarea id="editor" contenteditable="true" name="description_<?= $this->dataLanguage ?>"
+                    <textarea id="editor" class="data-description <?=(isset($this->empty_description)) ? ' empty_description ' : '' ?>" contenteditable="true" name="description_<?= $this->dataLanguage ?>"
                               style="overflow: auto; display: none"><?= $textArea ?></textarea>
 
                 </div>
@@ -37,8 +42,8 @@ if (isset($this->dataTitle)) {
 
                     <?= (isset($this->pin_realization)) ? '<button type="button" class="btn btn-default pin-btn" data-url="pinImages" data-type="realization">' . __('pin_realization') . '</button>' : '' ?>
                     <?= (isset($this->pin_images)) ? '<button type="button" class="btn btn-default pin-btn"  data-url="pinImages" data-type="product_id">' . __('pin_product_id') . '</button>' : '' ?>
-                    <button type="button" class="btn btn-default" data-dismiss="modal"><?= __('cancel') ?></button>
-                    <button type="submit" class="btn btn-primary"><?= $button ?></button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><?= __('cancel') ?></button>
+                    <button type="submit" class="btn btn-success"><?= $button ?></button>
                 </div>
                 <div class="pinned"></div>
             </div>
@@ -48,7 +53,12 @@ if (isset($this->dataTitle)) {
                     $.post('<?=createUrl('admin', 'loadViewFile')?>', {controllerData: 'admin', actionData: $(this).attr('data-url'), useController: true, dataType: $(this).attr('data-type') }, function (data) {
                         $('.modal').find('.pinned').html(data);
                     })
-                })
+                });
+                App.waitForElement('.note-editor', function () {
+                    if ($('textarea#editor').hasClass('empty_description')) {
+                        $('.note-editor').css({"border": "1px solid #ffc107"});
+                    }
+                });
             </script>
         </div>
     </form>

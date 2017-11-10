@@ -26,22 +26,57 @@ class AdminModel extends BaseModel
 
     public function getDataToEdit($controller, $action, $id, $lang = DEFAULT_LANG)
     {
-        $select = $this->select('Select `c`.`description_' . $lang . '` as value from `content` as `c`
+        $data = $this->getLanguagesCase('description');
+        $select = 'SELECT DISTINCT IF(ISNULL(description_' . $lang . '),
+        CASE idx
+        '.$data['list'].'
+        END
+        , description_' . $lang . ') AS description,
+         IF(ISNULL(description_' . $lang . '), 1,0) AS empty_description
+        FROM content as c
+        JOIN (
+        SELECT 1 AS idx
+        '.$data['listSelect'].') t
         left join `top_menu` as `tm` on `tm`.`id` = `c`.`menu_id`
-         where `c`.`id` = ' . $id . ' and `tm`.`controller` like "' . $controller . '" and `tm`.`action` LIKE "' . $action . '"');
+        where `c`.`id` = ' . $id . ' and `tm`.`controller` like "' . $controller . '" and `tm`.`action` LIKE "' . $action . '"
+        HAVING description IS NOT NULL Limit 1;';
+        $select = $this->select($select);
+
         if (!empty($select)) {
-            return $select[0]['value'];
+            return $select[0];
         }
         return false;
     }
 
     public function getProductToEdit($id = null, $lang = DEFAULT_LANG)
     {
+        $description = $this->getLanguagesCase('description');
+        $title = $this->getLanguagesCase('title');
         $where = '';
         if ($id != null) {
             $where = ' WHERE `id` = ' . $id;
         }
-        $select = $this->select('select id,`title_' . $lang . '` as title, `description_' . $lang . '` as description from `products` ' . $where);
+
+        $select = 'SELECT DISTINCT IF(ISNULL(description_'.$lang.'),
+CASE idx
+	'.$description['list'].'
+END
+, description_'.$lang.') AS description,
+
+IF(ISNULL(title_'.$lang.'),
+CASE idx
+	'.$title['list'].'
+END
+, title_'.$lang.') AS title,
+IF(ISNULL(title_'.$lang.'), 1,0) AS empty_title,
+IF(ISNULL(description_'.$lang.'), 1,0) AS empty_description
+FROM products AS c
+JOIN (
+SELECT 1 AS idx
+'.$title['listSelect'].') t
+'. $where . '
+HAVING description IS NOT NULL AND title IS NOT NULL; ';
+      $select = $this->select($select);
         if (!empty($select)) {
             return $select[0];
         }
@@ -93,6 +128,7 @@ class AdminModel extends BaseModel
         if (isset($params['title_' . $params['language']])) {
             $save['title_' . $params['language']] = $params['title_' . $params['language']];
         }
+
         $update = $this->update($table, $save, '`id` = ' . $params['dataId']);
         if ($update == false) return false;
         return true;
@@ -108,13 +144,46 @@ class AdminModel extends BaseModel
         $query = null;
         switch ($view) {
             case 'home' :
-                $query = 'select `c`.* , `tm`.controller, `tm`.action from `top_menu` as `tm` left join `content` as `c` on `tm`.id = `c`.menu_id';
+                $query = 'select `c`.id, c.menu_id, IF(ISNULL(c.description_' . $lang . '),c.description_' . DEFAULT_LANG . ', c.description_' . $lang . ') as description , `tm`.controller, `tm`.action from `top_menu` as `tm` left join `content` as `c` on `tm`.id = `c`.menu_id';
                 break;
             case 'products' :
-                $query = 'Select `id`,`title_' . $lang . '` as title, `description_' . $lang . '` as description  from `products` ';
+                $description = $this->getLanguagesCase('description');
+                $title = $this->getLanguagesCase('title');
+
+               $query = 'SELECT * FROM (SELECT DISTINCT IF(ISNULL(description_'.$lang.'),
+                            CASE idx
+                                '.$description['list'].'
+                            END
+                            , description_'.$lang.') AS description,
+
+                            IF(ISNULL(title_'.$lang.'),
+                            CASE idx
+                                '.$title['list'].'
+                            END
+                            , title_'.$lang.') AS title, id,
+                            IF(ISNULL(title_'.$lang.'), 1,0) AS empty_title,
+                            IF(ISNULL(description_'.$lang.'), 1,0) AS empty_description
+                            FROM products AS c
+                            JOIN (
+                            SELECT 1 AS idx
+                            '.$title['listSelect'].') t
+                            HAVING description IS NOT NULL AND title IS NOT NULL) AS ts GROUP BY `ts`.`id` order by `ts`.`id` asc;';
                 break;
             case 'gallery' :
-                $query = 'select `category_' . $lang . '` as category, id as category_id from category';
+                $data = $this->getLanguagesCase('category');
+                $fields = '  id as category_id ';
+                $query = 'SELECT DISTINCT IF(ISNULL(category_'.$lang.'),
+                            CASE idx
+                                '.$data['list'].'
+                            END
+                            , category_'.$lang.') AS category,
+                            '.$fields.',
+                            IF(ISNULL(category_'.$lang.'), 1,0) AS empty_category
+                            FROM category
+                            JOIN (
+                            SELECT 1 AS idx
+                            '.$data['listSelect'].') t
+                            HAVING category IS NOT NULL';
                 break;
         }
         if ($query != NULL) {

@@ -17,7 +17,7 @@
                          data-holder-rendered="true">
 
                     <div class="carousel-caption">
-                        <h3><?= $element_display['title']; ?></h3>
+                        <h3><a href="<?= createUrl('products', 'read') ?>/<?= $element_display['id'] ?>" class="slide-link"><?= $element_display['title']; ?></a></h3>
 
                         <p><?= $this->_heleper->restrictText($element_display['description'], 100, true) ?></p>
                     </div>

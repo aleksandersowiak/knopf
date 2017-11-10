@@ -36,7 +36,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="submit" required="required"
-                                    class="btn btn-default"><?= __('add') ?></button>
+                                    class="btn btn-success"><?= __('add') ?></button>
                         </div>
                     </div>
             </form>

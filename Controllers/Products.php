@@ -21,6 +21,8 @@ class Products extends BaseController
     {
         $product = $this->_model->getProducts('`p`.`id` = ' . $this->getParam('id') . ' AND ', $this->getParam('language'));
         if (empty($product)) $this->_baseHelper->redirect('products', 'index');
+        $this->Add('product_list', $this->_model->getProducts('', $this->getParam('language')));
+
         $this->renderValue($product[0]);
         $this->Add('realization', $this->_model->getRealizationProduct($product[0]['id']));
         $gallery = new GalleryModel();

@@ -4,7 +4,7 @@ if(empty($viewmodel)) :
 else :
 ?>
 <div class="row">
-    <?php foreach ($viewmodel as $key => $value) : ?>
+    <?php foreach ($viewmodel as $key => $value) :  ?>
 
         <div class="col-sm-5 col-md-3">
             <div class="thumbnail">

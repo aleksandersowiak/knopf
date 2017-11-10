@@ -95,4 +95,6 @@ $lang = array(
     'upload' => 'Prześlij',
     'selected_files' => 'Wybrane pliki:',
     'no_selected_files' => 'Nie wybrano plików',
+
+    'something_is_wrong' => 'Tytuł bądź opis jest pusty. Tymczasowo wzięte z innego języka, gdzie wartość została uzupełniona'
 );

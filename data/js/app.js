@@ -180,8 +180,11 @@ App = {
             },
             success: function (data, status, jqXHR) {
                 try {
+
                     eval('var datao = ' + data);
-                    loadEditButton();
+                    if (typeof loadEditButton == 'function') {
+                        loadEditButton();
+                    }
                     switch (datao.cmd) {
                         case 'redirect' :
                             document.location.href = datao.url;

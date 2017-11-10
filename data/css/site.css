@@ -552,3 +552,16 @@ span.text-content {
 }
 
 #upload-file-info { padding-bottom: 10px; list-style: none }
+
+.slide-link {
+    color: #ffffff !important;
+}
+
+.badge-warning {
+    color: #111;
+    background-color: #ffc107;
+}
+
+.empty_description, .empty_title {
+    border: 1px solid #ffc107;
+}

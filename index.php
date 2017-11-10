@@ -3,7 +3,7 @@ defined('APPLICATION_PATH')
 || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/'));
 defined('APPLICATION_ENV')
 || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
-define('DEFAULT_LANG', 'pl');
+define('DEFAULT_LANG', 'it');
 define('APP_VER', '1.00');
 spl_autoload_register(function ($class_name) {
     if (file_exists(APPLICATION_PATH . '/Classes/' . $class_name . '.php')) {

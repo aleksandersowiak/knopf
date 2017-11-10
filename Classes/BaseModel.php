@@ -9,6 +9,8 @@ abstract class BaseModel extends ViewModel
     protected $_db;
     public $_configApp = null;
     public $_email;
+    public $languagesList;
+    public $base_lang;
 
     public function __construct()
     {
@@ -24,6 +26,14 @@ abstract class BaseModel extends ViewModel
         or die(mysqli_connect_error());
         $this->_db->set_charset("utf8");
         $this->_db->query('USE `' . $schema['db'] . '`');
+
+        foreach (glob("Languages/*.php") as $filename) {
+            $lang = str_replace('.php', '', basename($filename));
+            $languages[$lang] = __($lang);
+            $base_lang = ($_GET['language'] == '') ? DEFAULT_LANG : $_GET['language'];
+        }
+        $this->languagesList= $languages;
+        $this->base_lang=$base_lang;
     }
 
     protected function getDb()
@@ -74,19 +84,20 @@ abstract class BaseModel extends ViewModel
 
     public function update($table, $upData, $wheres = '')
     {
+
         foreach ($upData as $key => $testimonials) {
             $column = ($key);
             $value = ($testimonials);
+            if($value == '') $value = NULL;
             $where = ($wheres != '') ? ' WHERE ' . $wheres : '';
             $sql = "UPDATE `" . $table . "` SET `" . $column . "`='" . $value . "' $where";
-
             $result = $this->_db->query($sql);
             if ($result === FALSE) {
                 return false;
 //                die($this->_db->error);
             }
-            return true;
         }
+        return true;
     }
 
     public function delete($table, $id)
@@ -112,11 +123,34 @@ abstract class BaseModel extends ViewModel
     public function getContent($controller = '', $action = '', $lang = DEFAULT_LANG)
     {
         if ($lang == '') $lang = DEFAULT_LANG;
-        $query = 'Select `c`.`description_' . $lang . '` as value, `c`.*, `tm`.controller, `tm`.action from `content` as `c`
-        left join `top_menu` as `tm` on `tm`.id = `c`.menu_id
-        where `tm`.`action` LIKE "' . str_replace('Action', '', $action) . '" AND `tm`.`controller` LIKE "' . $controller . '"';
-
+        $data = $this->getLanguagesCase('description');
+        $query = 'SELECT DISTINCT IF(ISNULL(description_' . $lang . '),
+                CASE idx
+                '.$data['list'].'
+                END
+                , description_' . $lang . ') AS value,
+                 IF(ISNULL(description_' . $lang . '), 1,0) AS empty_description,
+                 `c`.*, `tm`.controller, `tm`.action
+                FROM content as c
+                JOIN (
+                SELECT 1 AS idx
+                '.$data['listSelect'].') t
+                left join `top_menu` as `tm` on `tm`.id = `c`.menu_id
+                where `tm`.`action` LIKE "' . str_replace('Action', '', $action) . '" AND `tm`.`controller` LIKE "' . $controller . '"
+                HAVING value IS NOT NULL ORDER BY c.id;';
         $result = $this->select($query);
         return $result;
+    }
+    public function getLanguagesCase ($field) {
+        $list = $listSelect = '';
+        $i = 1;
+        foreach ($this->languagesList as $key => $val) {
+            $list .= 'WHEN '.$i.' THEN '.$field.'_'.$key .' ';
+            if( $i > 1) {
+                $listSelect .= 'UNION ALL SELECT ' . $i . ' ';
+            }
+            $i++;
+        }
+        return array('list' => $list, 'listSelect' => $listSelect);
     }
 }

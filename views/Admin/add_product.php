@@ -31,8 +31,8 @@
                     <input type="hidden" name="language" value="<?= $this->language ?>"/>
                     <input type="hidden" name="dataId" value="<?= $this->dataId ?>"/>
                     <input type="hidden" name="action" value="insert"/>
-                    <button type="button" class="btn btn-default" data-dismiss="modal"><?= __('cancel') ?></button>
-                    <button type="submit" class="btn btn-primary"><?= __('add') ?></button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><?= __('cancel') ?></button>
+                    <button type="submit" class="btn btn-success"><?= __('add') ?></button>
                 </div>
             </div>
         </div>

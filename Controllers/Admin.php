@@ -1,5 +1,9 @@
 <?php
 
+define('IMG_FLIP_HORIZONTAL', 1);
+define('IMG_FLIP_VERTICAL', 2);
+define('IMG_FLIP_BOTH', 3);
+
 class Admin extends BaseController
 {
     protected $_model;
@@ -94,7 +98,8 @@ class Admin extends BaseController
 
         switch ($controller) {
             case 'home' :
-                $data = $this->_model->getDataToEdit($controller, $action, $id, $lang);
+                $dataResult = $this->_model->getDataToEdit($controller, $action, $id, $lang);
+                $data = $dataResult['description'];
                 break;
             case 'products' :
                 $this->Add('pin_realization', '');
@@ -105,6 +110,8 @@ class Admin extends BaseController
                 break;
         }
 
+        if(isset($dataResult['empty_title']) && $dataResult['empty_title'] == "1")  $this->Add('empty_title', 1);
+        if(isset($dataResult['empty_description']) && $dataResult['empty_description'] == "1")  $this->Add('empty_description', 1);
         if ($data != false) {
             $this->Add('dataEdit', $data);
         }
@@ -201,13 +208,14 @@ class Admin extends BaseController
                 if (!array_key_exists($val['controller'], $contentData)) {
                     $contentData[] = sprintf($addButton, $val['controller'], $val['controller'], $val['controller']);
                 }
+                $warning = ($textContent['empty_description'] == 1) ? '<span class="badge badge-warning" data-toggle="tooltip" data-placement="right" title="' . __('something_is_wrong') . '">!</span>' : '';
                 $contentData[$val['controller']][] = sprintf($this->_editButton, $val['id'], __('menu_' . $val['action']),
                         createUrl('admin', 'edit'),
                         $val['action'],
                         $val['controller'],
                         $val['id'])
-                    .
-                    sprintf($this->_deleteButton, createUrl('admin', 'delete'), $val['action'], $val['controller'], $val['id'], $this->_baseHelper->restrictText($textContent, 100, true));
+                    . $warning .
+                    sprintf($this->_deleteButton, createUrl('admin', 'delete'), $val['action'], $val['controller'], $val['id'], $this->_baseHelper->restrictText($textContent['description'], 100, true));
             }
         }
         return $contentData;
@@ -220,7 +228,10 @@ class Admin extends BaseController
         $contentData[] = sprintf($this->_addButton, __('products'), 'products', 'products');
         foreach ($content as $key => $val) {
             $textContent = $this->_model->getProductToEdit($val['id'], $this->getParam('language'));
-            $contentData[$val['title']][] = sprintf($this->_editButton, $val['id'], $val['title'], createUrl('admin', 'edit'), '', 'products', $val['id']) .
+
+            $warning = ($textContent['empty_title'] == 1 || $textContent['empty_description'] == 1) ? '<span class="badge badge-warning" data-toggle="tooltip" data-placement="right" title="' . __('something_is_wrong') . '">!</span>' : '';
+
+            $contentData[$val['title']][] = sprintf($this->_editButton, $val['id'], $textContent['title'], createUrl('admin', 'edit'), '', 'products', $val['id']) . $warning .
                 sprintf($this->_deleteButton, createUrl('admin', 'delete'), '', 'products', $val['id'], $this->_baseHelper->restrictText($textContent['description'], 100, true));
 
         }
@@ -230,7 +241,12 @@ class Admin extends BaseController
     private function getgalleryView() {
         $contentData = array();
         $content = $this->_model->getContents($this->getParam('view'), $this->getParam('language'));
-        $contentData[] = '<a href="'.createUrl('admin','uploadImages').'"><span class="label label-default">'.__('upload_images').'</span></a>';
+        $script = <<<EOF
+        <script>
+                $('.viewContent ul').css({'position':'fixed', 'margin-top': '0'});
+        </script>
+EOF;
+        $contentData[] = $script . '<a href="'.createUrl('admin','uploadImages').'"><span class="label label-default">'.__('upload_images').'</span></a>';
         $contentData[] = sprintf($this->_addButton, __('category'), 'category', 'category');
 
         foreach ($content as $key => $val) {
@@ -275,28 +291,20 @@ class Admin extends BaseController
     }
     protected function importImagesAction($m = true)
     {
-        $listOfImported = array();
-        $gallery = new GalleryModel();
-        $images = $gallery->getImages(' WHERE (1=1) ');
         $i = 0;
-        foreach ($images as $image) {
-            $listOfImported[] = basename($image['image']);
-            $listOfImported[] = basename($image['image_thumb']);
-        }
         $dir          = APPLICATION_PATH . '/data/images/upload/';
         $ImagesA = $this->Get_ImagesToFolder($dir);
         foreach ($ImagesA as $image_to_import) {
-            if (!in_array($image_to_import, $listOfImported)) {
-                $select_category_id = $this->_model->select('Select id from category where ' . ' category_' . $this->getParam('language') . ' = "none_category"');
-                $save = array('image' => '/data/images/upload/' . $image_to_import, 'category_id' => $select_category_id[0]['id']);
-                if(!file_exists($dir . '/thumb_' . $image_to_import)) {
-                    $this->make_thumb($dir . $image_to_import, $dir. 'thumb_' . $image_to_import, 400);
-                    $this->fix_orientation($dir. 'thumb_' . $image_to_import);
-                    $save = array_merge(array('image_thumb' => '/data/images/upload/thumb_' . $image_to_import), $save);
-                }
-                $this->_model->insert('gallery', $save);
-                $i++;
+            $select_category_id = $this->_model->select('Select id from category where ' . ' category_' . $this->getParam('language') . ' = "none_category"');
+            $save = array('image' => '/data/images/upload/' . $image_to_import, 'category_id' => $select_category_id[0]['id']);
+            if(!file_exists($dir . '/thumb_' . $image_to_import)) {
+                $this->make_thumb($dir . $image_to_import, $dir. 'thumb_' . $image_to_import, 400);
+                $this->fix_orientation($dir. 'thumb_' . $image_to_import);
+                $save = array_merge(array('image_thumb' => '/data/images/upload/thumb_' . $image_to_import), $save);
             }
+            $this->_model->insert('gallery', $save);
+            $i++;
+
         }
         if($m = true) {
             $message = $this->renderMessage(sprintf(__('import_complete'), $i), 'success');
@@ -305,6 +313,13 @@ class Admin extends BaseController
         return true;
     }
     private function Get_ImagesToFolder($dir){
+        $listOfImported = array();
+        $gallery = new GalleryModel();
+        $images = $gallery->getImages(' WHERE (1=1) ');
+        foreach ($images as $image) {
+            $listOfImported[] = basename($image['image']);
+            $listOfImported[] = basename($image['image_thumb']);
+        }
         $ImagesArray = [];
         $file_display = [ 'jpg', 'jpeg', 'png', 'gif' ];
 
@@ -316,8 +331,12 @@ class Admin extends BaseController
             foreach ($dir_contents as $file) {
                 $file_type = pathinfo($file, PATHINFO_EXTENSION);
                 if (in_array($file_type, $file_display) == true) {
-                    $ImagesArray[] = $file;
-                    $this->fix_orientation($file);
+                    $ext = $this->get_extension($file);
+                    if (!in_array($file, $listOfImported)) {
+                        rename($dir . $file, $dir . sha1($file) . '.' . $ext);
+                        $this->fix_orientation($dir . sha1($file) . '.' . $ext);
+                        $ImagesArray[] = sha1($file) . '.' . $ext;
+                    }
                 }
             }
             return $ImagesArray;
@@ -338,10 +357,13 @@ class Admin extends BaseController
         // Does the file exist to start with?
         if(!file_exists($fileandpath))
             return false;
-
+        try {
+            @$exif = read_exif_data($fileandpath, 'IFD0');
+        }
+        catch (Exception $exp) {
+            $exif = false;
+        }
         // Get all the exif data from the file
-        $exif = read_exif_data($fileandpath, 'IFD0');
-
         // If we dont get any exif data at all, then we may as well stop now
         if(!$exif || !is_array($exif))
             return false;
@@ -364,6 +386,7 @@ class Admin extends BaseController
         // The meat of the script really, the orientation is supplied as an integer,
         // so we just rotate/flip it back to the correct orientation based on what we
         // are told it currently is
+
         switch($exif['orientation']) {
 
             // Standard/Normal Orientation (no need to do anything, we'll return true as in theory, it was successful)
