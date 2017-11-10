@@ -204,7 +204,7 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="Gallery.php" pinned="false" current="true" current-in-tab="true">
+          <file leaf-file-name="Gallery.php" pinned="false" current="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/Models/Gallery.php">
               <provider selected="true" editor-type-id="text-editor">
                 <state line="23" column="30" selection-start="891" selection-end="891" vertical-scroll-proportion="0.71090907" vertical-offset="0" max-vertical-offset="714">
@@ -358,10 +358,10 @@
       </split-first>
       <split-second>
         <leaf>
-          <file leaf-file-name="Admin.php" pinned="false" current="false" current-in-tab="true">
+          <file leaf-file-name="Admin.php" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/Controllers/Admin.php">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="89" column="40" selection-start="4224" selection-end="4224" vertical-scroll-proportion="0.6465364" vertical-offset="1149" max-vertical-offset="11288">
+                <state line="92" column="0" selection-start="4323" selection-end="4323" vertical-scroll-proportion="0.8277087" vertical-offset="1098" max-vertical-offset="11288">
                   <folding>
                     <marker date="1510296619833" expanded="false" signature="23245:23258" placeholder="..." />
                     <marker date="1510296619833" expanded="true" signature="23314:23340" placeholder="..." />
@@ -1145,18 +1145,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Controllers/Admin.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="280" column="46" selection-start="13858" selection-end="13858" vertical-scroll-proportion="-4.7115383" vertical-offset="4515" max-vertical-offset="11288">
-          <folding>
-            <marker date="1510296619833" expanded="false" signature="23245:23258" placeholder="..." />
-            <marker date="1510296619833" expanded="true" signature="23314:23340" placeholder="..." />
-            <marker date="1510296619833" expanded="true" signature="23702:24250" placeholder="..." />
-            <marker date="1510296619833" expanded="true" signature="23702:23728" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Controllers/Gallery.php">
       <provider selected="true" editor-type-id="text-editor">
         <state line="34" column="39" selection-start="977" selection-end="986" vertical-scroll-proportion="-17.76923" vertical-offset="116" max-vertical-offset="714">
@@ -1170,6 +1158,18 @@
           <folding>
             <marker date="1510312629456" expanded="true" signature="258:939" placeholder="SELECT DISTI..gallery..." />
             <marker date="1510312629456" expanded="true" signature="730:745" placeholder="SELECT 1 AS ..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Controllers/Admin.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="92" column="0" selection-start="4323" selection-end="4323" vertical-scroll-proportion="0.8277087" vertical-offset="1098" max-vertical-offset="11288">
+          <folding>
+            <marker date="1510296619833" expanded="false" signature="23245:23258" placeholder="..." />
+            <marker date="1510296619833" expanded="true" signature="23314:23340" placeholder="..." />
+            <marker date="1510296619833" expanded="true" signature="23702:24250" placeholder="..." />
+            <marker date="1510296619833" expanded="true" signature="23702:23728" placeholder="..." />
           </folding>
         </state>
       </provider>
