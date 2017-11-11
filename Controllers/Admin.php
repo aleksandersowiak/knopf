@@ -1,8 +1,8 @@
 <?php
 
-define('IMG_FLIP_HORIZONTAL', 1);
-define('IMG_FLIP_VERTICAL', 2);
-define('IMG_FLIP_BOTH', 3);
+defined('IMG_FLIP_HORIZONTAL') or define('IMG_FLIP_HORIZONTAL', 1);
+defined('IMG_FLIP_VERTICAL') or define('IMG_FLIP_VERTICAL', 2);
+defined('IMG_FLIP_BOTH') or define('IMG_FLIP_BOTH', 1);
 
 class Admin extends BaseController
 {
@@ -241,12 +241,8 @@ class Admin extends BaseController
     private function getgalleryView() {
         $contentData = array();
         $content = $this->_model->getContents($this->getParam('view'), $this->getParam('language'));
-        $script = <<<EOF
-        <script>
-                $('.viewContent ul').css({'position':'fixed', 'margin-top': '0'});
-        </script>
-EOF;
-        $contentData[] = $script . '<a href="'.createUrl('admin','uploadImages').'"><span class="label label-default">'.__('upload_images').'</span></a>';
+
+        $contentData[] = '<a href="'.createUrl('admin','uploadImages').'"><span class="label label-default">'.__('upload_images').'</span></a>';
         $contentData[] = sprintf($this->_addButton, __('category'), 'category', 'category');
 
         foreach ($content as $key => $val) {

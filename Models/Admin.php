@@ -222,7 +222,7 @@ HAVING description IS NOT NULL AND title IS NOT NULL; ';
     {
         $save = array();
         if ($params['action'] == 'delete') {
-            $save[$params['dataType']] = "NULL";
+            $save[$params['dataType']] = NULL;
         } else {
             $save[$params['dataType']] = $params['prodId'];
         }

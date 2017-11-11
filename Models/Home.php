@@ -26,8 +26,6 @@ class HomeModel extends BaseModel
                             '.$title['listSelect'].') t
                             left join `gallery` as `g` on g.product_id = p.id
                             HAVING description IS NOT NULL AND title IS NOT NULL LIMIT 5) AS ts GROUP BY `ts`.`id` order by `ts`.`id` asc;';
-
-        $query = 'Select IF(ISNULL(p.title_' . $lang . ') , p.title_' . DEFAULT_LANG . ', p.title_' . $lang . ') as title, IF(ISNULL(p.description_' . $lang . '),p.description_' . DEFAULT_LANG . ',p.description_' . $lang . ') as description, p.id , g.image from `products` as `p` left join `gallery` as `g` on `g`.`product_id` = `p`.`id` Group by p.id order by `id` asc LIMIT 5';
         $result = $this->select($query);
         return $result;
     }

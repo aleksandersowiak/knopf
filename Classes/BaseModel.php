@@ -87,10 +87,10 @@ abstract class BaseModel extends ViewModel
 
         foreach ($upData as $key => $testimonials) {
             $column = ($key);
-            $value = ($testimonials);
-            if($value == '') $value = NULL;
+            $value = "'".$testimonials."'";
+            if($testimonials == '') $value = "NULL";
             $where = ($wheres != '') ? ' WHERE ' . $wheres : '';
-            $sql = "UPDATE `" . $table . "` SET `" . $column . "`='" . $value . "' $where";
+            $sql = "UPDATE `" . $table . "` SET `" . $column . "`= " . $value . " $where";
             $result = $this->_db->query($sql);
             if ($result === FALSE) {
                 return false;
