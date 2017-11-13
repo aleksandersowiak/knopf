@@ -134,6 +134,9 @@
     </form>
 </div>
 <script>
+    $(document).ready(function () {
+        App.actionClick();
+    });
     $('button[type="submit"]').on('click', function (e) {
         if (!App.validateField('first_name')) {
             $("#first_name").attr("data-toggle", "tooltip").attr("data-placement", "top").attr("title", "<?=__("field_required")?>");

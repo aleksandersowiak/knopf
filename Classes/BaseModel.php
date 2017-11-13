@@ -34,6 +34,8 @@ abstract class BaseModel extends ViewModel
         }
         $this->languagesList= $languages;
         $this->base_lang=$base_lang;
+
+        $this->checkIfAllLanguagesAreSets($this->languagesList);
     }
 
     protected function getDb()
@@ -55,7 +57,8 @@ abstract class BaseModel extends ViewModel
 //        var_dump($query);
         $sql = $this->_db->query($query);
         if (mysqli_errno($this->_db) > 0) {
-            die($this->_db->error);
+            return false;
+//            die($this->_db->error);
         }
         $data = array();
         while ($d = mysqli_fetch_assoc($sql)) {
@@ -152,5 +155,28 @@ abstract class BaseModel extends ViewModel
             $i++;
         }
         return array('list' => $list, 'listSelect' => $listSelect);
+    }
+
+    private function checkIfAllLanguagesAreSets($languageList = NULL)
+    {
+        $tables = array(
+            'category' => array('category'),
+            'content' => array('description'),
+            'products' => array('description', 'title')
+        );
+
+        if($languageList != NULL) {
+            foreach ($languageList as $lang => $l) {
+                foreach ($tables as $t => $c) {
+                    $where = ' (1=1) ';
+                    if(isset($c[0])) $where .= ' AND ' . $c[0] .'_'. $lang;
+                    if(isset($c[1])) $where .= ' AND ' . $c[1] .'_'. $lang;
+                    if($this->select("select * from $t WHERE " . $where) === false) {
+                        if(isset($c[0]))  $this->select('ALTER TABLE `'.$t.'` ADD COLUMN `'.$c[0].'_'.$lang .'` LONGTEXT NULL;');
+                        if(isset($c[1]))  $this->select('ALTER TABLE `'.$t.'` ADD COLUMN `'.$c[1].'_'.$lang .'` LONGTEXT NULL;');
+                    }
+                }
+            }
+        }
     }
 }

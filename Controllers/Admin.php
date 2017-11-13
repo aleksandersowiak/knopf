@@ -2,7 +2,7 @@
 
 defined('IMG_FLIP_HORIZONTAL') or define('IMG_FLIP_HORIZONTAL', 1);
 defined('IMG_FLIP_VERTICAL') or define('IMG_FLIP_VERTICAL', 2);
-defined('IMG_FLIP_BOTH') or define('IMG_FLIP_BOTH', 1);
+defined('IMG_FLIP_BOTH') or define('IMG_FLIP_BOTH', 3);
 
 class Admin extends BaseController
 {
