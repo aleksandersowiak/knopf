@@ -5,6 +5,7 @@ else :
     ?>
     <div class="list-group gallery">
     <?php
+    $j = 1;
     foreach ($viewmodel as $category => $images) : ?>
         <?php $attr = array();
         $i = 0;
@@ -36,7 +37,7 @@ else :
             endif;
         endforeach; ?>
 
-        <div style="width: 340px; display: block; float: left; margin-right: 10px; border: 1px solid #ccc">
+        <div style="width: 32%; display: block; float: left; margin-left: 10px; margin-bottom:10px; border: 1px solid #ccc">
             <div style="<?=$style3?>">
                 <?php if (!empty($attr[0])) : ?>
                     <div style="<?= $class ?>">
@@ -105,7 +106,7 @@ else :
                     href="<?= createUrl('gallery', 'view', $this->getCategoryId($images['category_id'])) ?>"><?= ucfirst($category) ?></a>
             </div>
         </div>
-    <?php endforeach; ?>
+    <?php $j++; endforeach; ?>
     <style>
         .dynamicTile .col-sm-2.col-xs-4 {
             padding: 5px;
