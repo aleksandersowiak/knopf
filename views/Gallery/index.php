@@ -16,21 +16,21 @@ else :
                 if ($i <= 1) {
                     $attr[0][] = $image;
                     $class = 'width: 100%; float: left';
-                    $style = 'max-width:340px; max-height:290px; min-width:340px; min-height:290px;';
+                    $style = 'width:100%; max-height:290px;  min-height:290px;';
                 } else if ($i > 1 && $i <= 3) {
                     $attr[1][] = $image;
                     $class = 'width: 50%; float: left';
-                    $style = 'max-width:185px; max-height:290px; min-width:185px; min-height:290px;';
+                    $style = 'max-width:185px; max-height:290px; min-height:290px;';
                     $class1 = 'width: 50%; float: left';
-                    $style1 = 'max-width:185px; max-height:290px; min-width:185px; min-height:290px;';
+                    $style1 = 'width:100%; max-height:290px;min-height:290px;';
                 } else if ($i > 3 && $i <= 5) {
                     $attr[2][] = $image;
                     $class = 'width: 50%; float: left';
-                    $style = 'max-width:185px; max-height:145px; min-width:185px; min-height:145px;';
+                    $style = 'width:100%; max-height:145px; min-height:145px;';
                     $class1 = 'width: 50%; float: left';
-                    $style1 = 'max-width:185px; max-height:145px; min-width:185px; min-height:145px;';
+                    $style1 = 'width:100%; max-height:145px;  min-height:145px;';
                     $class2 = 'width: 100%; float: left';
-                    $style2 = 'max-width:340px; max-height:145px; min-width:340px; min-height:145px;';
+                    $style2 = 'width:100%; max-height:145px;  min-height:145px;';
                     $style3 = '';
                 }
                 $i++;
