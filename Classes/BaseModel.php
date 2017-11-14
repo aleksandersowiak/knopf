@@ -94,6 +94,7 @@ abstract class BaseModel extends ViewModel
             if($testimonials == '') $value = "NULL";
             $where = ($wheres != '') ? ' WHERE ' . $wheres : '';
             $sql = "UPDATE `" . $table . "` SET `" . $column . "`= " . $value . " $where";
+
             $result = $this->_db->query($sql);
             if ($result === FALSE) {
                 return false;

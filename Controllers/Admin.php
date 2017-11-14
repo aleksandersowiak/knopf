@@ -248,10 +248,11 @@ class Admin extends BaseController
         foreach ($content as $key => $val) {
             $count = $this->_model->select('select count(*) as count from gallery where category_id = '. $val['category_id']);
             $deleteButton = ($val['category_id'] != 1 ) ? sprintf($this->_deleteButton, createUrl('admin', 'delete'), 'category', 'category', $val['category_id'], '') : "";
+            $warning = (isset($val['empty_category']) && $val['empty_category'] == 1) ? '<span class="badge badge-warning" data-toggle="tooltip" data-placement="right" title="' . __('something_is_wrong') . '">!</span>' : '';
             $contentData[][] =
                 sprintf('<span class="category label label-default" data-id="%d">%s</span>
                 <span class=" like-link edit-document" data-url="%s" data-action="%s" data-controller="%s" data-id="%d">
-                <i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="right" title="' . __('edit') . '"></i>
+                <i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="right" title="' . __('edit') . '"></i> ' . $warning .'
                 </span>', $val['category_id'], __($val['category']) . ' (<span class="count">' . $count[0]['count']. '</span>)',createUrl('admin', 'editGallery'), '','',$val['category_id'])
                 . $deleteButton
             ;
@@ -529,7 +530,24 @@ class Admin extends BaseController
     protected function renderJSGallery($content) {
         $images = '';
         $viewContent= "$('.viewContent').append('<div class=\"viewContentGallery\"></div>'); ";
+
         $h3 = "$('.viewContentGallery').append('<div class=\"page-header\"><h3>".__($content[0]['category'])."</h3></div>'); ";
+        $h3 .= "$('div.page-header').append('<input style=\"display:none\" class=\"form-control \" type=\"text\" value=\"".__($content[0]['category'])."\" name=\"category_".$this->base_lang."\"/>'); ";
+        $h3 .= " $('div.page-header').on('click', function() {
+                     $(this).find('h3').css({display: 'none'});
+                     $(this).find('input[name=\"category_".$this->base_lang."\"]').css({display: 'block'});
+                 });
+
+                 $('input[name=\"category_".$this->base_lang."\"]').change(function() {
+                    var params = {
+                                category : 'category_".$this->base_lang."',
+                                value : $(this).val(),
+                                category_id: '".$content[0]['category_id']."'
+                            };
+                    App.ajaxSend('".createUrl('admin','changeCategoryName')."',params);
+                 });
+               ";
+        if ($content[0]['empty_category'] == 1) { $h3 .= "$('.page-header h3').append('&nbsp;<span class=\"badge badge-warning\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"". __('something_is_wrong') . "\">!</span>')"; }
         foreach ($content as $image) :
             $images .= "$('.viewContentGallery').append('<div class=\"images\" style=\"display: none\" > ";
             $images .= "<div class=\"thumbnail\">";
@@ -648,8 +666,20 @@ EOF;
         }
     }
     private  function get_extension($file_name){
-    $ext = explode('.', $file_name);
-    $ext = array_pop($ext);
-    return strtolower($ext);
-}
+        $ext = explode('.', $file_name);
+        $ext = array_pop($ext);
+        return strtolower($ext);
+    }
+
+    public function changeCategoryNameAction() {
+        $message = $this->renderMessage(__('error'), 'danger');
+        $save = array($this->getParam('category') => $this->getParam('value'));
+        $update = $this->_model->update('category', $save, '`id` = ' . $this->getParam('category_id'));
+        if ($update) {
+            $message = "$('div.page-header').find('h3').css({display: 'block'}).text('".$this->getParam('value')."');
+                        $('span.category[data-id=\"".$this->getParam('category_id')."\"]').text('".$this->getParam('value')."');
+                        $('div.page-header').find('input[name=\"".$this->getParam('category')."\"]').css({display: 'none'});";
+        }
+        $this->finish(null, $message);
+    }
 }

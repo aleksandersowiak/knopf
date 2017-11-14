@@ -90,6 +90,6 @@ $lang = array(
     'upload' => 'Presentare',
     'selected_files' =>  'File selezionati:',
     'no_selected_files' =>  'Nessun file selezionato',
-    'something_is_wrong' => 'Il titolo o l\'entrata è vuota. Catturato da un\'altra lingua, dove è stato aggiunto il valore',
+    'something_is_wrong' => 'Il titolo o l&#8217;entrata è vuota. Catturato da un&#8217;altra lingua, dove è stato aggiunto il valore',
 
 );
