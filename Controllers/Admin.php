@@ -707,17 +707,18 @@ EOF;
         foreach ($images as $image) {
             $listOfImported[] = basename($image['image']);
         }
-
-        $file_display = array('mp4', 'wma', 'mov');
-
         $file = strtolower($movie['name']);
+        $file_display = array('mp4', 'wma', 'mov');
         $ext = $this->get_extension($file);
+        $shaFile = sha1($file) . '.' . $ext;
+        chmod($dir . $file, 0755);
         if (in_array(pathinfo($file, PATHINFO_EXTENSION), $file_display) == true) {
-            if (!in_array(sha1($file) . '.' . $ext, $listOfImported)) {
-                rename($dir . $file, $dir . sha1($file) . '.' . $ext);
-                $file = sha1($file) . '.' . $ext;
+            if (!in_array($shaFile, $listOfImported)) {
+                if(!rename($dir . $movie['name'], $dir . $shaFile)) {
+                    echo 'Nie można mienić nazwy';
+                }
                 $select_category_id = $this->_model->select('Select id from category where ' . ' category_' . $this->getParam('language') . ' = "none_category"');
-                $save = array('image' => '/data/images/upload/' . $file, 'category_id' => $select_category_id[0]['id'], 'type' => 2);
+                $save = array('image' => '/data/images/upload/' . $shaFile, 'category_id' => $select_category_id[0]['id'], 'type' => 2);
                 return $this->_model->insert('gallery', $save);
             }
         }
