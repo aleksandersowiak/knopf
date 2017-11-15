@@ -326,7 +326,7 @@ class Admin extends BaseController
         else {
             $dir_contents = scandir($dir);
             foreach ($dir_contents as $file) {
-                $file_type = pathinfo($file, PATHINFO_EXTENSION);
+                $file_type = pathinfo(strtolower($file), PATHINFO_EXTENSION);
                 if (in_array($file_type, $file_display) == true) {
                     $ext = $this->get_extension($file);
                     if (!in_array($file, $listOfImported)) {
@@ -549,14 +549,21 @@ class Admin extends BaseController
                ";
         if ($content[0]['empty_category'] == 1) { $h3 .= "$('.page-header h3').append('&nbsp;<span class=\"badge badge-warning\" data-toggle=\"tooltip\" data-placement=\"right\" title=\"". __('something_is_wrong') . "\">!</span>')"; }
         foreach ($content as $image) :
-            $images .= "$('.viewContentGallery').append('<div class=\"images\" style=\"display: none\" > ";
-            $images .= "<div class=\"thumbnail\">";
-            $images .= "<img target-category-id=\"".$image['category_id']."\" data-id =\"".$image['id']."\" style=\"max-height:150px; min-height:150px;  min-width:150px;  max-width:150px;  overflow: hidden; background: url(".$image['image_thumb'].") no-repeat 50% 50%; background-size:cover;\"/> ";
-            $images .= "</div>";
-            $images .= "<span class=\"text-content\">";
-            $images .= "<span data-url=\"".createUrl('admin','deleteImage')."\" data-id=\"".$image['id']."\" class=\"delete-image\"> <i class=\"glyphicon glyphicon-remove-circle\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"".__('delete_image')."\"></i></span>";
-            $images .= "<a class=\"fancybox\" rel=\"ligthbox\" href=\"".$image['image']."\"> <i class=\"glyphicon glyphicon-resize-full\"  data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"".__('full_size_image')."\"></i></a> ";
-            $images .= "</span></div>'); ";
+            if($image['type'] == 1) {
+                $images .= "$('.viewContentGallery').append('<div class=\"images\" style=\"display: none\" > ";
+                $images .= "<div class=\"thumbnail\">";
+                $images .= "<img target-category-id=\"".$image['category_id']."\" data-id =\"".$image['id']."\" style=\"max-height:150px; min-height:150px;  min-width:150px;  max-width:150px;  overflow: hidden; background: url(".$image['image_thumb'].") no-repeat 50% 50%; background-size:cover;\"/> ";
+                $images .= "</div>";
+                $images .= "<span class=\"text-content\">";
+                $images .= "<span data-url=\"".createUrl('admin','deleteImage')."\" data-id=\"".$image['id']."\" class=\"delete-image\"> <i class=\"glyphicon glyphicon-remove-circle\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"".__('delete_image')."\"></i></span>";
+                $images .= "<a class=\"fancybox\" rel=\"ligthbox\" href=\"".$image['image']."\"> <i class=\"glyphicon glyphicon-resize-full\"  data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"".__('full_size_image')."\"></i></a> ";
+                $images .= "</span></div>'); ";
+            } else if ($image['type'] == 2) {
+                $images .= "$('.viewContentGallery').append('<div class=\"images video-box-" . $image['id'] ."\" style=\"display: none\" ></div>');";
+                $images .= "App.thumbVideo(".$image['id'].",'".$image['image']."','',".$image['type'].");";
+                $images .= "$('#thumbnail-".$image['id']."').attr('target-category-id','".$image['category_id']."').attr('data-id' ,'".$image['id']."');";
+                $images .= "$('.video-box-".$image['id']."').find('.text-content').prepend('<span data-url=\"".createUrl('admin','deleteImage')."\" data-id=\"".$image['id']."\" class=\"delete-image\"> <i class=\"glyphicon glyphicon-remove-circle\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"".__('delete_image')."\"></i></span>');";
+            }
         endforeach;
         $url = createUrl('admin','assignImageToCategory');
         return <<<EOF
@@ -568,7 +575,7 @@ class Admin extends BaseController
         $h3
         $(document).ready(function () {
             $images
-            $('.viewContentGallery').find('div').each(function (i, el) {
+            $('.viewContentGallery').find('div.images').each(function (i, el) {
                 $(el).fadeIn('slow');
             });
             $('.images').draggable({
@@ -613,7 +620,7 @@ EOF;
     protected function deleteImageAction()
     {
         $message = $this->renderMessage(__('image_delete_error'), 'danger');
-        $file = $this->_model->select('select image, image_thumb from `gallery` where id = ' . $this->getParam('dataId'));
+        $file = $this->_model->select('select image, image_thumb, category_id from `gallery` where id = ' . $this->getParam('dataId'));
         if ($this->_model->delete('gallery', '`id` = ' . $this->getParam('dataId')) != false) {
 
             $image = APPLICATION_PATH . $file[0]['image'];
@@ -626,12 +633,13 @@ EOF;
             }
             if (is_file($image)) {
                 unlink($image);
+            }if (is_file($image_thumb)) {
                 unlink($image_thumb);
             }
 
             $message = $this->renderMessage(__('image_delete_success'), 'success');
             $message .= '$(\'img[data-id="' . $this->getParam('dataId') . '"]\').parents(\'div.images\').remove();';
-            $message .= 'var count = $(\'span.count\').text(); $(\'span.count\').text(count-1); ';
+            $message .= 'var count = $(\'span.category[data-id="'.$file[0]['category_id'].'"]\').find(\'.count\').text(); $(\'span.category[data-id="'.$file[0]['category_id'].'"]\').find(\'.count\').text(count-1); ';
         }
 
         $this->finish(null, $message);
@@ -649,19 +657,27 @@ EOF;
     protected function uploadAction() {
         $target_dir = APPLICATION_PATH . '/data/images/upload/';
         $allowed_ext = array('jpg','jpeg','png');
+        $allowed_ext_mov = array( 'mp4', 'wma', 'mov');
         if(array_key_exists('file',$_FILES) && $_FILES['file']['error'] == 0 ){
             $pic = $_FILES['file'];
-            if(!in_array($this->get_extension($pic['name']),$allowed_ext)){
-                $message = $this->renderMessage(sprintf(__('error_jpeg'),implode(',',$allowed_ext)), 'danger');
+            if(!in_array($this->get_extension($pic['name']),array_merge($allowed_ext, $allowed_ext_mov))){
+                $message = $this->renderMessage(sprintf(__('error_jpeg'),implode(',',array_merge($allowed_ext, $allowed_ext_mov))), 'danger');
                 $this->finish(null, $message);
             }
             if(!move_uploaded_file($pic['tmp_name'], $target_dir.$pic['name'])){
                 $message = $this->renderMessage(__('file_was_not_upload'), 'danger');
                 $this->finish(null, $message);
             }
-            if($this->importImagesAction($m = false)) {
-                $message = $this->renderMessage(sprintf(__('file_upload_done'),$pic['name']), 'danger');
-                $this->finish(null, $message);
+            if(in_array($this->get_extension($pic['name']),$allowed_ext)){
+                if($this->importImagesAction($m = false)) {
+                    $message = $this->renderMessage(sprintf(__('file_upload_done'),$pic['name']), 'success');
+                    $this->finish(null, $message);
+                }
+            }else if(in_array($this->get_extension($pic['name']),$allowed_ext_mov)){
+                if($this->uploadMovie($pic)) {
+                    $message = $this->renderMessage(sprintf(__('file_upload_done'),$pic['name']), 'success');
+                    $this->finish(null, $message);
+                }
             }
         }
     }
@@ -681,5 +697,30 @@ EOF;
                         $('div.page-header').find('input[name=\"".$this->getParam('category')."\"]').css({display: 'none'});";
         }
         $this->finish(null, $message);
+    }
+
+    private function uploadMovie($movie) {
+        $dir = APPLICATION_PATH . '/data/images/upload/';
+        $gallery = new GalleryModel();
+        $images = $gallery->getImages(' WHERE (1=1) ');
+        $listOfImported = array();
+        foreach ($images as $image) {
+            $listOfImported[] = basename($image['image']);
+        }
+
+        $file_display = array('mp4', 'wma', 'mov');
+
+        $file = strtolower($movie['name']);
+        $ext = $this->get_extension($file);
+        if (in_array(pathinfo($file, PATHINFO_EXTENSION), $file_display) == true) {
+            if (!in_array(sha1($file) . '.' . $ext, $listOfImported)) {
+                rename($dir . $file, $dir . sha1($file) . '.' . $ext);
+                $file = sha1($file) . '.' . $ext;
+                $select_category_id = $this->_model->select('Select id from category where ' . ' category_' . $this->getParam('language') . ' = "none_category"');
+                $save = array('image' => '/data/images/upload/' . $file, 'category_id' => $select_category_id[0]['id'], 'type' => 2);
+                return $this->_model->insert('gallery', $save);
+            }
+        }
+        return false;
     }
 }

@@ -15,7 +15,7 @@ class GalleryModel extends BaseModel
                     , category_'.$lang.') AS category,
                     g.id ,image, image_thumb, c.id as category_id,
                     IF(ISNULL(category_'.$lang.'), 1,0) AS empty_category,
-                    g.product_id, g.realization
+                    g.product_id, g.realization, g.type AS type
                     FROM gallery AS g
                     JOIN (
                     SELECT 1 AS idx

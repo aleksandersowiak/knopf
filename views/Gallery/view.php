@@ -5,14 +5,13 @@
 <script>
     $(document).ready(function () {
         <?php foreach ($viewmodel as $image) : ?>
-        $('.gallery').append('<div class="images" style="display: none">' +
-            '<a class="fancybox thumbnail" rel="ligthbox" href="<?=$image['image']?>">' +
-            '<img style="max-height:150px; min-height:150px;  min-width:150px;  max-width:150px;  overflow: hidden; background: url(<?= $image['image_thumb'] ?>) no-repeat 50% 50%; background-size:cover;"/>' +
-            '</a>' +
-            '</div>');
+        console.log('<?=json_encode($image)?>');
+        $('.gallery').append('<div class="images <?=($image['type'] == 1) ? 'images-box-'.$image['id'] : 'video-box-'.$image['id']?>" " style="display: none"></div>');
+        App.thumbVideo(<?=$image['id']?>,'<?=$image['image']?>','<?= $image['image_thumb'] ?>',<?=$image['type']?>);
         <?php endforeach; ?>
-        $('.gallery').find('div').each(function (i, el) {
+        $('.gallery').find('div.images').each(function (i, el) {
             $(el).fadeIn('slow');
         })
-    })
+    });
 </script>
+

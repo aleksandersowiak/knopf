@@ -19,7 +19,7 @@ class ProductsModel extends BaseModel
                             END
                             , title_'.$lang.') AS title,
                             g.image_thumb as image_thumb,
-                            p.id,
+                            p.id, g.type,
                             IF(ISNULL(description_'.$lang.'), 1,0) AS empty_description,
                             IF(ISNULL(title_'.$lang.'), 1,0) AS empty_title
                             FROM products AS p
@@ -28,7 +28,7 @@ class ProductsModel extends BaseModel
                             '.$title['listSelect'].') t
                             left join `gallery` as `g` on g.product_id = p.id
                             WHERE '. $where .'
-                            HAVING description IS NOT NULL AND title IS NOT NULL) AS ts GROUP BY `ts`.`id` order by `ts`.`id` asc;';
+                            HAVING description IS NOT NULL AND title IS NOT NULL AND type = 1 ) AS ts GROUP BY `ts`.`id` order by `ts`.`id` asc;';
         $result = $this->select($query);
         return $result;
     }

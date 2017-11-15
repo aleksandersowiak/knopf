@@ -17,10 +17,10 @@
     </div>
     <div class="col-md-3 ">
         <?php foreach ($this->image as $image) : ?>
-            <div class='col-md-6'>
-                <a class="thumbnail fancybox" rel="ligthbox" href="<?= $image['image'] ?>">
-                    <img class="img-responsive" alt="" src="<?= $image['image_thumb'] ?>"/>
-                </a>
+            <div class='col-md-6 <?=($image['type'] == 1) ? 'images-box-'.$image['id'] : 'video-box-'.$image['id']?>'>
+                <script>App.thumbVideo(<?=$image['id']?>,'<?=$image['image']?>','<?= $image['image_thumb'] ?>',<?=$image['type']?>);
+                $('.<?=($image['type'] == 1) ? 'images-box-'.$image['id'] : 'video-box-'.$image['id']?> img').addClass('smallImageView');
+                </script>
             </div>
         <?php endforeach; ?>
     </div>

@@ -566,3 +566,31 @@ span.text-content {
 .empty_description, .empty_title {
     border: 1px solid #ffc107;
 }
+
+.fancybox-video {
+    display: none;
+}
+
+.fancybox-nav {
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    height: 40%;
+}
+
+.video-links {
+    list-style: none;
+    padding: 0;
+}
+.video-links li {
+    float: left;
+    margin-right: 10px;
+}
+.smallImageView {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    height: 92px !important;
+    min-height: 92px !important;
+    max-height: 92px !important;
+}
