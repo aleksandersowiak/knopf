@@ -20,7 +20,6 @@ $uri = '/' . $_GET['controller'] . '/' . $_GET['action'] . $id;
         <script src="/data/js/bootstrap.js"></script>
         <script src="/data/js/app.js?ver=<?= APP_VER ?>"></script>
         <script src="/data/js/summernote.js"></script>
-        <script src="/data/js/selectables.js"></script>
         <script src="/data/js/lang/summernote-<?= $this->base_lang ?>-<?= strtoupper($this->base_lang) ?>.js"></script>
 <!--        <script src="/data/js/jquery.jMosaic.js"></script>-->
 
@@ -32,7 +31,6 @@ $uri = '/' . $_GET['controller'] . '/' . $_GET['action'] . $id;
         <link rel="stylesheet" type="text/css" href="/data/css/flags16.css">
         <link rel="stylesheet" type="text/css" href="/data/css/site.css?ver=<?= APP_VER ?>">
         <link rel="stylesheet" type="text/css" href="/data/css/summernote.css">
-        <link rel="stylesheet" type="text/css" href="/data/css/selectables.css">
 
         <link rel="stylesheet" type="text/css"
               href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css"/>

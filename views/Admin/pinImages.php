@@ -10,12 +10,12 @@
             var indDb = '<?=((isset($image[$this->data_type]) && ($image[$this->data_type] > 0))) ? 'checked' : '' ; ?>';
             var dataId = $('input[name="dataId"]').val();
             var checked = (dataId == '<?=$image[$this->data_type]?>' && indDb != '') ? 'checked' : '';
-            $('.gallery').append('<div class="images img-relative" style="display: none">' +
-                '<img style="max-height:150px; min-height:150px;  min-width:150px;  max-width:150px;  overflow: hidden; background: url(<?= $image['image_thumb'] ?>) no-repeat 50% 50%; background-size:cover;"/>' +
-                '<input type="checkbox" ' + checked + ' class="checkbox-img" name="<?= $image['id'] ?>" value="' + dataId + '" />' +
-                '</div>');
+            $('.gallery').append('<div class="images img-relative <?=($image['type'] == 1) ? 'images-box-'.$image['id'] : 'video-box-'.$image['id']?>" style="display: none"></div>');
+                App.thumbVideo(<?=$image['id']?>,'<?=$image['image']?>','<?= $image['image_thumb'] ?>',<?=$image['type']?>);
+                $('.<?=($image['type'] == 1) ? 'images-box-'.$image['id'] : 'video-box-'.$image['id']?>').append(
+                    '<input type="checkbox" ' + checked + ' class="checkbox-img" name="<?= $image['id'] ?>" value="' + dataId + '" />');
             <?php endforeach; ?>
-            $('.gallery').find('div').each(function (i, el) {
+            $('.gallery').find('div.images').each(function (i, el) {
                 $(el).fadeIn('slow');
             });
 

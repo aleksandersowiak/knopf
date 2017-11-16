@@ -278,7 +278,7 @@ App = {
     },
     animate: function () {
 
-        var introSection = $('#carousel-example-generic'),
+        var introSection  = $('#carousel-example-generic'),
             introSectionHeight = introSection.height(),
         //change scaleSpeed if you want to change the speed of the scale effect
             scaleSpeed = 0.3,

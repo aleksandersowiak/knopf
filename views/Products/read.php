@@ -17,7 +17,7 @@
     </div>
     <div class="col-md-3 ">
         <?php foreach ($this->image as $image) : ?>
-            <div class='col-md-6 <?=($image['type'] == 1) ? 'images-box-'.$image['id'] : 'video-box-'.$image['id']?>'>
+            <div class='col-md-6 gallery images <?=($image['type'] == 1) ? 'images-box-'.$image['id'] : 'video-box-'.$image['id']?>'>
                 <script>App.thumbVideo(<?=$image['id']?>,'<?=$image['image']?>','<?= $image['image_thumb'] ?>',<?=$image['type']?>);
                 $('.<?=($image['type'] == 1) ? 'images-box-'.$image['id'] : 'video-box-'.$image['id']?> img').addClass('smallImageView');
                 </script>
@@ -31,12 +31,20 @@
     </div>
     <div class="row">
         <?php foreach ($this->realization as $image_realization): ?>
-            <div class="col-xs-6 col-md-3">
-                <a class="thumbnail fancybox" rel="ligthbox" href="<?= $image_realization['image'] ?>">
-                    <img
-                        style="height: 150px; width: 100%;overflow: hidden; background: url(<?= str_replace(' ' , '%20', $image_realization['image_thumb']) ?>) no-repeat 50% 50%; background-size:cover;"/>
-                </a>
+            <div class="col-xs-6 col-md-3 realization images <?=($image_realization['type'] == 1) ? 'images-box-'.$image_realization['id'] : 'video-box-'.$image_realization['id']?>">
+                <script>
+                    App.thumbVideo(<?=$image_realization['id']?>,'<?=$image_realization['image']?>','<?=$image_realization['image_thumb'] ?>',<?=$image_realization['type']?>);
+                    $('.<?=($image_realization['type'] == 1) ? 'images-box-'.$image_realization['id'] : 'video-box-'.$image_realization['id']?> img').addClass('smallImageView');
+                </script>
             </div>
         <?php endforeach; ?>
     </div>
 <?php endif; ?>
+<style>
+    span.text-content{
+        width: 90% !important;
+        height: 102px !important;
+        position: absolute !important;
+        left: 5% !important;
+    }
+</style>

@@ -119,19 +119,6 @@ else :
         .tile {
             height: 145px;
         }
-
-        #tile1 {
-            background: rgb(0, 172, 238);
-        }
-
-        #tile2 {
-            background: rgb(243, 243, 243);
-        }
-
-        #tile3 {
-            background: rgb(71, 193, 228);
-        }
-
         .tilecaption {
             position: relative;
             top: 50%;

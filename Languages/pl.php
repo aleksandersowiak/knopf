@@ -96,5 +96,6 @@ $lang = array(
     'selected_files' => 'Wybrane pliki:',
     'no_selected_files' => 'Nie wybrano plików',
 
-    'something_is_wrong' => 'Tytuł bądź opis jest pusty. Tymczasowo wzięte z innego języka, gdzie wartość została uzupełniona'
+    'something_is_wrong' => 'Tytuł bądź opis jest pusty. Tymczasowo wzięte z innego języka, gdzie wartość została uzupełniona',
+    'change_category_image' => 'Przenieść zdjęcie do kategorii:'
 );
