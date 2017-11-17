@@ -331,47 +331,45 @@ App = {
     },
 
     thumbVideo: function (id, src, src_thum, type) {
-        var el = null;
-        if(type == 1) {
-            $('.images-box-'+id).append('<a class="fancybox thumbnail" rel="ligthbox" href="'+src+'">' +
-            '<img style="max-height:150px; min-height:150px;  min-width:150px;  max-width:150px;  overflow: hidden; background: url('+src_thum+') no-repeat 50% 50%; background-size:cover;"/>' +
-            '</a>');
-        }else if( type == 2) {
-        $('.video-box-'+id).append(
-            '<a class="fancybox thumbnail" href="#video-'+id+'">' +
-            '<img id="thumbnail-'+id+'"  style="max-height:150px; min-height:150px;  min-width:150px;  max-width:150px;  overflow: hidden; background: url() no-repeat 50% 50%; background-size:cover;" />' +
-                '<span class="text-content">' +
-                '<span> <i class="glyphicon glyphicon-play"></i></span>' +
-                '</span></a>' +
-                '</div>' +
-                '<div id="div_video" class="fancybox-video">'+
-            '<video id="video-'+id+'" width="400" controls="controls" preload="metadata" src="'+src+'" type="video/mp4">'+
-                '</video>'+
-            '</div>');
+        if (type == 1) {
+            $('.images-box-' + id).append('<a class="fancybox thumbnail" rel="ligthbox" href="' + src + '">' +
+                '<img style="max-height:150px; min-height:150px;  min-width:150px;  max-width:150px;  overflow: hidden; background: url(' + src_thum + ') no-repeat 50% 50%; background-size:cover;"/>' +
+                '</a>');
+        } else if (type == 2) {
+            $('.video-box-' + id).append(
+                '<div><span class="fancybox thumbnail">' +
+                    '<img id="thumbnail-' + id + '"  style="max-height:150px; min-height:150px;  min-width:150px;  max-width:150px;  overflow: hidden; background: url() no-repeat 50% 50%; background-size:cover;" />' +
+                    '</span><span class="text-content">' +
+                    '<a class="fancybox" href="#video-' + id + '"><i class="glyphicon glyphicon-play"></i></a>' +
+                    '</span></div>' +
+                    '<div id="div_video" class="fancybox-video">' +
+                    '<video id="video-' + id + '" width="400" controls="controls" preload="metadata" src="' + src + '" type="video/mp4">' +
+                    '</video>' +
+                    '</div>');
 
             var time = 15;
             var scale = 0.5;
             var video_obj = null;
 
-            document.getElementById('video-'+id).addEventListener('loadedmetadata', function() {
+            document.getElementById('video-' + id).addEventListener('loadedmetadata', function () {
                 this.currentTime = time;
                 video_obj = this;
             }, false);
-            document.getElementById('video-'+id).addEventListener('loadeddata', function() {
-                var video = document.getElementById('video-'+id);
+            document.getElementById('video-' + id).addEventListener('loadeddata', function () {
+                var video = document.getElementById('video-' + id);
                 var canvas = document.createElement("canvas");
                 canvas.width = video.videoWidth * scale;
                 canvas.height = video.videoHeight * scale;
                 canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
                 var img = document.createElement("img");
                 img.src = canvas.toDataURL();
-                $('#thumbnail-'+id).css("background-image", "url('" + img.src + "')");
+                $('#thumbnail-' + id).css("background-image", "url('" + img.src + "')");
                 video_obj.currentTime = 0;
             }, false);
             $(".fancybox").fancybox({
-                afterShow: function() {
-                    this.content.find('video-'+id).trigger('play')
-                    this.content.find('video-'+id).on('ended', function() {
+                afterShow: function () {
+                    this.content.find('video-' + id).trigger('play')
+                    this.content.find('video-' + id).on('ended', function () {
                         $.fancybox.next();
                     });
                 }

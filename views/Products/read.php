@@ -31,7 +31,7 @@
     </div>
     <div class="row">
         <?php foreach ($this->realization as $image_realization): ?>
-            <div class="col-xs-6 col-md-3 realization images <?=($image_realization['type'] == 1) ? 'images-box-'.$image_realization['id'] : 'video-box-'.$image_realization['id']?>">
+            <div class="col-xs-6 col-md-2 realization images <?=($image_realization['type'] == 1) ? 'images-box-'.$image_realization['id'] : 'video-box-'.$image_realization['id']?>">
                 <script>
                     App.thumbVideo(<?=$image_realization['id']?>,'<?=$image_realization['image']?>','<?=$image_realization['image_thumb'] ?>',<?=$image_realization['type']?>);
                     $('.<?=($image_realization['type'] == 1) ? 'images-box-'.$image_realization['id'] : 'video-box-'.$image_realization['id']?> img').addClass('smallImageView');
@@ -41,10 +41,15 @@
     </div>
 <?php endif; ?>
 <style>
-    span.text-content{
+
+    span.text-content, span.text-content span{
         width: 90% !important;
         height: 102px !important;
         position: absolute !important;
         left: 5% !important;
+        margin: 15% auto !important;
+    }
+    span.text-content {
+        margin: 0 !important;
     }
 </style>

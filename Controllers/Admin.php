@@ -288,6 +288,7 @@ class Admin extends BaseController
     }
     protected function importImagesAction($m = true)
     {
+        set_time_limit ( 0 );
         $i = 0;
         $dir          = APPLICATION_PATH . '/data/images/upload/';
         $ImagesA = $this->Get_ImagesToFolder($dir);
@@ -429,16 +430,10 @@ class Admin extends BaseController
         }
         if(!isset($final_img))
             return false;
-
-        //-- rename original (very ugly, could probably be rewritten, but i can't be arsed at this stage)
-        $parts = explode("/", $fileandpath);
-        $oldname = array_pop($parts);
-        $path = implode('/', $parts);
-        $oldname_parts = explode(".", $oldname);
-        $ext = array_pop($oldname_parts);
-        $newname = implode('.', $oldname_parts).'.orig.'.$ext;
-
-        rename($fileandpath, $path.'/'.$newname);
+        if (!is_writable($fileandpath)) {
+            chmod($fileandpath, 0777);
+        }
+        unlink($fileandpath);
 
         // Save it and the return the result (true or false)
         $done = $this->save_image_resource($final_img,$fileandpath);
@@ -552,24 +547,24 @@ class Admin extends BaseController
 
         $categories = '<ul>';
         foreach ($content_categories as $val) {
-            $categories .= sprintf('<span><li data-url=&#34;'.createUrl('admin','assignImageToCategory').'&#34; class=&#34;assign-to-category like-link&#34; data-id=&#34;%d&#34;>%s</li></a>', $val['category_id'], __($val['category']));
+            $categories .= sprintf('<li data-url=&#34;'.createUrl('admin','assignImageToCategory').'&#34; class=&#34;assign-to-category like-link&#34; data-id=&#34;%d&#34;>%s</li>', $val['category_id'], __($val['category']));
         }
         $categories .= '</ul>';
 
 
         foreach ($content as $image) :
             if($image['type'] == 1) {
-                $images .= "$('.viewContentGallery').append('<div class=\"images\" style=\"display: none\" > ";
+                $images .= "$('.viewContentGallery').append('<div class=\"images-admin\" style=\"display: none\" > ";
                 $images .= "<div class=\"thumbnail\">";
                 $images .= "<img target-category-id=\"".$image['category_id']."\" data-id =\"".$image['id']."\" style=\"max-height:150px; min-height:150px;  min-width:150px;  max-width:150px;  overflow: hidden; background: url(".$image['image_thumb'].") no-repeat 50% 50%; background-size:cover;\"/> ";
                 $images .= "</div>";
                 $images .= "<span class=\"text-content\">";
-                $images .= "<span data-toggle=\"popover\" title=\"".__('change_category_image')."\"  data-html=\"true\" data-content=\"".$categories."\" data-url=\"".createUrl('admin','assignImageToCategory')."\" data-id=\"".$image['id']."\" class=\"chane-category-image\"> <i class=\"glyphicon glyphicon-th-list\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"".__('change_category_image')."\"></i></span>";
-                $images .= "<span data-url=\"".createUrl('admin','deleteImage')."\" data-id=\"".$image['id']."\" class=\"delete-image\"> <i class=\"glyphicon glyphicon-remove-circle\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"".__('delete_image')."\"></i></span>";
+                $images .= "<span> <i data-toggle=\"popover\" data-placement=\"right\" title=\"".__('change_category_image')."\"  data-html=\"true\" data-content=\"".$categories."\" data-url=\"".createUrl('admin','assignImageToCategory')."\" data-id=\"".$image['id']."\" class=\"chane-category-image glyphicon glyphicon-th-list\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"".__('change_category_image')."\"></i></span>";
+                $images .= "<span> <i data-url=\"".createUrl('admin','deleteImage')."\" data-id=\"".$image['id']."\" class=\"delete-image glyphicon glyphicon-remove-circle\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"".__('delete_image')."\"></i></span>";
                 $images .= "<a class=\"fancybox\" rel=\"ligthbox\" href=\"".$image['image']."\"> <i class=\"glyphicon glyphicon-resize-full\"  data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"".__('full_size_image')."\"></i></a> ";
                 $images .= "</span></div>'); ";
             } else if ($image['type'] == 2) {
-                $images .= "$('.viewContentGallery').append('<div class=\"images video-box-" . $image['id'] ."\" style=\"display: none\" ></div>');";
+                $images .= "$('.viewContentGallery').append('<div class=\"images-admin video-box-" . $image['id'] ."\" style=\"display: none\" ></div>');";
                 $images .= "App.thumbVideo(".$image['id'].",'".$image['image']."','',".$image['type'].");";
                 $images .= "$('#thumbnail-".$image['id']."').attr('target-category-id','".$image['category_id']."').attr('data-id' ,'".$image['id']."');";
                 $images .= "$('.video-box-".$image['id']."').find('.text-content').prepend('<span data-url=\"".createUrl('admin','deleteImage')."\" data-id=\"".$image['id']."\" class=\"delete-image\"> <i class=\"glyphicon glyphicon-remove-circle\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"".__('delete_image')."\"></i></span>');";
@@ -581,15 +576,16 @@ class Admin extends BaseController
         if($('.viewContentGallery').length > 0) {
             $('.viewContentGallery').remove();
         }
-
+	var classes = '.images-admin';
         $viewContent
         $h3
         $(document).ready(function () {
+
             $images
-            $('.viewContentGallery').find('div.images').each(function (i, el) {
+            $('.viewContentGallery').find('div.images-admin').each(function (i, el) {
                 $(el).fadeIn('slow');
             });
-            $('.images').draggable({
+            $(classes).draggable({
                 cursor: 'move',
                 helper: "clone",
                 opacity: 0.35
@@ -601,12 +597,12 @@ class Admin extends BaseController
 
                 var params = {
                         droppedCategoryId : $(this).attr('data-id'),
-                        imageId : $(event.originalEvent.toElement).parents('.images').find('img').attr('data-id')
+                        imageId : $(event.originalEvent.toElement).parents(classes).find('img').attr('data-id')
                     };
                     App.ajaxSend("$url", params);
-                    $('img[data-id="'+$(event.originalEvent.toElement).parents('.images').find('img').attr('data-id')+'"]').parents('div.images').remove();
+                    $('img[data-id="'+$(event.originalEvent.toElement).parents(classes).find('img').attr('data-id')+'"]').parents('div' + classes).remove();
                     var count = $(this).find('span.count').text(); $(this).find('span.count').text(parseInt(count)+1);
-                    var category = $('span.category[data-id="'+$(event.originalEvent.toElement).parents('.images').find('img').attr('target-category-id')+'"]');
+                    var category = $('span.category[data-id="'+$(event.originalEvent.toElement).parents(classes).find('img').attr('target-category-id')+'"]');
                     var count_target = category.find('span.count').text(); category.find('span.count').text(parseInt(count_target)-1);
                 }
             });
@@ -617,7 +613,7 @@ class Admin extends BaseController
                 });
             });
             App.waitForElement('.delete-image', function () {
-                $('.delete-image').on('click', function () {
+                 $(document).undelegate('.delete-image').delegate('.delete-image', 'click', function () {
                         App.ajaxSend($(this).attr('data-url'), {
                             'popupModal': true,
                             'dataId': $(this).attr('data-id')
@@ -630,8 +626,8 @@ class Admin extends BaseController
                 });
 
             App.waitForElement('.assign-to-category', function () {
-                $('.assign-to-category').on('click', function () {
-                    var imageId = $(this).parents('.images').find('img').attr('data-id');
+                $(document).undelegate('.assign-to-category').delegate('.assign-to-category', 'click', function () {
+                    var imageId = $(this).parents(classes).find('img').attr('data-id');
                     var categoryId = $(this).attr('data-id');
                     var params = {
                         'popupModal': true,
@@ -639,10 +635,10 @@ class Admin extends BaseController
                         imageId : imageId
                     };
                     App.ajaxSend($(this).attr('data-url'),params);
-                    $('img[data-id="'+imageId+'"]').parents('div.images').remove();
+                    $('img[data-id="'+imageId+'"]').parents('div' + classes).remove();
                     var count = $('span.category[data-id="' + categoryId + '"]').find('span.count').text();
                     $('span.category[data-id="' + categoryId + '"]').find('span.count').text(parseInt(count)+1);
-                    var category = $('span.category[data-id="'+$(this).parents('.images').find('img').attr('target-category-id')+'"]');
+                    var category = $('span.category[data-id="'+$(this).parents(classes).find('img').attr('target-category-id')+'"]');
                     var count_target = category.find('span.count').text();
                     category.find('span.count').text(parseInt(count_target)-1);
                     });
@@ -728,6 +724,7 @@ EOF;
         if ($update) {
             $message = "$('div.page-header').find('h3').css({display: 'block'}).text('".$this->getParam('value')."');
                         $('span.category[data-id=\"".$this->getParam('category_id')."\"]').text('".$this->getParam('value')."');
+                        $('span.category[data-id=\"".$this->getParam('category_id')."\"]').parent().find('.badge').remove();
                         $('div.page-header').find('input[name=\"".$this->getParam('category')."\"]').css({display: 'none'});";
         }
         $this->finish(null, $message);
@@ -749,7 +746,7 @@ EOF;
         if (in_array(pathinfo($file, PATHINFO_EXTENSION), $file_display) == true) {
             if (!in_array($shaFile, $listOfImported)) {
                 if(!rename($dir . $movie['name'], $dir . $shaFile)) {
-                    echo 'Nie można mienić nazwy';
+                    echo 'Nie można zmienić nazwy';
                 }
                 $select_category_id = $this->_model->select('Select id from category where ' . ' category_' . $this->getParam('language') . ' = "none_category"');
                 $save = array('image' => '/data/images/upload/' . $shaFile, 'category_id' => $select_category_id[0]['id'], 'type' => 2);
