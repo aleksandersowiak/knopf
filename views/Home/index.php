@@ -13,7 +13,7 @@
                 <div class="item <?= ($k == 0) ? "active" : "" ?>">
 
                     <div role="image" data-src="holder.js/auto/auto/#11/" alt=""
-                         style="max-width:100%; max-height:250px; min-width:100%; min-height:250px; overflow: hidden; background: url(<?= $element_display['image'] ?>) no-repeat 50% 50%; background-size:cover;"
+                         style="max-width:100%; max-height:350px; min-width:100%; min-height:350px; overflow: hidden; background: url(<?= $element_display['image'] ?>) no-repeat 50% 50%; background-size:cover;"
                          data-holder-rendered="true"></div>
 
                     <div class="carousel-caption" style="    background-color: rgba(0,0,0, 0.4);">
@@ -26,7 +26,7 @@
         </div>
     </div>
 <?php endif; ?>
-
+<div class="container">
 <?php
 $message = '';
 foreach ($this->indexAction as $k => $value) :
@@ -34,6 +34,7 @@ foreach ($this->indexAction as $k => $value) :
 endforeach;
 echo $message;
 ?>
+</div>
 <script>
     var image_element = $('.carousel-inner .item div[role="image"]'),
          image_url;

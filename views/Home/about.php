@@ -1,3 +1,4 @@
+<div class="container">
 <div class="page-header">
     <h1><?= __('menu_about') ?></h1>
 </div>
@@ -8,3 +9,4 @@ foreach ($this->aboutAction as $k => $value) :
 endforeach;
 echo $message;
 ?>
+</div>

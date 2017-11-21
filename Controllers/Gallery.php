@@ -14,7 +14,7 @@ class Gallery extends BaseController
     {
         $data = array();
         foreach ($this->_model->getImages(' WHERE category_id != 1 ', $this->getParam('language')) as $cat_img) {
-            $data[$cat_img['category']][] = $cat_img['image'];
+            $data[$cat_img['category']][] = $cat_img['image_thumb'];
             $data[$cat_img['category']]['category_id'] = $cat_img['category_id'];
         }
         $this->ReturnView($data, false, $fix);

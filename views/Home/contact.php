@@ -1,3 +1,4 @@
+<div class="container">
 <div class="col-md-6">
     <div class="well">
         <fieldset>
@@ -155,3 +156,4 @@
         }
     });
 </script>
+</div>

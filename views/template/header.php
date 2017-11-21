@@ -15,14 +15,14 @@ $uri = '/' . $_GET['controller'] . '/' . $_GET['action'] . $id;
         <title>KNOPF - Serramenti vendita ed installazione</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <meta http-equiv="Content-Language" content="<?= $this->base_lang ?>"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
         <script src="/data/js/jquery-3.2.1.js"></script>
         <script src="/data/js/jquery-ui.js"></script>
         <script src="/data/js/bootstrap.js"></script>
         <script src="/data/js/app.js?ver=<?= APP_VER ?>"></script>
         <script src="/data/js/summernote.js"></script>
         <script src="/data/js/lang/summernote-<?= $this->base_lang ?>-<?= strtoupper($this->base_lang) ?>.js"></script>
-<!--        <script src="/data/js/jquery.jMosaic.js"></script>-->
-
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"
               media="screen">
         <script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
@@ -98,7 +98,7 @@ if ($this->_session->__isset('flash_message')) {
 <!--                    </form>-->
                     <li class="dropdown f16">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false"><?= __('global_header_language'); ?> <?= $this->languagesList[$this->base_lang] ?>
+                           aria-expanded="false"><span class="lang-display"><?= __('global_header_language'); ?> <?= $this->languagesList[$this->base_lang] ?></span>
                             <span
                                 class="flag <?= $this->base_lang ?>"></span> <span class="caret"></span></a>
                         <ul class="dropdown-menu langs">
@@ -116,7 +116,7 @@ if ($this->_session->__isset('flash_message')) {
         <!-- /.container-fluid -->
     </nav>
 <div id="body">
-    <div class="container">
+    <div class="">
 <?php if ($this->edit == true) : ?>
     <script>
         function loadEditButton() {

@@ -2,6 +2,7 @@ App = {
     init: function () {
         
         $(document).ready(function () {
+            $('#body').css({'padding-top':$('.navbar-top').height()+10+'px', 'padding-bottom':$('.footer').height()+'px'});
             if (typeof loadEditButton == 'function') {
                 loadEditButton();
             }
@@ -332,18 +333,18 @@ App = {
 
     thumbVideo: function (id, src, src_thum, type) {
         if (type == 1) {
-            $('.images-box-' + id).append('<a class="fancybox thumbnail" rel="ligthbox" href="' + src + '">' +
-                '<img style="max-height:150px; min-height:150px;  min-width:150px;  max-width:150px;  overflow: hidden; background: url(' + src_thum + ') no-repeat 50% 50%; background-size:cover;"/>' +
+            $('.images-box-' + id).append('<a class="fancybox" rel="ligthbox" href="' + src + '">' +
+                '<img style="background: url(' + src_thum + ') no-repeat 50% 50%; background-size:cover;"/>' +
                 '</a>');
         } else if (type == 2) {
             $('.video-box-' + id).append(
-                '<div><span class="fancybox thumbnail">' +
-                    '<img id="thumbnail-' + id + '"  style="max-height:150px; min-height:150px;  min-width:150px;  max-width:150px;  overflow: hidden; background: url() no-repeat 50% 50%; background-size:cover;" />' +
+                '<div><span class="fancybox">' +
+                    '<img id="thumbnail-' + id + '"  style="overflow: hidden; background: url() no-repeat 50% 50%; background-size:cover;" />' +
                     '</span><span class="text-content">' +
                     '<a class="fancybox" href="#video-' + id + '"><i class="glyphicon glyphicon-play"></i></a>' +
                     '</span></div>' +
                     '<div id="div_video" class="fancybox-video">' +
-                    '<video id="video-' + id + '" width="400" controls="controls" preload="metadata" src="' + src + '" type="video/mp4">' +
+                    '<video id="video-' + id + '" width="800" controls="controls" preload="metadata" src="' + src + '" type="video/mp4">' +
                     '</video>' +
                     '</div>');
 

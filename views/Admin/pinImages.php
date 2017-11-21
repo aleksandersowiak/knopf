@@ -18,6 +18,7 @@
             <?php endforeach; ?>
             $('.gallery').find('div.images-admin').each(function (i, el) {
                 $(el).fadeIn('slow');
+                $(el).find('img').css({width:'150px', height:'150px'});
             });
 
             $('button.pin-btn').removeClass('btn-info');
