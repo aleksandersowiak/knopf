@@ -28,7 +28,7 @@ abstract class BaseController extends BaseModel
         }
         $this->setParams($the_request);
         $this->__init();
-        $this->Add('web_title', '<img src="/data/images/logo.png"/>');
+        $this->Add('web_title', '<img class="logoHeader" src="/data/images/logo.png"/>');
         $this->Add('top_menu', $this->_model->getTopMenu());
         $this->_session = new Session();
         if (session_status() == PHP_SESSION_NONE) {

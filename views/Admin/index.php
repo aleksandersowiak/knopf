@@ -1,3 +1,4 @@
+<div class="container container-admin">
 <nav class="navbar">
     <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed collapsed-admin" data-toggle="collapse"
@@ -48,3 +49,4 @@
             $('.nav-tabs').find('li[data-select="<?=$v?>"]').addClass('active');
         </script>
     <?php endif; endif; ?>
+</div>

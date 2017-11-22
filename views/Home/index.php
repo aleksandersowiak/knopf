@@ -26,7 +26,7 @@
         </div>
     </div>
 <?php endif; ?>
-<div class="container">
+<div class="container container-admin">
 <?php
 $message = '';
 foreach ($this->indexAction as $k => $value) :

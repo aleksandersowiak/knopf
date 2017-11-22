@@ -1,4 +1,6 @@
+
 <?php require_once(dirname(__FILE__) . '/index.php'); ?>
+<div class="container">
 <form method="post" enctype="multipart/form-data">
     <p><?=__('selected_files')?></p>
     <span id="upload-file-info"><ul><li><?=__('no_selected_files')?></li></ul></span>
@@ -195,3 +197,4 @@
 
     });
 </script>
+</div>

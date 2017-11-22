@@ -2,12 +2,12 @@
 <div class="col-md-12">
     <!--// Content Information //-->
     <div class="heading-style3">
-        <h2><?= __('gallery')?></h2>
+        <h2><?= __('menu_gallery')?></h2>
     </div>
 </div>
 <?php
 if (empty($viewmodel)) :
-    echo '<div class="alert alert-info">' . __('no_images') . '</div>';
+    echo '<div class="container"><div class="alert alert-info col-md-12 col-sm-12 col-xs-12 center-block">' . __('no_images') . '</div></div>';
 else :
     ?>
 <!--    <div class="list-group gallery">-->
@@ -44,7 +44,7 @@ else :
                 $i++;
             endif;
         endforeach; ?>
-            <div class="case-study col-md-4 col-sm-4 col-xs-12">
+            <div class="case-study col-md-4 col-sm-4 col-xs-12 no-padding">
                 <div>
                     <?php if (!empty($attr[0])) : ?>
                         <div style="<?= $class ?>">
@@ -110,7 +110,7 @@ else :
                 <?php endif; ?>
                 <div class="case-study__overlay col-md-12 col-sm-12 col-xs-12">
                     <h2 class="case-study__title"><?= ucfirst($category) ?></h2>
-                    <a class="case-study__link" href="<?= createUrl('gallery', 'view', $this->getCategoryId($images['category_id'])) ?>"><?= __('show_all') ?></a>
+                    <a class="case-study__link" href="<?= createUrl('gallery', 'view', $this->getCategoryId($images['category_id'])) ?>"><?= __('shows') ?></a>
                 </div>
             </div>
 

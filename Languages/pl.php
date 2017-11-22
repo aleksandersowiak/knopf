@@ -16,7 +16,7 @@ $lang = array(
     "menu_index" => "Strona Główna",
 
     "logout" => "Wyloguj",
-
+    "shows" => "Wyświetl",
     "back" => "Wróć",
     "fist_name" => "Imię",
     "last_name" => "Nazwisko",

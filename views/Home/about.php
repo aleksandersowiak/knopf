@@ -1,7 +1,10 @@
-<div class="container">
-<div class="page-header">
-    <h1><?= __('menu_about') ?></h1>
-</div>
+<div class="case-study-gallery">
+    <div class="col-md-12">
+        <div class="heading-style3">
+            <h2><?= __('menu_about') ?></h2>
+        </div>
+    </div>
+    <div class="container">
 <?php
 $message = '';
 foreach ($this->aboutAction as $k => $value) :
@@ -9,4 +12,5 @@ foreach ($this->aboutAction as $k => $value) :
 endforeach;
 echo $message;
 ?>
+</div>
 </div>

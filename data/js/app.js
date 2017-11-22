@@ -2,7 +2,7 @@ App = {
     init: function () {
         
         $(document).ready(function () {
-            $('#body').css({'padding-top':$('.navbar-top').height()+10+'px', 'padding-bottom':$('.footer').height()+'px'});
+            $('#body').css({'padding-top':$('.navbar-top').height()+'px', 'padding-bottom':$('.footer').height()+'px'});
             if (typeof loadEditButton == 'function') {
                 loadEditButton();
             }
