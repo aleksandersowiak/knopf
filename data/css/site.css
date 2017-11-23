@@ -39,6 +39,8 @@ a {
 @media (max-width: 768px) {
     .case-study__description { display: none; }
     #rc-imageselect, .g-recaptcha {transform:scale(0.77);-webkit-transform:scale(0.77);transform-origin:0 0;-webkit-transform-origin:0 0;}
+    .logoHeader { margin-top: -5px; }
+    .viewContentGallery { width: 100% !important; }
     /*.lang-display {display: none}*/
     /*#sidebar-wrapper { display: none}*/
     /*#body {*/
