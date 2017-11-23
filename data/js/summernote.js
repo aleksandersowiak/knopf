@@ -6929,7 +6929,7 @@
             fontNames: [
                 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New',
                 'Helvetica Neue', 'Helvetica', 'Impact', 'Lucida Grande',
-                'Tahoma', 'Times New Roman', 'Verdana'
+                'Tahoma', 'Times New Roman', 'Verdana', 'Montserrat'
             ],
 
             fontSizes: ['8', '9', '10', '11', '12', '14', '18', '24', '36'],

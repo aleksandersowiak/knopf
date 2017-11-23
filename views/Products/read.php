@@ -26,6 +26,7 @@
                 </p>
             </div>
             <div class="col-md-3 col-sm-3 co-sx-12">
+                <div class="page-header"><h1><?= __('photos') ?></h1></div>
                 <div class="gal-container">
                     <?php $i = 0;
                     foreach ($this->image as $image) : ?>

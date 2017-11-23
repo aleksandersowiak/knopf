@@ -127,7 +127,7 @@ class Admin extends BaseController
             if($this->getParam('dataController') == 'category') $this->setParam('dataController', 'gallery');
             $modal = "$('.modal').modal('hide');";
             $reload = '$.post("' . $_SERVER['HTTP_REFERER'] . '", {\'onlyView\': true, \'id\': \'contents\', \'view\': \'' . $this->getParam('dataController') . '\', \'language\': \'' . $_GET['language'] . '\', \'controller\': \'' . $_GET['controller'] . '\', \'action\': \'' . $_GET['action'] . '\' }, function(data){
-                $("#body").find(\'.container\').html(data);
+                $("#body").html(data);
             });';
             $message = $this->renderMessage(__('edit_success'), 'success') . $modal . $reload;
         }
@@ -566,7 +566,8 @@ class Admin extends BaseController
             } else if ($image['type'] == 2) {
                 $images .= "$('.viewContentGallery').append('<div class=\"images-admin video-box-" . $image['id'] ."\" style=\"display: none\" ></div>');";
                 $images .= "App.thumbVideo(".$image['id'].",'".$image['image']."','',".$image['type'].");";
-                $images .= "$('#thumbnail-".$image['id']."').attr('target-category-id','".$image['category_id']."').attr('data-id' ,'".$image['id']."');";
+                $images .= "$('#thumbnail-".$image['id']."').attr('target-category-id','".$image['category_id']."').attr('data-id' ,'".$image['id']."').parent('.fancybox').addClass('thumbnail');";
+                $images .= "if($('#thumbnail-".$image['id']."').height() == 0 || $('#thumbnail-".$image['id']."').width() == 0) { $('#thumbnail-".$image['id']."').css({height: 150+'px', width: 150+'px'}); }";
                 $images .= "$('.video-box-".$image['id']."').find('.text-content').prepend('<span data-url=\"".createUrl('admin','deleteImage')."\" data-id=\"".$image['id']."\" class=\"delete-image\"> <i class=\"glyphicon glyphicon-remove-circle\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"".__('delete_image')."\"></i></span>');";
                 $images .= "$('.video-box-".$image['id']."').find('.text-content').prepend('<span data-toggle=\"popover\" title=\"".__('change_category_image')."\"  data-html=\"true\" data-content=\"".$categories."\" data-url=\"".createUrl('admin','assignImageToCategory')."\" data-id=\"".$image['id']."\" class=\"chane-category-image\"> <i class=\"glyphicon glyphicon-th-list\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"".__('change_category_image')."\"></i></span>');";
             }

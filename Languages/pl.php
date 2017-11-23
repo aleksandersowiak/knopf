@@ -35,6 +35,7 @@ $lang = array(
     "login_incorrect" => "Nazwa użytkownika lub hasło jest nieprawidłowe",
     "logout_success" => "Zostałeś(aś) wylogowany(a)",
     "delete_success" => "Wpis został usunięty!",
+    "photos" => "Zdjęcia",
 
     "ask_us" => "Skontaktuj się z nami przez formularz",
     "contact" => "Kontakt",
