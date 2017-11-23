@@ -37,6 +37,8 @@ a {
 }
 .no-padding {padding: 0 !important;}
 @media (max-width: 768px) {
+    .case-study__description { display: none; }
+    #rc-imageselect, .g-recaptcha {transform:scale(0.77);-webkit-transform:scale(0.77);transform-origin:0 0;-webkit-transform-origin:0 0;}
     /*.lang-display {display: none}*/
     /*#sidebar-wrapper { display: none}*/
     /*#body {*/
@@ -816,7 +818,7 @@ margin : 0;
 .case-study {
     position: relative;
     display: inline-block;;
-
+    border: 5px solid #ffffff;
     height: 250px;
 
     background-size: cover;

@@ -93,4 +93,5 @@ $lang = array(
     'something_is_wrong' => 'Il titolo o l&#8217;entrata è vuota. Catturato da un&#8217;altra lingua, dove è stato aggiunto il valore',
     'change_category_image' => 'Sposta l&#8217;immagine nella categoria:',
     "shows" => "Vista",
+    "photos" => "Foto",
 );
