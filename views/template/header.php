@@ -31,6 +31,7 @@ $uri = '/' . $_GET['controller'] . '/' . $_GET['action'] . $id;
         <link rel="stylesheet" type="text/css" href="/data/css/flags16.css">
         <link rel="stylesheet" type="text/css" href="/data/css/site.css?ver=<?= APP_VER ?>">
         <link rel="stylesheet" type="text/css" href="/data/css/summernote.css">
+        <link rel="stylesheet" href="/data/fonts/font-awesome/css/font-awesome.min.css">
 
         <link rel="stylesheet" type="text/css"
               href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css"/>
@@ -84,7 +85,8 @@ if ($this->_session->__isset('flash_message')) {
                 <ul class="nav navbar-nav">
                     <?php
                     foreach ($this->top_menu as $element) {
-                        echo '<li><a href="' . createUrl($element['controller'], $element['action']) . '"> ' . __($element['menu_element']) . '</a></li>';
+                        $class = ($element['controller'] == $this->getParam('controller') && $element['action'] == $this->getParam('action')) ? ' class="active" ' : '';
+                        echo '<li '. $class .'><a href="' . createUrl($element['controller'], $element['action']) . '"> ' . __($element['menu_element']) . '</a></li>';
                         unset($link);
                     }
                     ?>

@@ -13,8 +13,8 @@
                                 <p class="logo"><?= $this->web_title ?> </p>
                             </div>
                             <div class="col-md-3 col-sm-3 col-xs-12 kd-services">
-                                <i class="fa fa-phone thbg-color"></i>
-                                <h5><?= __('contact') ?>
+
+                                <h5><i class="fa fa-map-marker thbg-color"></i> <?= __('contact') ?>
                                 </h5>
 
                                 <p></p>
@@ -26,8 +26,8 @@
                                 </p>
                             </div>
                             <div class="col-md-3 col-sm-3 col-xs-12 kd-services">
-                                <i class="fa fa-phone thbg-color"></i>
-                                <h5><?= __('phone') ?>
+
+                                <h5><i class="fa fa-phone thbg-color"></i> <?= __('phone') ?>
                                 </h5>
 
                                 <p></p>
@@ -38,8 +38,8 @@
                                     <?php endforeach; ?>
                                 </p></div>
                             <div class="col-md-3 col-sm-3 col-xs-12 kd-services">
-                                <i class="fa fa-envelope-o thbg-color"></i>
-                                <h5><?= __('email'); ?>
+
+                                <h5><i class="fa fa-envelope-o thbg-color"></i> <?= __('email'); ?>
                                 </h5>
 
                                 <p></p>
