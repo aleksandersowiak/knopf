@@ -16,9 +16,9 @@ class Admin extends BaseController
     {
         $this->_model = new AdminModel();
         $this->_addButton = '<span class="label label-primary">%s</span> <span class="like-link" id="pop-upModal" data-url="' . createUrl('admin', 'add') . '" data-controller="%s"
-        params="dataController:%s"><i class="glyphicon glyphicon-plus-sign" data-toggle="tooltip" data-placement="right" title="' . __('add') . '"></i></span>';
-        $this->_editButton = '<span class="label label-default" data-id="%d">%s</span> <span class="like-link edit-document" data-url="%s" data-action="%s" data-controller="%s"  data-id="%d"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="right" title="' . __('edit') . '"></i> </span>';
-        $this->_deleteButton = '<span class="like-link edit-document" data-url="%s" data-action="%s" data-controller="%s" data-id="%d" data-controller="products"> <i class="glyphicon glyphicon-remove" data-toggle="tooltip" data-placement="right" title="' . __('delete') . '"></i> </span><p><i>%s</i></p>';
+        params="dataController:%s"><i class="fa fa-plus" data-toggle="tooltip" data-placement="right" title="' . __('add') . '"></i></span>';
+        $this->_editButton = '<span class="label label-default" data-id="%d">%s</span> <span class="like-link edit-document" data-url="%s" data-action="%s" data-controller="%s"  data-id="%d"><i class="fa fa-pencil-square-o" data-toggle="tooltip" data-placement="right" title="' . __('edit') . '"></i> </span>';
+        $this->_deleteButton = '<span class="like-link edit-document" data-url="%s" data-action="%s" data-controller="%s" data-id="%d" data-controller="products"> <i class="fa fa-trash" data-toggle="tooltip" data-placement="right" title="' . __('delete') . '"></i> </span><p><i>%s</i></p>';
         parent::__init();
     }
 
@@ -259,7 +259,7 @@ class Admin extends BaseController
             $contentData[][] =
                 sprintf('<span class="category label label-default" data-id="%d">%s</span>
                 <span class=" like-link edit-document" data-url="%s" data-action="%s" data-controller="%s" data-id="%d">
-                <i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="right" title="' . __('edit') . '"></i> ' . $warning .'
+                <i class="fa fa-pencil-square-o" data-toggle="tooltip" data-placement="right" title="' . __('edit') . '"></i> ' . $warning .'
                 </span>', $val['category_id'], __($val['category']) . ' (<span class="count">' . $count[0]['count']. '</span>)',createUrl('admin', 'editGallery'), '','',$val['category_id'])
                 . $deleteButton
             ;
@@ -566,17 +566,17 @@ class Admin extends BaseController
                 $images .= "<img target-category-id=\"".$image['category_id']."\" data-id =\"".$image['id']."\" style=\"max-height:150px; min-height:150px;  min-width:150px;  max-width:150px;  overflow: hidden; background: url(".$image['image_thumb'].") no-repeat 50% 50%; background-size:cover;\"/> ";
                 $images .= "</div>";
                 $images .= "<span class=\"text-content\">";
-                $images .= "<span> <i data-toggle=\"popover\" data-placement=\"right\" title=\"".__('change_category_image')."\"  data-html=\"true\" data-content=\"".$categories."\" data-url=\"".createUrl('admin','assignImageToCategory')."\" data-id=\"".$image['id']."\" class=\"chane-category-image glyphicon glyphicon-th-list\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"".__('change_category_image')."\"></i></span>";
-                $images .= "<span> <i data-url=\"".createUrl('admin','deleteImage')."\" data-id=\"".$image['id']."\" class=\"delete-image glyphicon glyphicon-remove-circle\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"".__('delete_image')."\"></i></span>";
-                $images .= "<a class=\"fancybox\" rel=\"ligthbox\" href=\"".$image['image']."\"> <i class=\"glyphicon glyphicon-resize-full\"  data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"".__('full_size_image')."\"></i></a> ";
+                $images .= "<span> <i data-toggle=\"popover\" data-placement=\"right\" title=\"".__('change_category_image')."\"  data-html=\"true\" data-content=\"".$categories."\" data-url=\"".createUrl('admin','assignImageToCategory')."\" data-id=\"".$image['id']."\" class=\"chane-category-image fa fa-list\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"".__('change_category_image')."\"></i></span>";
+                $images .= "<span> <i data-url=\"".createUrl('admin','deleteImage')."\" data-id=\"".$image['id']."\" class=\"delete-image fa fa-times-circle-o\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"".__('delete_image')."\"></i></span>";
+                $images .= "<a class=\"fancybox\" rel=\"ligthbox\" href=\"".$image['image']."\"> <i class=\"fa fa-expand\"  data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"".__('full_size_image')."\"></i></a> ";
                 $images .= "</span></div>'); ";
             } else if ($image['type'] == 2) {
                 $images .= "$('.viewContentGallery').append('<div class=\"images-admin video-box-" . $image['id'] ."\" style=\"display: none\" ></div>');";
                 $images .= "App.thumbVideo(".$image['id'].",'".$image['image']."','',".$image['type'].");";
                 $images .= "$('#thumbnail-".$image['id']."').attr('target-category-id','".$image['category_id']."').attr('data-id' ,'".$image['id']."').parent('.fancybox').addClass('thumbnail');";
                 $images .= "if($('#thumbnail-".$image['id']."').height() == 0 || $('#thumbnail-".$image['id']."').width() == 0) { $('#thumbnail-".$image['id']."').css({height: 150+'px', width: 150+'px'}); }";
-                $images .= "$('.video-box-".$image['id']."').find('.text-content').prepend('<span data-url=\"".createUrl('admin','deleteImage')."\" data-id=\"".$image['id']."\" class=\"delete-image\"> <i class=\"glyphicon glyphicon-remove-circle\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"".__('delete_image')."\"></i></span>');";
-                $images .= "$('.video-box-".$image['id']."').find('.text-content').prepend('<span data-toggle=\"popover\" title=\"".__('change_category_image')."\"  data-html=\"true\" data-content=\"".$categories."\" data-url=\"".createUrl('admin','assignImageToCategory')."\" data-id=\"".$image['id']."\" class=\"chane-category-image\"> <i class=\"glyphicon glyphicon-th-list\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"".__('change_category_image')."\"></i></span>');";
+                $images .= "$('.video-box-".$image['id']."').find('.text-content').prepend('<span data-url=\"".createUrl('admin','deleteImage')."\" data-id=\"".$image['id']."\" class=\"delete-image\"> <i class=\"fa fa-times-circle-o\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"".__('delete_image')."\"></i></span>');";
+                $images .= "$('.video-box-".$image['id']."').find('.text-content').prepend('<span data-toggle=\"popover\" title=\"".__('change_category_image')."\"  data-html=\"true\" data-content=\"".$categories."\" data-url=\"".createUrl('admin','assignImageToCategory')."\" data-id=\"".$image['id']."\" class=\"chane-category-image\"> <i class=\"fa fa-list\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"".__('change_category_image')."\"></i></span>');";
             }
         endforeach;
         $url = createUrl('admin','assignImageToCategory');

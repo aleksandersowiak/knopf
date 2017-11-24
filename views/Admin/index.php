@@ -24,11 +24,11 @@
             }
             ?>
             <li data-select="uploadImages"><a href="<?= createUrl('admin', 'uploadImages') ?>"><i
-                        class="glyphicon glyphicon-upload"></i> <?= __('upload_images') ?></a></li>
+                        class="fa fa-upload"></i> <?= __('upload_images') ?></a></li>
             <li><a href="#" id="pop-upModal" data-url="<?= createUrl('admin', 'importImages') ?>"><i
-                        class="glyphicon glyphicon-import"></i> <?= __('import_images') ?></a></li>
+                        class="fa fa-cloud-download"></i> <?= __('import_images') ?></a></li>
             <li><a href="<?= createUrl('admin', 'logout') ?>"><i
-                        class="glyphicon glyphicon-off"></i> <?= __('logout') ?></a></li>
+                        class="fa fa-sign-out"></i> <?= __('logout') ?></a></li>
 
         </ul>
     </div>

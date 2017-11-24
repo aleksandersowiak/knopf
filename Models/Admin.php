@@ -192,8 +192,8 @@ HAVING description IS NOT NULL AND title IS NOT NULL; ';
                             JOIN (
                             SELECT 1 AS idx
                             '.$data['listSelect'].') t
-
-                            HAVING category IS NOT NULL';
+                            WHERE category_type = 1
+                            HAVING category IS NOT NULL ';
                 break;
         }
         if ($query != NULL) {

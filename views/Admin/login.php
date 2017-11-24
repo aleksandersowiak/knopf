@@ -4,7 +4,7 @@
             <form role="form" method="post" action="<?= createUrl('admin', 'setSession') ?>">
                 <div class="form-group text-center">
                     <div class="logo">
-                        <span class="glyphicon glyphicon-user set-logo"></span>
+                        <span class="fa fa-user-circle-o" style="font-size:10em; color : #f8f8f8;"></span>
                     </div>
                 </div>
                 <div class="modal-body ">

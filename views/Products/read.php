@@ -2,7 +2,7 @@
     <div id="sidebar-wrapper">
         <ul id="sidebar_menu" class="sidebar-nav">
             <li class="sidebar-brand"><a id="menu-toggle" href="#"><?= __('products') ?><span id="main_icon"
-                                                                                              class="glyphicon glyphicon-align-justify"></span></a>
+                                                                                              class="fa fa-bars"></span></a>
             </li>
         </ul>
         <ul class="sidebar-nav" id="sidebar">
@@ -11,7 +11,7 @@
                        href="<?= createUrl('products', 'read') ?>/<?= $element['id'] ?>">
                         <span style="width: 90%; display: inline-block"><?= $element['title'] ?></span>
                         <span style="width: 10%; display: inline-block"
-                              class="sub_icon glyphicon glyphicon-chevron-right"></span>
+                              class="sub_icon fa fa-chevron-right"></span>
                     </a></li>
             <?php endforeach; ?>
         </ul>

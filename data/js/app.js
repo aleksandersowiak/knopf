@@ -86,6 +86,7 @@ App = {
                     });
                 });
             });
+            $('#body').css({'min-height': $('#body').outerHeight()-$('#contact-us-sec').outerHeight()+'px'})
         });
 
     },
@@ -121,7 +122,7 @@ App = {
         div.removeClass("has-success");
         $("#glypcn" + id).remove();
         div.addClass("has-error has-feedback");
-        div.append('<span id="glypcn' + id + '" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+        div.append('<span id="glypcn' + id + '" class="fa fa-ban form-control-feedback"></span>');
         return false;
     },
     serSuccessfield: function (id) {
@@ -129,7 +130,7 @@ App = {
         div.removeClass("has-error");
         $("#glypcn" + id).remove();
         div.addClass("has-success has-feedback");
-        div.append('<span id="glypcn' + id + '" class="glyphicon glyphicon-ok form-control-feedback"></span>');
+        div.append('<span id="glypcn' + id + '" class="fa fa-check-square-o form-control-feedback"></span>');
         return true;
     },
     showModal: function (data, modalClass, back_redirect) {
@@ -361,7 +362,7 @@ App = {
                 '<div><span class="fancybox">' +
                     '<img id="thumbnail-' + id + '"  style="overflow: hidden; background: url() no-repeat 50% 50%; background-size:cover;" />' +
                     '</span><span class="text-content">' +
-                    '<a class="fancybox" href="#video-' + id + '"><i class="glyphicon glyphicon-play"></i></a>' +
+                    '<a class="fancybox" href="#video-' + id + '"><i class="fa fa-play"></i></a>' +
                     '</span></div>' +
                     '<div id="div_video" class="fancybox-video">' +
                     '<video id="video-' + id + '" width="800" controls="controls" preload="metadata" src="' + src + '" type="video/mp4">' +

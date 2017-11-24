@@ -662,8 +662,8 @@ margin : 0;
     outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px; }
 .checkbox input[type="checkbox"]:checked + label::after {
-    font-family: 'Glyphicons Halflings';
-    content: "\e013"; }
+   font-family: 'FontAwesome';
+    content: "\f00c"; }
 .checkbox input[type="checkbox"]:disabled + label {
     opacity: 0.65; }
 .checkbox input[type="checkbox"]:disabled + label::before {
@@ -1008,15 +1008,15 @@ margin : 0;
      outline: none;
  }
 .gal-item-video a:after{
-    content:"\e072" !important;
-    font-family: 'Glyphicons Halflings';
+    content:"\f04b" !important;
+   font-family: 'FontAwesome';
 }
 .gal-item-prod a:after{
     line-height: 92px !important;
 }
 .gal-item a:after, .gal-item-prod a:after{
-    content:"\e003";
-    font-family: 'Glyphicons Halflings';
+    content:"\f002";
+   font-family: 'FontAwesome';
     opacity: 0;
     background-color: rgba(0, 0, 0, 0.75);
     position: absolute;

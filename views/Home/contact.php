@@ -29,7 +29,7 @@
 
                         <div class="col-md-8 inputGroupContainer">
                             <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
                                 <input required="required" name="first_name" id="first_name"
                                        placeholder="<?= __('fist_name'); ?>"
                                        class="form-control"
@@ -42,7 +42,7 @@
 
                         <div class="col-md-8 inputGroupContainer">
                             <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
                                 <input required="required" name="last_name" id="last_name"
                                        placeholder="<?= __('last_name'); ?>"
                                        class="form-control"
@@ -55,7 +55,7 @@
 
                         <div class="col-md-8 inputGroupContainer">
                             <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                                <span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
                                 <input required="required" name="email" id="email" placeholder="<?= __('email'); ?>"
                                        class="form-control"
                                        type="text">
@@ -67,7 +67,7 @@
 
                         <div class="col-md-8 inputGroupContainer">
                             <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
+                                <span class="input-group-addon"><i class="fa fa-phone"></i></span>
                                 <input name="phone" placeholder="(845)555-1212" class="form-control" type="text">
                             </div>
                         </div>
@@ -77,7 +77,7 @@
 
                         <div class="col-md-8 inputGroupContainer">
                             <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                <span class="input-group-addon"><i class="fa fa-pencil"></i></span>
                                 <textarea class="form-control" name="comment"></textarea>
                             </div>
                         </div>
@@ -119,7 +119,7 @@
                         <div class="col-md-3">
                             <button type="submit" name="sendContact" value="send" class="btn btn-warning"><?= __('send'); ?>
                                 <span
-                                    class="glyphicon glyphicon-send"></span></button>
+                                    class="fa fa-paper-plane"></span></button>
                         </div>
                     </div>
                     <p style="font-size: 11px"><?= __('field_is_required') ?></p>

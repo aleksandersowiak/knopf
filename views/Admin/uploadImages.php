@@ -9,13 +9,13 @@
 						<span class="input-group-btn">
 						<!-- file-preview-input -->
 						<div class="btn btn-default file-preview-input"><span
-                                class="glyphicon glyphicon-folder-open"></span> <span class="file-preview-input-title"><?=__('browse')?></span>
+                                class="fa fa-folder-open-o"></span> <span class="file-preview-input-title"><?=__('browse')?></span>
                             <input id="fileupload" type="file" name="files[]" multiple />
                             <script>
                                 $("#fileupload").change(function() {
                                     var names = '';
                                     for (var i = 0; i < $(this).get(0).files.length; ++i) {
-                                        names += '<li><i class="glyphicon glyphicon-picture" aria-hidden="true"></i>  '+($(this).get(0).files[i].name)+'</li>';
+                                        names += '<li><i class="fa fa-file-image-o" aria-hidden="true"></i>  '+($(this).get(0).files[i].name)+'</li>';
                                     }
                                     $("#upload-file-info ul").html(names);
                                 });
@@ -23,7 +23,7 @@
                             <!-- rename it -->
                         </div>
 						<button type="submit" class="btn btn-labeled btn-primary"><span class="btn-label"><i
-                                    class="glyphicon glyphicon-upload"></i> </span><?=__('upload')?>
+                                    class="fa fa-upload"></i> </span><?=__('upload')?>
                         </button>
 						</span></div>
 </form>

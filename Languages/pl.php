@@ -39,7 +39,7 @@ $lang = array(
 
     "ask_us" => "Skontaktuj się z nami przez formularz",
     "contact" => "Kontakt",
-    "send_mail" => "<i class=\"glyphicon glyphicon-thumbs-up\"></i> Dziękujemy za kontakt, odezwiemy się wkrótce.",
+    "send_mail" => "<i class=\"fa fa-thumbs-o-up\"></i> Dziękujemy za kontakt, odezwiemy się wkrótce.",
 //    "reCAPTCHA_error" => "The reCAPTCHA wasn't entered correctly. Go back and try it again."
     "reCAPTCHA_error" => "reCAPTCHA nie został wprowadzony prawidłowo. Prosimy spróbować ponownie.",
     "field_is_required" => "Pola oznaczone <b>*</b> są wymagane.",

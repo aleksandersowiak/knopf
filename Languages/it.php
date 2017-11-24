@@ -34,7 +34,7 @@ $lang = array(
     "delete_success" => "Registro e stato cancellato",
     "ask_us" => "Contatta ci tramite il formulario",
     "contact" => "Contatto",
-    "send_mail" => "<i class=\"glyphicon glyphicon-thumbs-up\"></i> Grazie per contattarci vi contatteremo in breve.",
+    "send_mail" => "<i class=\"fa fa-thumbs-o-up\"></i> Grazie per contattarci vi contatteremo in breve.",
     "reCAPTCHA_error" => "Recaptcha non e inserito correttamente.Prova di nuovo",
     "field_is_required" => "<b>*</b> I campi sono obbligatori.",
     "show" => "Visualizza",
