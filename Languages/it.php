@@ -95,8 +95,8 @@ $lang = array(
     "shows" => "Vista",
     "photos" => "Foto",
 
-    'type_of' => 'Do wyświetlenia u dołu strony',
-    'contact_bottom' => 'Adress',
-    'phone_bottom' => 'Telefony',
-    'email_bottom' => 'Emaile',
+    'type_of' => 'Per visualizzare nella parte inferiore della pagina',
+    'contact_bottom' => 'Indirizzo',
+    'phone_bottom' => 'Telefono',
+    'email_bottom' => 'Email',
 );

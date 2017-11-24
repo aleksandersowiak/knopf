@@ -204,7 +204,7 @@
 
     @media (max-width: 767px) {
         #wrapper {
-            margin-top: -38px;
+            margin-top: -40px;
             padding-left: 35px;
             transition: all .4s ease 0s;
         }

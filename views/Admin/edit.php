@@ -36,12 +36,12 @@ if (isset($this->dataTitle)) {
                     <?php if ($this->dataAction == 'contact') : ?>
                         <div class="col-md-12"><h5><?= __('type_of') ?></h5>
                             <?php foreach ($this->edit_category_type as $category) : ?>
-
-                                <label><?= __($category['category_' . DEFAULT_LANG]) ?></label>
                                 <input type="radio" name="edit_category_type"
-                                       <?= ($this->bottom_set != NULL && $this->bottom_set == $category['id']) ? 'checked' : '' ?>
+                                    <?= ($this->bottom_set != NULL && $this->bottom_set == $category['id']) ? 'checked' : '' ?>
                                        data-url="<?= createUrl('admin', 'editCategoryType') ?>"
                                        data-id="<?= $this->dataId ?>" value="<?= $category['id'] ?>"/>
+                                <label><?= __($category['category_' . DEFAULT_LANG]) ?></label>
+                                &nbsp;&nbsp;
                             <?php endforeach; ?>
                         </div>
                         <div style="clear: both"></div>
