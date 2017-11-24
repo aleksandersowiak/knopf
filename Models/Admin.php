@@ -32,14 +32,15 @@ class AdminModel extends BaseModel
         '.$data['list'].'
         END
         , description_' . $lang . ') AS description,
-         IF(ISNULL(description_' . $lang . '), 1,0) AS empty_description
+         IF(ISNULL(description_' . $lang . '), 1,0) AS empty_description, c.ordering, c.category_id
         FROM content as c
         JOIN (
         SELECT 1 AS idx
         '.$data['listSelect'].') t
         left join `top_menu` as `tm` on `tm`.`id` = `c`.`menu_id`
         where `c`.`id` = ' . $id . ' and `tm`.`controller` like "' . $controller . '" and `tm`.`action` LIKE "' . $action . '"
-        HAVING description IS NOT NULL Limit 1;';
+
+        HAVING description IS NOT NULL order by c.ordering Limit 1 ;';
         $select = $this->select($select);
 
         if (!empty($select)) {
@@ -95,6 +96,9 @@ HAVING description IS NOT NULL AND title IS NOT NULL; ';
             case 'category' :
                 $table = 'category';
                 $save['category_' . $params['language']] = $params['category_' . $params['language']];
+                if (isset($params['edit_category_type'])) {
+                    $save['category_id'] = $params['edit_category_type'];
+                }
                 break;
             default:
                 $table = 'content';
@@ -105,9 +109,11 @@ HAVING description IS NOT NULL AND title IS NOT NULL; ';
 
                 $save['description_' . $params['language']] = '';
                 $menu_id = $this->select("select id from `top_menu` where `controller` LIKE '" . $data[0] . "' and `action` LIKE '" . $data[1] . "'");
-                $save['menu_id'] = $menu_id[0]['id'];
-        }
 
+                $save['menu_id'] = $menu_id[0]['id'];
+                $order = $this->select('select max(`ordering`) as ordering from '.$table.' where menu_id = '. $save['menu_id']);
+                $save['ordering'] = $order[0]['ordering']+1;
+        }
         if ($this->insert($table, $save) == false) {
             return false;
         }
@@ -116,14 +122,17 @@ HAVING description IS NOT NULL AND title IS NOT NULL; ';
 
     public function updateData($params = array())
     {
+        $save = $saveContent = array();
         switch ($params['dataController']) {
             case 'products' :
                 $table = 'products';
                 break;
             default:
+                if (isset($params['edit_category_type'])) {
+                    $save['category_id'] = $params['edit_category_type'];
+                }
                 $table = 'content';
         }
-        $save = $saveContent = array();
         $save['description_' . $params['language']] = str_replace("'", "&#8217;", $params['description_' . $params['language']]);
         if (isset($params['title_' . $params['language']])) {
             $save['title_' . $params['language']] = $params['title_' . $params['language']];
@@ -144,7 +153,7 @@ HAVING description IS NOT NULL AND title IS NOT NULL; ';
         $query = null;
         switch ($view) {
             case 'home' :
-                $query = 'select `c`.id, c.menu_id, IF(ISNULL(c.description_' . $lang . '),c.description_' . DEFAULT_LANG . ', c.description_' . $lang . ') as description , `tm`.controller, `tm`.action from `top_menu` as `tm` left join `content` as `c` on `tm`.id = `c`.menu_id';
+                $query = 'select `c`.id, c.menu_id, IF(ISNULL(c.description_' . $lang . '),c.description_' . DEFAULT_LANG . ', c.description_' . $lang . ') as description , `tm`.controller, `tm`.action from `top_menu` as `tm` left join `content` as `c` on `tm`.id = `c`.menu_id order by c.ordering asc';
                 break;
             case 'products' :
                 $description = $this->getLanguagesCase('description');

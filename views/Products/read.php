@@ -1,4 +1,4 @@
-<div id="wrapper" class="active">
+<div id="wrapper" class="">
     <div id="sidebar-wrapper">
         <ul id="sidebar_menu" class="sidebar-nav">
             <li class="sidebar-brand"><a id="menu-toggle" href="#"><?= __('products') ?><span id="main_icon"

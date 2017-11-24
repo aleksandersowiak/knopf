@@ -21,8 +21,8 @@ class GalleryModel extends BaseModel
                     SELECT 1 AS idx
                     '.$data['listSelect'].') t
                     left join category as c on c.id = g.category_id
-                    '.$where.'
-                    HAVING category IS NOT NULL;
+                    '.$where.' AND category_type = 1
+                    HAVING category IS NOT NULL ;
                     ';
         return $this->select($query);
     }

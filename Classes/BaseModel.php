@@ -87,14 +87,12 @@ abstract class BaseModel extends ViewModel
 
     public function update($table, $upData, $wheres = '')
     {
-
         foreach ($upData as $key => $testimonials) {
             $column = ($key);
             $value = "'".$testimonials."'";
             if($testimonials == '') $value = "NULL";
             $where = ($wheres != '') ? ' WHERE ' . $wheres : '';
             $sql = "UPDATE `" . $table . "` SET `" . $column . "`= " . $value . " $where";
-
             $result = $this->_db->query($sql);
             if ($result === FALSE) {
                 return false;
@@ -141,7 +139,7 @@ abstract class BaseModel extends ViewModel
                 '.$data['listSelect'].') t
                 left join `top_menu` as `tm` on `tm`.id = `c`.menu_id
                 where `tm`.`action` LIKE "' . str_replace('Action', '', $action) . '" AND `tm`.`controller` LIKE "' . $controller . '"
-                HAVING value IS NOT NULL ORDER BY c.id;';
+                HAVING value IS NOT NULL ORDER BY c.ordering;';
         $result = $this->select($query);
         return $result;
     }

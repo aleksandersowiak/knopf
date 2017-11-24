@@ -116,14 +116,13 @@ if ($this->_session->__isset('flash_message')) {
         <!-- /.container-fluid -->
     </nav>
 <div id="body">
-    <div class="">
 <?php if ($this->edit == true) : ?>
     <script>
         function loadEditButton() {
             App.waitForElement('div[data-content="content"]', function () {
                 if ($('.edit-bot').length == 0) {
                     $('div[data-content="content"]').each(function (i, e) {
-                        var editButton = '<div class="pull-right edit-bot like-link clearfix edit-document" data-url="<?=createUrl('admin','edit')?>" data-action="' + $(e).attr('data-action') + '" data-controller="' + $(e).attr('data-controller') + '"  data-id="' + $(e).attr('data-id') + '">  <span><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="right" title="<?=__('edit')?>"></i> </span></div>';
+                        var editButton = '<div class="pull-right edit-bot like-link clearfix edit-document" data-url="<?=createUrl('admin','edit')?>" data-action="' + $(e).attr('data-action') + '" data-controller="' + $(e).attr('data-controller') + '"  data-id="' + $(e).attr('data-id') + '">  <span><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="right" title="<?=__('edit')?>"></i> </span></div><div style="clear:both"></div>';
                         $(e).prepend(editButton);
                     });
                 }

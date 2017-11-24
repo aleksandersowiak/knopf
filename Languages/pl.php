@@ -98,5 +98,10 @@ $lang = array(
     'no_selected_files' => 'Nie wybrano plików',
 
     'something_is_wrong' => 'Tytuł bądź opis jest pusty. Tymczasowo wzięte z innego języka, gdzie wartość została uzupełniona',
-    'change_category_image' => 'Przenieść zdjęcie do kategorii:'
+    'change_category_image' => 'Przenieść zdjęcie do kategorii:',
+
+    'type_of' => 'Do wyświetlenia u dołu strony',
+    'contact_bottom' => 'Adress',
+    'phone_bottom' => 'Telefony',
+    'email_bottom' => 'Emaile',
 );

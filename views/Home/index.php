@@ -47,7 +47,7 @@ echo $message;
             image = new Image();
             image.src = image_url;
             $(image).on('load', function () {
-                $('.carousel-inner').css({width: $('.carousel-inner').width(), border: '1px solid #ccc'})
+                $('.carousel-inner').css({width: $('.carousel-inner').width(), 'border-bottom': '1px solid #ccc'})
                 if (image.width < $('.carousel-inner').width()) {
                     $(e).css({'max-width': image.width, 'min-width': image.width, display: 'block', margin: 'auto' });
 

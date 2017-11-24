@@ -94,4 +94,9 @@ $lang = array(
     'change_category_image' => 'Sposta l&#8217;immagine nella categoria:',
     "shows" => "Vista",
     "photos" => "Foto",
+
+    'type_of' => 'Do wyświetlenia u dołu strony',
+    'contact_bottom' => 'Adress',
+    'phone_bottom' => 'Telefony',
+    'email_bottom' => 'Emaile',
 );

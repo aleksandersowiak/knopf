@@ -59,7 +59,7 @@ class Admin extends BaseController
                     $this->_session->__set('user_id', $data[0]['id']);
                     $this->_session->__set('name', $data[0]['name'] . ' ' . $data[0]['surname']);
                     $reload = "$.post('" . createUrl('admin', 'loadViewFile') . "', {controllerData: 'admin', actionData: 'index' }, function(data){
-                        $('#body').find('.container').html(data);
+                        $('#body').html(data);
                     });
                      window.history.pushState('object or string', 'Title', '" . createUrl('admin', 'index') . "');
                     ";
@@ -100,6 +100,11 @@ class Admin extends BaseController
             case 'home' :
                 $dataResult = $this->_model->getDataToEdit($controller, $action, $id, $lang);
                 $data = $dataResult['description'];
+                $this->Add('bottom_set', $dataResult['category_id']);
+                if($action == 'contact') {
+                    $categories = $this->_model->select('select id,category_' . DEFAULT_LANG . ' from category where category_type = 11');
+                    $this->Add('edit_category_type', $categories);
+                }
                 break;
             case 'products' :
                 $this->Add('pin_realization', '');
@@ -123,6 +128,7 @@ class Admin extends BaseController
     {
         $message = $this->renderMessage(__('edit_error'), 'danger');
         $save = $this->_model->{$this->getParam('action') . 'Data'}($this->getParams());
+
         if ($save != false) {
             if($this->getParam('dataController') == 'category') $this->setParam('dataController', 'gallery');
             $modal = "$('.modal').modal('hide');";
@@ -208,8 +214,9 @@ class Admin extends BaseController
                 if (!array_key_exists($val['controller'], $contentData)) {
                     $contentData[] = sprintf($addButton, $val['controller'], $val['controller'], $val['controller']);
                 }
+                $order = '<span data-url="'.createUrl('admin', 'order').'" contenteditable="true" table="content" data-id="'.$val['id'].'" class="badge order_position">'.$textContent['ordering'].'</span>';
                 $warning = ($textContent['empty_description'] == 1) ? '<span class="badge badge-warning" data-toggle="tooltip" data-placement="right" title="' . __('something_is_wrong') . '">!</span>' : '';
-                $contentData[$val['controller']][] = sprintf($this->_editButton, $val['id'], __('menu_' . $val['action']),
+                $contentData[$val['controller']][] = $order . sprintf($this->_editButton, $val['id'], __('menu_' . $val['action']),
                         createUrl('admin', 'edit'),
                         $val['action'],
                         $val['controller'],
@@ -524,7 +531,7 @@ class Admin extends BaseController
     }
     protected function renderJSGallery($content) {
         $images = '';
-        $viewContent= "$('.viewContent').append('<div class=\"viewContentGallery\"></div>'); ";
+        $viewContent= "$('.viewContent').append('<div class=\"viewContentGallery col-md-9 col-sm-9 col-xs-12\"></div>'); ";
 
         $h3 = "$('.viewContentGallery').append('<div class=\"page-header\"><h3>".__($content[0]['category'])."</h3></div>'); ";
         $h3 .= "$('div.page-header').append('<input style=\"display:none\" class=\"form-control \" type=\"text\" value=\"".__($content[0]['category'])."\" name=\"category_".$this->base_lang."\"/>'); ";
@@ -755,5 +762,9 @@ EOF;
             }
         }
         return false;
+    }
+    public  function orderAction() {
+        $this->_model->update($this->getParam('table'), array('ordering' => (int)$this->getParam('order')), '`id` = ' . $this->getParam('content_id'));
+        $this->finish(null, '');
     }
 }

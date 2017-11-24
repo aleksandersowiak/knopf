@@ -29,10 +29,25 @@ if (isset($this->dataTitle)) {
                 </div>
                 <div class="modal-body">
                     <div id="alerts"></div>
-                    <textarea id="editor" class="data-description <?=(isset($this->empty_description)) ? ' empty_description ' : '' ?>" contenteditable="true" name="description_<?= $this->dataLanguage ?>"
+                    <textarea id="editor"
+                              class="data-description <?= (isset($this->empty_description)) ? ' empty_description ' : '' ?>"
+                              contenteditable="true" name="description_<?= $this->dataLanguage ?>"
                               style="overflow: auto; display: none"><?= $textArea ?></textarea>
+                    <?php if ($this->dataAction == 'contact') : ?>
+                        <div class="col-md-12"><h5><?= __('type_of') ?></h5>
+                            <?php foreach ($this->edit_category_type as $category) : ?>
 
+                                <label><?= __($category['category_' . DEFAULT_LANG]) ?></label>
+                                <input type="radio" name="edit_category_type"
+                                       <?= ($this->bottom_set != NULL && $this->bottom_set == $category['id']) ? 'checked' : '' ?>
+                                       data-url="<?= createUrl('admin', 'editCategoryType') ?>"
+                                       data-id="<?= $this->dataId ?>" value="<?= $category['id'] ?>"/>
+                            <?php endforeach; ?>
+                        </div>
+                        <div style="clear: both"></div>
+                    <?php endif; ?>
                 </div>
+
                 <div class="modal-footer">
                     <input type="hidden" name="dataController" value="<?= $this->dataController ?>"/>
                     <input type="hidden" name="dataAction" value="<?= $this->dataAction ?>"/>

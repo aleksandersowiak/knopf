@@ -11,6 +11,26 @@ App = {
                     $('[data-toggle="tooltip"]').tooltip()
                 });
             })
+            $('.order_position').on('focus', function() {
+                before = $(this).html();
+            }).on('focusout', function() {
+                if (before != $(this).html()) { $(this).trigger('change'); }
+            });
+
+            $('.order_position').on('change', function() {
+                var $this = $(this);
+                if($.isNumeric($this.html())) {
+                    var params = {
+                        order: $this.html(),
+                        content_id: $this.attr('data-id'),
+                        table: $this.attr('table')
+                    };
+                    App.ajaxSend($(this).attr('data-url'), params);
+                }else{
+                    alert('Is not numeric')
+                }
+
+            });
 
             $(document).undelegate('#pop-upModal, .modal #pop-upModal').delegate('#pop-upModal, .modal #pop-upModal', 'click', function () {
                 var params = {

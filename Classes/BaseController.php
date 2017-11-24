@@ -28,7 +28,7 @@ abstract class BaseController extends BaseModel
         }
         $this->setParams($the_request);
         $this->__init();
-        $this->Add('web_title', '<img class="logoHeader" src="/data/images/logo.png"/>');
+        $this->Add('web_title', '<img class="logoHeader" src="/data/images/logo.png?ver=<?= APP_VER ?>"/>');
         $this->Add('top_menu', $this->_model->getTopMenu());
         $this->_session = new Session();
         if (session_status() == PHP_SESSION_NONE) {
@@ -47,6 +47,8 @@ abstract class BaseController extends BaseModel
         }
         $this->Add('languagesList', $languages);
         $this->Add('base_lang', $base_lang);
+
+        $this->setContactParams();
     }
 
     public function __init()
@@ -216,8 +218,8 @@ EOF;
 
     public function renderMessageView($controller, $action)
     {
-        $contact = $this->_model->getContent($controller, $action, $this->getParam('language'));
-        $this->Add($action, $contact);
+        $content = $this->_model->getContent($controller, $action, $this->getParam('language'));
+        $this->Add($action, $content);
     }
 
     public function reloadView($controller = '', $action = 'index')
@@ -238,5 +240,19 @@ EOF;
             return;
         }
         require_once(APPLICATION_PATH . '/views/' . ucfirst($controller) . '/' . $action . '.php');
+    }
+
+    private function setContactParams()
+    {
+        $contactData = $this->_model->getContent('home', 'contact', $this->getParam('language'));
+        $cont = array();
+        foreach ($contactData as $content) {
+            $category = $this->_model->select('select * from category where id = ' . $content['category_id']);
+            if ($category != false) {
+                $cont[$category[0]['category_'. DEFAULT_LANG]][] = $content['value'];
+
+                $this->Add('edit_bottom_contact', $cont);
+            }
+        }
     }
 }
