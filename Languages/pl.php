@@ -73,8 +73,8 @@ $lang = array(
     "image_assign_error" => "Błąd przy przypisywaniu zdjęcia",
     "import_images" => "Import Zdjęć",
     "import_complete" => "Zaimportowano: %s",
-    "%s photo" => 'zdjęć',
-    "%s movie" => 'film',
+    "photo" => '%s - zdjęć',
+    "movie" => '%s - film',
     "field_required" => "To pole jest wymagane",
     "success_assign_to_category" => "Zdjęcie zostało poprawnie przypisane do kategorii",
     "no_action_add_element" => "Nie ma możliwości dodania nowych elementów",
@@ -84,7 +84,7 @@ $lang = array(
     "home" => "Główne",
     "no_images" => "Brak zdjęć do wyświetlenia.",
     "no_products" => "Brak produktów do wyświetlenia.",
-    'file_upload_done' => 'Plik %s został przesłany poprawnie!',
+    'file_upload_done' => 'Plik został przesłany poprawnie!',
     'error_jpeg' => 'Tylko pliki typu %s są dozwolone!',
     'file_was_not_upload' => 'Plik nie został załadowany!',
     'can_not_copy_file' => 'Nie można przenieść pliku!',
@@ -108,4 +108,5 @@ $lang = array(
     'email_bottom' => 'Emaile',
 
     "page_not_found" => 'Nie znaleziono wybranej strony.',
+    "cleaning_data" => "Usuwanie zdjęć lub filmów, które nie zostały zapisane",
 );

@@ -1,4 +1,4 @@
-<?php
+za<?php
 $lang = array(
     //"String" => "Translated String",
     "en" => 'English',

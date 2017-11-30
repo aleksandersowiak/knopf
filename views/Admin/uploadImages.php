@@ -117,12 +117,14 @@
                         }
                         onbeforeunload=function(){
                             if (true) {
+                                $('body').append("<div id=\"loader-backGround\" class=\"modal-backdrop fade in\"></div><div id=\"loader\"></div>");
+                                $('#body').append('<div class="box-message"><div class="alert alert-info pop-up" role="alert"><?= __('cleaning_data');?></div></div>');
                                 $.ajax({
                                     url: '<?= createUrl('admin','removeNotSaveData'); ?>'
                                 });
                             }
                         }
-                        $( "#saveOnserver").attr('disabled',false);
+                        App.waitForElement($( "#saveOnserver"), function () { $( "#saveOnserver").attr('disabled',false) });
                 status.setProgress(100);
             }
         });

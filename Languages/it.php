@@ -67,8 +67,8 @@ $lang = array(
     "image_assign_error" => "Errore nella inserzione della immagine",
     "import_images" => "Importa le foto",
     "import_complete" => "Importato: %s",
-    "photo" => ' foto ',
-    "movie" => ' film ',
+    "photo" => '%s foto ',
+    "movie" => '%s film ',
     "field_required" => "Questo campo e obbligatorio",
     "success_assign_to_category" => "Immagine correttamente inserita alla categoria",
     "no_action_add_element" => "Non cè la possibilità di inserzione di elementi nuovi",
@@ -102,4 +102,5 @@ $lang = array(
     'phone_bottom' => 'Telefono',
     'email_bottom' => 'Email',
     "page_not_found" => 'Nessuna pagina trovata.',
+        "cleaning_data" => "Eliminazione di foto o video, che non sono stati salvati",
 );
