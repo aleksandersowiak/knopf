@@ -19,7 +19,7 @@ class HomeModel extends BaseModel
                             , title_' . $lang . ') AS title,
                             IF(ISNULL(title_' . $lang . '), 1,0) AS empty_title,
                             IF(ISNULL(description_' . $lang . '), 1,0) AS empty_description,
-                            g.image,
+                             (select image_thumb from gallery as ga where ga.product_id = c.id and type = 1 LIMIT 1) as image,
                             c.id
                             FROM products AS c
                             JOIN (

@@ -48,7 +48,7 @@
             <div class="page-content">
                 <div class="col-md-12 col-sm-12 co-sx-12">
                     <div class="page-header">
-                        <h3><?= __('realization') ?></h3>
+                        <h2><?= __('realization') ?></h2>
                     </div>
                     <div class="gal-container">
                         <?php $i = 0;

@@ -34,9 +34,44 @@
 </div>
 <div id="status1"></div>
 <script>
+    function saveFileOnServer(formData,status) {
+        $('body').append("<div id=\"loader-backGround\" class=\"modal-backdrop fade in\"></div><div id=\"loader\"></div>");
+        var uploadURLImport = "<?=createUrl('admin','importImages')?>";
+        var extraData ={}; //Extra Data.
+        $.ajax({
+            url: uploadURLImport,
+            contentType:false,
+            processData: false,
+            cache: false,
+            data: formData,
+
+            success: function(data){
+                if (/^[\],:{}\s]*$/.test(data.replace(/\\["\\\/bfnrtu]/g, '@').
+                    replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
+                    replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
+                    console.log(data);
+                    eval('var datao = ' + data);
+                    if(data.error == '401') {
+                        $("#status1").append("<p><?=__('file_upload_failed')?> "+data.status+"</p>");
+                    } else if (datao.extraCommand != undefined) {
+                        eval(datao.extraCommand);
+                        $('#loader-backGround, #loader').fadeOut().remove();
+                    }
+                } else {
+                    $('#body').append('<div class="box-message"><div class="alert alert-warning pop-up" role="alert">'+data+'</div></div>');
+                    setTimeout(function(){
+                        $('.alert').remove();
+                    }, 5000);
+                }
+                onbeforeunload=function(){};
+                $('#loader-backGround, #loader').fadeOut().remove();
+            }
+        });
+    }
     function sendFileToServer(formData,status)
     {
         var uploadURL ="<?=createUrl('admin','upload')?>"; //Upload URL
+        App.waitForElement($( "#saveOnserver") , function () {( "#saveOnserver").attr('disabled',true)});
         var extraData ={}; //Extra Data.
         var jqXHR=$.ajax({
             xhr: function() {
@@ -55,37 +90,46 @@
                 }
                 return xhrobj;
             },
+//            async: false,
             url: uploadURL,
             type: "POST",
             contentType:false,
             processData: false,
             cache: false,
             data: formData,
-            success: function(data){
-                status.setProgress(100);
-                if (/^[\],:{}\s]*$/.test(data.replace(/\\["\\\/bfnrtu]/g, '@').
-                    replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
-                    replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
-                        eval('var datao = ' + data);
-                        if(data.error == '401') {
-                            $("#status1").append("<p><?=__('file_upload_failed')?> "+data.status+"</p>");
-                        } else if (datao.extraCommand != undefined) {
-                            eval(datao.extraCommand);
-                            $('#loader-backGround, #loader').fadeOut().remove();
+                    success: function(data){
+                        if (/^[\],:{}\s]*$/.test(data.replace(/\\["\\\/bfnrtu]/g, '@').
+                            replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
+                            replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
+                            console.log(data);
+                            eval('var datao = ' + data);
+                            if(data.error == '401') {
+                                $("#status1").append("<p><?=__('file_upload_failed')?> "+data.status+"</p>");
+                            } else if (datao.extraCommand != undefined) {
+                                eval(datao.extraCommand);
+                                $('#loader-backGround, #loader').fadeOut().remove();
+                            }
+                        } else {
+                            $('#body').append('<div class="box-message"><div class="alert alert-warning pop-up" role="alert">'+data+'</div></div>');
+                            setTimeout(function(){
+                                $('.alert').remove();
+                            }, 5000);
                         }
-                } else {
-                    $('#body').append('<div class="box-message"><div class="alert alert-warning pop-up" role="alert">'+data+'</div></div>');
-                    setTimeout(function(){
-                        $('.alert').remove();
-                    }, 5000);
-                }
+                        onbeforeunload=function(){
+                            if (true) {
+                                $.ajax({
+                                    url: '<?= createUrl('admin','removeNotSaveData'); ?>'
+                                });
+                            }
+                        }
+                        $( "#saveOnserver").attr('disabled',false);
+                status.setProgress(100);
             }
         });
-
         status.setAbort(jqXHR);
     }
 
-    var rowCount=0;
+        var rowCount=0;
     function createStatusbar(obj)
     {
         rowCount++;
@@ -146,11 +190,25 @@
             sendFileToServer(fd,status);
 
         }
+        if (i > 0) {
+            if ($('#saveOnserver').length == 0) {
+                $('#status1').append('<div class="row col-md-12 col-sm-12 col-xs-12" style="margin-top: 20px">' +
+                    '<button type="submit" id="saveOnserver" class="btn btn-labeled btn-primary" >' +
+                    '<span class="btn-label">' +
+                    '<i class="fa fa-save"></i> ' +
+                    '</span><?=__('save')?> </button></div>');
+            }
+        }
     }
     $(document).ready(function()
     {
         var obj = $("#dragandrophandler");
         var obj1 = $("#fileupload");
+        App.waitForElement('#saveOnserver', function () {
+            $( "#saveOnserver" ).on('click',function(e) {
+                saveFileOnServer();
+            });
+        });
         $( "form" ).submit(function(e) {
             e.preventDefault();
             var files = obj1[0].files;

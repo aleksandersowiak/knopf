@@ -72,7 +72,9 @@ $lang = array(
     "image_assign_success" => "Zdjęcie zostało poprawnie przypisane",
     "image_assign_error" => "Błąd przy przypisywaniu zdjęcia",
     "import_images" => "Import Zdjęć",
-    "import_complete" => "Zaimportowano %s zdjęć",
+    "import_complete" => "Zaimportowano: %s",
+    "%s photo" => 'zdjęć',
+    "%s movie" => 'film',
     "field_required" => "To pole jest wymagane",
     "success_assign_to_category" => "Zdjęcie zostało poprawnie przypisane do kategorii",
     "no_action_add_element" => "Nie ma możliwości dodania nowych elementów",
@@ -104,4 +106,6 @@ $lang = array(
     'contact_bottom' => 'Adress',
     'phone_bottom' => 'Telefony',
     'email_bottom' => 'Emaile',
+
+    "page_not_found" => 'Nie znaleziono wybranej strony.',
 );

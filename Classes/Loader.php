@@ -24,7 +24,7 @@ class Loader
             $this->action = $action;
         }
         if ($this->urlvalues['language'] == "") {
-            $this->language = "pl";
+            $this->language = DEFAULT_LANG;
         } else {
             $this->language = $this->urlvalues['language'];
         }
@@ -44,16 +44,16 @@ class Loader
                 if (method_exists($this->controller, $this->action)) {
                     return new $this->controller($this->controller, $this->action, $this->urlvalues);
                 } else {
-                    echo 'bad method error';
-//					return new Error("badUrl",$this->urlvalues);
+//                    echo 'bad method error';
+					return new Errors('error',"badUrlAction",$this->urlvalues);
                 }
             } else {
-                echo 'bad controller error';
-//				return new Error("badUrl",$this->urlvalues);
+//                echo 'bad controller error';
+				return new Errors('error',"badUrl",$this->urlvalues);
             }
         } else {
-            echo 'bad controller error';
-//			return new Error("badUrl",$this->urlvalues);
+//            echo 'bad controller error';
+			return new Errors('error',"badUrl",$this->urlvalues);
         }
     }
 

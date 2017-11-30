@@ -115,6 +115,7 @@ else :
             </div>
 
     <?php $j++; endforeach; ?>
+    <div style="clear:both"></div>
     </div>
     <style>
         .dynamicTile .col-sm-2.col-xs-4 {

@@ -66,7 +66,9 @@ $lang = array(
     "image_assign_success" => "Immagina e stata aggiunta correttamente",
     "image_assign_error" => "Errore nella inserzione della immagine",
     "import_images" => "Importa le foto",
-    "import_complete" => "Importato %s foto",
+    "import_complete" => "Importato: %s",
+    "photo" => ' foto ',
+    "movie" => ' film ',
     "field_required" => "Questo campo e obbligatorio",
     "success_assign_to_category" => "Immagine correttamente inserita alla categoria",
     "no_action_add_element" => "Non cè la possibilità di inserzione di elementi nuovi",
@@ -99,4 +101,5 @@ $lang = array(
     'contact_bottom' => 'Indirizzo',
     'phone_bottom' => 'Telefono',
     'email_bottom' => 'Email',
+    "page_not_found" => 'Nessuna pagina trovata.',
 );

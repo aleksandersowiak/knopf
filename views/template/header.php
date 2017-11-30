@@ -5,13 +5,13 @@ if ($_GET['id'] == "") {
 } else {
     $id = "/" . $_GET['id'];
 }
-$uri = '/' . $_GET['controller'] . '/' . $_GET['action'] . $id;
-
+$controller =  ($this->getParam('controller') == '') ? 'home' : $this->getParam('controller');
+$action = ($this->getParam('action') == '') ? 'index' : $this->getParam('action');
+$uri = '/' . $controller . '/' . $action . $id;
 ?>
     <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html lang="<?= $this->base_lang ?>">
     <head>
-        <meta charset="UTF-8">
         <title>KNOPF - Serramenti vendita ed installazione</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <meta http-equiv="Content-Language" content="<?= $this->base_lang ?>"/>

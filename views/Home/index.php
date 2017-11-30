@@ -39,7 +39,8 @@ echo $message;
     var image_element = $('.carousel-inner .item div[role="image"]'),
          image_url;
     $.each(image_element, function(i,e) {
-        var image_element_css = $(e).css('background');
+        var image_element_css = $(e)[0].style.background;
+
         var image;
         image_url = image_element_css.match(/^.*url\("?(.+?)"?\).*$/);
         if (image_url[1]) {

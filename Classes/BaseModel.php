@@ -79,6 +79,7 @@ abstract class BaseModel extends ViewModel
         $sql = "INSERT INTO `" . $table . "` ($columns) VALUES ($values) $where";
         $result = $this->_db->query($sql);
         if ($result === FALSE) {
+            echo $this->_db->error;
             return false;
 //            die($this->_db->error);
         }

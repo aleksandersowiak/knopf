@@ -2,7 +2,7 @@ App = {
     init: function () {
         
         $(document).ready(function () {
-            $('#body').css({'padding-top':$('.navbar-top').height()+'px', 'padding-bottom':$('.footer').height()+'px'});
+
             if (typeof loadEditButton == 'function') {
                 loadEditButton();
             }
@@ -86,7 +86,10 @@ App = {
                     });
                 });
             });
-            $('#body').css({'min-height': $('#body').outerHeight()-$('#contact-us-sec').outerHeight()+'px'})
+
+            $('#body').css({'min-height': $(window).outerHeight() - $('#contact-us-sec').outerHeight() + 'px',
+                'padding-top': $('.navbar-top').height() + 'px',
+                'padding-bottom': $('.footer').height() + 'px'});
         });
 
     },
@@ -191,6 +194,7 @@ App = {
             url: url,
             type: ajaxType,
             data: params,
+
             error: function (data, status) {
                 if (onError == false) {
                     alert('Server communication problem. ' + status);
@@ -233,7 +237,6 @@ App = {
                             if ($('.modal').length > 0) {
                                 App.waitForElement('.modal', function () {
                                     $('#loader-backGround, #loader').fadeOut().remove();
-
                                 })
                             } else {
                                 $('#loader-backGround, #loader').fadeOut().remove();
@@ -359,7 +362,7 @@ App = {
                 '</a>');
         } else if (type == 2) {
             $('.video-box-' + id).append(
-                '<div><span class="fancybox">' +
+                '<div><i class="fa fa-file-movie-o fa-gallery-movie"></i> <span class="fancybox">' +
                     '<img id="thumbnail-' + id + '"  style="overflow: hidden; background: url() no-repeat 50% 50%; background-size:cover;" />' +
                     '</span><span class="text-content">' +
                     '<a class="fancybox" href="#video-' + id + '"><i class="fa fa-play"></i></a>' +
@@ -370,7 +373,7 @@ App = {
                     '</div>');
 
             var time = 15;
-            var scale = 0.5;
+            var scale = 1;
             var video_obj = null;
 
             document.getElementById('video-' + id).addEventListener('loadedmetadata', function () {
@@ -380,11 +383,19 @@ App = {
             document.getElementById('video-' + id).addEventListener('loadeddata', function () {
                 var video = document.getElementById('video-' + id);
                 var canvas = document.createElement("canvas");
+                if(video.videoWidth >= 1920) {
+                    scale = 0.2;
+                }else if (video.videoWidth < 1920 && video.videoWidth >= 720) {
+                    scale = 0.5;
+                }else if (video.videoWidth < 720 && video.videoWidth >= 360) {
+                    scale = 0.7;
+                }
                 canvas.width = video.videoWidth * scale;
                 canvas.height = video.videoHeight * scale;
                 canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
                 var img = document.createElement("img");
                 img.src = canvas.toDataURL();
+
                 $('#thumbnail-' + id).css("background-image", "url('" + img.src + "')");
                 video_obj.currentTime = 0;
             }, false);

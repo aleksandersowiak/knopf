@@ -45,6 +45,7 @@ abstract class BaseController extends BaseModel
             $languages[$lang] = __($lang);
             $base_lang = ($_GET['language'] == '') ? DEFAULT_LANG : $_GET['language'];
         }
+        if((!array_key_exists($_GET['language'],$languages)) && ($_GET['language'] != '')) header("Location: /".DEFAULT_LANG);;
         $this->Add('languagesList', $languages);
         $this->Add('base_lang', $base_lang);
 
@@ -138,12 +139,12 @@ abstract class BaseController extends BaseModel
     public function send_mail($title = 'Default', $message = '', $attachment = null)
     {
         $mail = $this->mailClass();
-
+        $arr = $this->getConfig();
         $mail->ClearReplyTos();
-        $mail->From = "aleksander.sowiak@codeconcept.pl";
+
+        $mail->From = $arr['email.globalAddress'];
         $mail->FromName = $title;
 
-        $arr = $this->getConfig();
         $mail->AddAddress($arr['email.globalAddress'], '');
 
         if ($attachment != null) {

@@ -381,7 +381,7 @@ a {
 }
 
 .viewContent ul {
-    float: left;
+    /*float: left;*/
     display: inline-grid;
 }
 .viewContentGallery {
@@ -881,7 +881,7 @@ margin : 0;
 }
 .case-study__title {
     position: relative;
-    top: -200px;
+    top: 95px;
     margin-bottom: 2rem;
     margin-top: 4rem;
     font-size: 2.25rem;
@@ -890,10 +890,12 @@ margin : 0;
     text-align: center;
     letter-spacing: 5px;
     transition: all 0.3s cubic-bezier(0.3, 0, 0, 1.3);
+    background-color: #202020;
+    padding:5px;
 }
 .case-study__description {
     clear: both;
-    position: relative;
+    position: absolute;
     top: -400px;
     margin-bottom: 4rem;
     margin-top: 4rem;
@@ -906,10 +908,11 @@ margin : 0;
     transition: all 0.3s cubic-bezier(0.3, 0, 0, 1.3);
 }
 .case-study__link {
-    position: relative;
+    position: absolute;
     display: block;
     width: 60%;
-    top: 200px;
+    top: 400px;
+    left:20%;
     padding: 10px;
     margin: 0 auto;
     color: white;
@@ -930,10 +933,10 @@ margin : 0;
     top: 0;
 }
 .case-study:hover .case-study__link {
-    top: 0;
+    top: 200px;
 }
 .case-study:hover .case-study__description {
-    top: 0;
+    top: 75px;
 }
 .case-study:hover .case-study__overlay:after {
     opacity: .75;
@@ -943,23 +946,23 @@ margin : 0;
     top: 0;
 }
 .case-study-active .case-study__link {
-    top: 0;
+    top: 200px;
 }
 .case-study-active .case-study__description {
-    top: 0;
+    top: 75px;
 }
 .case-study-active .case-study__overlay:after {
     opacity: .75;
 }
 
-.heading-style3 {
+.heading-style3, .heading-style3-2 {
     float: left;
     width: 100%;
     text-align: center;
     color: #333333;
     margin: 0 0 15px;
 }
-.heading-style3 h2 {
+.heading-style3 h2, .heading-style3-2 h2 {
     font-size: 40px;
     line-height: 40px;
     text-transform: uppercase;
@@ -969,7 +972,7 @@ margin : 0;
     position: relative;
     font-weight: 300;
 }
-.heading-style3 h2:after {
+.heading-style3 h2:after, .heading-style3-2 h2:after {
     content: '';
     position: absolute;
     left: 0;
@@ -980,7 +983,9 @@ margin : 0;
     height: 3px;
     background-color: #cacaca;
 }
-
+.heading-style3-2{
+    margin-top:10px
+}
 .gal-container{
     padding: 12px;
 }
@@ -1119,4 +1124,18 @@ background-color: #ccc;
 }
 .order_position {
    min-width: 10px;
+}
+
+.fa-gallery-movie{
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    color: #fff;
+    opacity: 0.5;
+    font-size: 48px !important;
+}
+
+.form-horizontal .has-feedback .form-control-feedback {
+    right: 10px;
+    top: 10px
 }
