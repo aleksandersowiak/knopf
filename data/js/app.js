@@ -390,6 +390,13 @@ App = {
                 }else if (video.videoWidth < 720 && video.videoWidth >= 360) {
                     scale = 0.7;
                 }
+                if(video.videoHeight >= 1920) {
+                    scale = 0.2;
+                }else if (video.videoHeight < 1920 && video.videoHeight >= 720) {
+                    scale = 0.5;
+                }else if (video.videoHeight < 720 && video.videoHeight >= 360) {
+                    scale = 0.7;
+                }
                 canvas.width = video.videoWidth * scale;
                 canvas.height = video.videoHeight * scale;
                 canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);

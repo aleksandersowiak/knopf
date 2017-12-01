@@ -60,7 +60,7 @@
 </div>
 <footer class="footer">
     <div class="container">
-        <p class="text-muted">ASowiak 2017 v. <?= APP_VER ?> | <a href="#" data-url="<?= createUrl('admin', 'login') ?>"
+        <p class="text-muted"><a href="mailto:aleksander.sowiak@gmail.com"><img src="/data/images/asowiak_logo.png" class="asowiak" /></a>&nbsp;<span class="asowiak_v">2017 v. <?= APP_VER ?></span> | <a href="#" data-url="<?= createUrl('admin', 'login') ?>"
                                                                   id="pop-upModal"><?= __('admin_footer') ?></a></p>
     </div>
 </footer>
